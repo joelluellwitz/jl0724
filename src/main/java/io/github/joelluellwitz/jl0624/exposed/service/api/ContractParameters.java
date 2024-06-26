@@ -3,7 +3,7 @@
  */
 package io.github.joelluellwitz.jl0624.exposed.service.api;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Contains the parameters to generate a contract during checkout.
@@ -15,7 +15,7 @@ public class ContractParameters {
     //   unnecessary abstraction. That said, having getters and setters for all properties is very
     //   much ingrained in Java culture, so I won't try to buck that trend here.
     private String toolCode;
-    private Date checkoutDate;
+    private LocalDate checkoutDate;
     private int rentalDayCount;
     private int discountPercent;
 
@@ -35,13 +35,13 @@ public class ContractParameters {
 	/**
 	 * @return the checkoutDate
 	 */
-	public Date getCheckoutDate() {
+	public LocalDate getCheckoutDate() {
 		return checkoutDate;
 	}
 	/**
 	 * @param checkoutDate the checkoutDate to set
 	 */
-	public void setCheckoutDate(Date checkoutDate) {
+	public void setCheckoutDate(LocalDate checkoutDate) {
 		this.checkoutDate = checkoutDate;
 	}
     /**

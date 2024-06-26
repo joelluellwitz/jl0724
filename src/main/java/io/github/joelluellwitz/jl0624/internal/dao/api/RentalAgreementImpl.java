@@ -6,13 +6,14 @@ package io.github.joelluellwitz.jl0624.internal.dao.api;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.util.Assert;
 
 import io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters;
 import io.github.joelluellwitz.jl0624.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
+import jakarta.annotation.Nonnull;
 
 /**
  * TODO: Document
@@ -23,17 +24,18 @@ public class RentalAgreementImpl implements RentalAgreement {
     private final String toolBrand;
     private final BigDecimal dailyRentalCharge;
     private final int rentalDayCount;
-    private final Date checkoutDate;
+    private final LocalDate checkoutDate;
     private final int discountPercent;
 
-    private Date dueDate = null;
+    private LocalDate dueDate = null;
     private Integer chargeDayCount = null;
     private BigDecimal preDiscountCharge = null;
     private BigDecimal discountAmount = null;
     private BigDecimal finalCharge = null;
 
     // Intentionally package private.
-    RentalAgreementImpl(final ContractParameters contractParameters,
+    // TODO: Verified @Nonnull works with my IDE.
+    RentalAgreementImpl(@Nonnull final ContractParameters contractParameters,
         final Tool tool) {
         Assert.isTrue(contractParameters.getToolCode().equals(tool.getCode()),
                 "Tool codes do not match.");
@@ -85,7 +87,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     /**
      * @return the checkoutDate
      */
-    public Date getCheckoutDate() {
+    public LocalDate getCheckoutDate() {
         return checkoutDate;
     }
 
@@ -102,11 +104,9 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return the dueDate
      */
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         if (dueDate == null) {
-            LocalDate.from(getCheckoutDate().toInstant());
-            dueDate = new Date(LocalDate.from(getCheckoutDate().toInstant()).plusDays(
-                    getRentalDayCount()).getTime());  // TODO: Remove JodaTime
+            dueDate = getCheckoutDate().plusDays(getRentalDayCount());
         }
 
         return dueDate;
@@ -117,28 +117,50 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return the chargeDayCount
      */
-    // TODO: Are we using Europing style counting or American style counting?
-    // TODO: Consider switching all Dates to LocalDates.
+    // TODO: Are we using European style counting or American style counting?
     public Integer getChargeDayCount() {
         if (chargeDayCount == null) {
-            final DateTime checkoutDateTime = new DateTime(getCheckoutDate());
-            final DateTime dueDateTime = new DateTime(getDueDate());
-            final Period rentalPeriod = new Period(checkoutDateTime, dueDateTime);
+            final Period rentalPeriod = Period.between(getCheckoutDate(), getDueDate());
             final int rentalYearCount = rentalPeriod.getYears();
 
-            final DateTime lastYearIndependenceDay = new DateTime(dueDateTime.getYear(), 7, 4, 0, 0);
+            final LocalDate lastYearIndependenceDay = LocalDate.of(getDueDate().getYear(), 7, 4);
             final int independenceDayCount;
-            if (new Interval(checkoutDateTime.plusYears(rentalYearCount), dueDateTime).contains(
-                    lastYearIndependenceDay)) {
+            if (!getCheckoutDate().withYear(getDueDate().getYear()).isBefore(lastYearIndependenceDay)
+                    && getDueDate().isAfter(lastYearIndependenceDay)) {
                 independenceDayCount = rentalYearCount + 1;
             }
             else {
                 independenceDayCount = rentalYearCount;
             }
 
-            final int totalDayCount = Days.daysBetween(checkoutDateTime.toLocalDate(), dueDateTime.toLocalDate()).getDays();
+            final LocalDate firstSeptemberDay = LocalDate.of(getDueDate().getYear(), 9, 1);
+            final int firstSeptemberDayOfWeek = firstSeptemberDay.getDayOfWeek().getValue();
+            final LocalDate lastYearLaborDay = firstSeptemberDay.withDayOfMonth((8 - firstSeptemberDayOfWeek) % 7);
+            final int laborDayCount;
+            if (!getCheckoutDate().withYear(getDueDate().getYear()).isBefore(lastYearLaborDay)
+                    && getDueDate().isAfter(lastYearLaborDay)) {
+                laborDayCount = rentalYearCount + 1;
+            }
+            else {
+                laborDayCount = rentalYearCount;
+            }
 
-            chargeDayCount = new Interval(checkoutDateTime, dueDateTime);
+            // Week count can never be greater than rentalDayCount, so the long result can be safely casted back to an
+            //   int.
+            final int fullWeekCount = (int) ChronoUnit.WEEKS.between(getCheckoutDate(), getDueDate());
+            final int startDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
+            final int endDayOfWeek = getDueDate().getDayOfWeek().getValue();
+            final int weekPortionCount;
+            // TODO: See if you can apply modulus down here too:
+            if (startDayOfWeek <= endDayOfWeek) {
+                weekPortionCount = endDayOfWeek - startDayOfWeek;
+            }
+            else {
+                weekPortionCount = startDayOfWeek + 5 - endDayOfWeek;
+            }
+            final int weekDayCount = fullWeekCount * 5 + weekPortionCount;
+
+            chargeDayCount = weekDayCount - independenceDayCount - laborDayCount;
         }
 
         return chargeDayCount;
