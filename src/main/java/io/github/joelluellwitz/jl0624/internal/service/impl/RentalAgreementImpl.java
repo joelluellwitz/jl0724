@@ -1,12 +1,16 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.dao.api;
+package io.github.joelluellwitz.jl0624.internal.service.impl;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 
 import org.springframework.util.Assert;
 
@@ -19,6 +23,8 @@ import jakarta.annotation.Nonnull;
  * TODO: Document
  */
 public class RentalAgreementImpl implements RentalAgreement {
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("");
+
     private final String toolCode;
     private final String toolType;
     private final String toolBrand;
@@ -27,11 +33,11 @@ public class RentalAgreementImpl implements RentalAgreement {
     private final LocalDate checkoutDate;
     private final int discountPercent;
 
-    private LocalDate dueDate = null;
-    private Integer chargeDayCount = null;
-    private BigDecimal preDiscountCharge = null;
-    private BigDecimal discountAmount = null;
-    private BigDecimal finalCharge = null;
+    private LocalDate dueDate;
+    private Integer chargeDayCount;
+    private BigDecimal preDiscountCharge;
+    private BigDecimal discountAmount;
+    private BigDecimal finalCharge;
 
     // Intentionally package private.
     // TODO: Verified @Nonnull works with my IDE.
@@ -47,6 +53,32 @@ public class RentalAgreementImpl implements RentalAgreement {
         rentalDayCount = contractParameters.getRentalDayCount();
         checkoutDate = contractParameters.getCheckoutDate();
         discountPercent = contractParameters.getDiscountPercent();
+    }
+
+    // TODO: Document
+    @Override
+    public void printRentalAgreement() {
+        final StringBuilder agreementStringBuilder = new StringBuilder();
+        agreementStringBuilder.append("Tool code: ").append(getToolCode()).append('\n');
+        agreementStringBuilder.append("Tool type: ").append(getToolType()).append('\n');
+        agreementStringBuilder.append("Tool brand: ").append(getToolBrand()).append('\n');
+        agreementStringBuilder.append("Rental days: ").append(getRentalDayCount()).append('\n');
+        agreementStringBuilder.append("Check out date: ");
+        dateFormatter.formatTo(getCheckoutDate(), agreementStringBuilder);
+        agreementStringBuilder.append('\n');
+        agreementStringBuilder.append("Due date: ");
+        dateFormatter.formatTo(getDueDate(), agreementStringBuilder);
+        agreementStringBuilder.append('\n');
+        agreementStringBuilder.append("Daily rental charge: ").append(
+                formatCurrency(getDailyRentalCharge())).append('\n');
+        agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
+        agreementStringBuilder.append("Pre-discount charge: ").append(
+                formatCurrency(getPreDiscountCharge())).append('\n');
+        agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent())).append('\n');
+        agreementStringBuilder.append("Discount amount: ").append(formatCurrency(getDiscountAmount())).append('\n');
+        agreementStringBuilder.append("Final charge: ").append(formatCurrency(getFinalCharge())).append('\n');
+
+        System.out.println(agreementStringBuilder.toString());  // TODO: Replace with logger?
     }
 
     /**
@@ -98,7 +130,6 @@ public class RentalAgreementImpl implements RentalAgreement {
         return discountPercent;
     }
 
-
     /**
      * TODO: Document.
      *
@@ -114,6 +145,9 @@ public class RentalAgreementImpl implements RentalAgreement {
 
     /**
      * TODO: Document.
+     *
+     * For speed, I could remove some of the branches, but the method would harder to read. Usually, readability is more
+     *   important.
      *
      * @return the chargeDayCount
      */
@@ -148,16 +182,16 @@ public class RentalAgreementImpl implements RentalAgreement {
             // Week count can never be greater than rentalDayCount, so the long result can be safely casted back to an
             //   int.
             final int fullWeekCount = (int) ChronoUnit.WEEKS.between(getCheckoutDate(), getDueDate());
-            final int startDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
-            final int endDayOfWeek = getDueDate().getDayOfWeek().getValue();
-            final int weekPortionCount;
-            // TODO: See if you can apply modulus down here too:
-            if (startDayOfWeek <= endDayOfWeek) {
-                weekPortionCount = endDayOfWeek - startDayOfWeek;
+            final int realStartDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
+            final int effectiveStartDayOfWeek;
+            if (realStartDayOfWeek > DayOfWeek.FRIDAY.getValue()) {
+                effectiveStartDayOfWeek = DayOfWeek.MONDAY.getValue();
             }
             else {
-                weekPortionCount = startDayOfWeek + 5 - endDayOfWeek;
+                effectiveStartDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
             }
+            final int effectiveEndDayOfWeek = Math.max(getDueDate().getDayOfWeek().getValue(), 5);
+            final int weekPortionCount = (effectiveEndDayOfWeek - effectiveStartDayOfWeek) % 5;
             final int weekDayCount = fullWeekCount * 5 + weekPortionCount;
 
             chargeDayCount = weekDayCount - independenceDayCount - laborDayCount;
@@ -173,8 +207,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     public BigDecimal getPreDiscountCharge() {
         if (preDiscountCharge == null) {
-            preDiscountCharge = getDailyRentalCharge().multiply(
-                    BigDecimal.valueOf(getChargeDayCount()));
+            preDiscountCharge = getDailyRentalCharge().multiply(BigDecimal.valueOf(getChargeDayCount()));
         }
 
         return preDiscountCharge;
@@ -207,25 +240,21 @@ public class RentalAgreementImpl implements RentalAgreement {
         return finalCharge;
     }
 
-    // TODO: Document
-    @Override
-    public void printRentalAgreement() {
-        final StringBuilder agreementStringBuilder = new StringBuilder();
-        agreementStringBuilder.append("Tool code: ").append(getToolCode()).append('\n');
-        agreementStringBuilder.append("Tool type: ").append(getToolType()).append('\n');
-        agreementStringBuilder.append("Tool brand: ").append(getToolBrand()).append('\n');
-        agreementStringBuilder.append("Rental days: ").append(getRentalDayCount()).append('\n');
-        agreementStringBuilder.append("Check out date: ").append(formatDate(getCheckoutDate())).append('\n');
-        agreementStringBuilder.append("Due date: ").append(formatDate(getDueDate())).append('\n');
-        agreementStringBuilder.append("Daily rental charge: ").append(
-                formatCurrency(getDailyRentalCharge())).append('\n');
-        agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
-        agreementStringBuilder.append("Pre-discount charge: ").append(
-                formatCurrency(getPreDiscountCharge())).append('\n');
-        agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent())).append('\n');
-        agreementStringBuilder.append("Discount amount: ").append(formatCurrency(getDiscountAmount())).append('\n');
-        agreementStringBuilder.append("Final charge: ").append(formatCurrency(getFinalCharge())).append('\n');
+    /**
+     * TODO: Document.
+     *
+     * @return
+     */
+    private String formatCurrency(final BigDecimal amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(amount);
+    }
 
-        System.out.println(agreementStringBuilder.toString());  // TODO: Replace with logger?
+    /**
+     * TODO: Document.
+     *
+     * @return
+     */
+    private String formatPercentage(final int percentage) {
+        return NumberFormat.getPercentInstance(Locale.US).format(percentage);
     }
 }

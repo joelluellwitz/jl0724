@@ -15,5 +15,5 @@ public interface RentalAgreement {
      *   the agreement text. It should then be a third component's responsibility to request that
      *   text and print it to the console. (Separation of UI concerns from business logic concerns.)
      */
-    public void printRentalAgreement();
+    void printRentalAgreement();
 }

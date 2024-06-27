@@ -16,12 +16,12 @@ public interface RetailPointOfSale {
      *   by the console based register user interface (also not required).
      *
      * @return A {@link java.util.List List} of
-     *   {@link io.github.joelluellwitz.jl0624.exposed.service.api.Tool Tools}.
+     *   {@link io.github.joelluellwitz.jl0624.exposed.service.api.ToolImpl Tools}.
      */
-    public List<Tool> listTools();
+    List<Tool> listTools();
 
     /**
-     * Checks out a {@link io.github.joelluellwitz.jl0624.exposed.service.api.Tool Tool} to a
+     * Checks out a {@link io.github.joelluellwitz.jl0624.exposed.service.api.ToolImpl Tool} to a
      *   customer using the provided
      *   {@link io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters}.
      *
@@ -31,5 +31,5 @@ public interface RetailPointOfSale {
      * @return Represents of the exact terms of the customer
      *   {@link io.github.joelluellwitz.jl0624.exposed.service.api.RentalAgreement RentalAgreement}.
      */
-    public RentalAgreement checkout(ContractParameters contractParameters);
+    RentalAgreement checkout(ContractParameters contractParameters);
 }
