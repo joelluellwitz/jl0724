@@ -5,3 +5,6 @@
 * Mention where to find required unit tests.
 * Mention in code comments explain the rational about why things are done.
 * Maybe mention why not all versions are listed in properties.
+* Add @Override annotations.
+* See if there is a real tag for "// See method documentation in interface definition."
+* Search for use of underscores.

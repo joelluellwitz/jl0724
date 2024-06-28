@@ -5,10 +5,13 @@ package io.github.joelluellwitz.jl0624.exposed.ui.console;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
 
@@ -16,12 +19,15 @@ import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
  * A console based implementation of the tool rental point of sale user interface.
  */
 @SpringBootApplication
+@ComponentScan(basePackages="io.github.joelluellwitz.jl0624")
 public class RetailConsole implements CommandLineRunner {
+    //private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
 
     private final RetailPointOfSale retailPointOfSale;
 
     // TODO: Document?
-    private RetailConsole(@Autowired RetailPointOfSale retailPointOfSale) {
+    // Intentionally package private.
+    RetailConsole(@Autowired RetailPointOfSale retailPointOfSale) {
         this.retailPointOfSale = retailPointOfSale;
     }
 

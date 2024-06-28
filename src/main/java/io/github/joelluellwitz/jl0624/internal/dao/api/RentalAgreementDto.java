@@ -13,7 +13,7 @@ public class RentalAgreementDto {
     private String toolCode;
     private String toolType;
     private String toolBrand;
-    private BigDecimal dailyRentalCharge;
+    private BigDecimal dailyCharge;
     private int rentalDayCount;
     private LocalDate checkoutDate;
     private int discountPercent;
@@ -60,16 +60,16 @@ public class RentalAgreementDto {
         this.toolBrand = toolBrand;
     }
     /**
-     * @return the dailyRentalCharge
+     * @return the dailyCharge
      */
-    public BigDecimal getDailyRentalCharge() {
-        return dailyRentalCharge;
+    public BigDecimal getDailyCharge() {
+        return dailyCharge;
     }
     /**
-     * @param dailyRentalCharge the dailyRentalCharge to set
+     * @param dailyCharge the dailyCharge to set
      */
-    public void setDailyRentalCharge(final BigDecimal dailyRentalCharge) {
-        this.dailyRentalCharge = dailyRentalCharge;
+    public void setDailyCharge(final BigDecimal dailyCharge) {
+        this.dailyCharge = dailyCharge;
     }
     /**
      * @return the rentalDayCount

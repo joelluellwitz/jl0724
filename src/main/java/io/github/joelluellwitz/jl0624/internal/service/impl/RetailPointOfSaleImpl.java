@@ -47,7 +47,7 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
     @Override
     public List<Tool> listTools() {
         final List<ToolDto> dataTierTools = toolDao.listToolsSortedByToolCode();
-        final List<Tool> tools = toolMapper.toolDtoToTool(dataTierTools);
+        final List<Tool> tools = toolMapper.toolDtosToTools(dataTierTools);
 
         return tools;
     }

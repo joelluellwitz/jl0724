@@ -28,7 +28,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     private final String toolCode;
     private final String toolType;
     private final String toolBrand;
-    private final BigDecimal dailyRentalCharge;
+    private final BigDecimal dailyCharge;
     private final int rentalDayCount;
     private final LocalDate checkoutDate;
     private final int discountPercent;
@@ -49,7 +49,7 @@ public class RentalAgreementImpl implements RentalAgreement {
         toolCode = contractParameters.getToolCode();
         toolType = tool.getType();
         toolBrand = tool.getBrand();
-        dailyRentalCharge = tool.getDailyRentalCharge();
+        dailyCharge = tool.getDailyCharge();
         rentalDayCount = contractParameters.getRentalDayCount();
         checkoutDate = contractParameters.getCheckoutDate();
         discountPercent = contractParameters.getDiscountPercent();
@@ -70,7 +70,7 @@ public class RentalAgreementImpl implements RentalAgreement {
         dateFormatter.formatTo(getDueDate(), agreementStringBuilder);
         agreementStringBuilder.append('\n');
         agreementStringBuilder.append("Daily rental charge: ").append(
-                formatCurrency(getDailyRentalCharge())).append('\n');
+                formatCurrency(getDailyCharge())).append('\n');
         agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
         agreementStringBuilder.append("Pre-discount charge: ").append(
                 formatCurrency(getPreDiscountCharge())).append('\n');
@@ -103,10 +103,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * @return the dailyRentalCharge
+     * @return the dailyCharge
      */
-    public BigDecimal getDailyRentalCharge() {
-        return dailyRentalCharge;
+    public BigDecimal getDailyCharge() {
+        return dailyCharge;
     }
 
     /**
@@ -207,7 +207,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     public BigDecimal getPreDiscountCharge() {
         if (preDiscountCharge == null) {
-            preDiscountCharge = getDailyRentalCharge().multiply(BigDecimal.valueOf(getChargeDayCount()));
+            preDiscountCharge = getDailyCharge().multiply(BigDecimal.valueOf(getChargeDayCount()));
         }
 
         return preDiscountCharge;

@@ -22,7 +22,19 @@ public interface Tool {
      */
     String getBrand();
     /**
-     * @return the dailyRentalCharge
+     * @return the dailyCharge
      */
-    BigDecimal getDailyRentalCharge();
+    BigDecimal getDailyCharge();
+    /**
+     * @return the weekdayCharge
+     */
+    boolean isWeekdayCharge();
+    /**
+     * @return the weekendCharge
+     */
+    boolean isWeekendCharge();
+    /**
+     * @return the holidayCharge
+     */
+    boolean isHolidayCharge();
 }

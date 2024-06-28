@@ -12,7 +12,7 @@ import io.github.joelluellwitz.jl0624.internal.dao.api.RentalAgreementDto;
  * TODO: Document.
  */
 public interface RentalAgreementMapper {
-    final RentalAgreementMapper INSTANCE = Mappers.getMapper(RentalAgreementMapper.class);
+    RentalAgreementMapper INSTANCE = Mappers.getMapper(RentalAgreementMapper.class);
 
     RentalAgreementDto rentalAgreementToRentalAgreementDto(RentalAgreement tool);
 }

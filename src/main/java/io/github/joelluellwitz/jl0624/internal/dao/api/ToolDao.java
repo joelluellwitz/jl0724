@@ -5,6 +5,8 @@ package io.github.joelluellwitz.jl0624.internal.dao.api;
 
 import java.util.List;
 
+import org.hibernate.annotations.processing.HQL;
+
 /**
  * TODO: Document.
  */
@@ -15,6 +17,7 @@ public interface ToolDao {
      * @param toolCode
      * @return
      */
+    @HQL("SELECT tool FROM Tool tool INNER JOIN FETCH ToolType toolType WHERE tool.code = :toolCode")
     ToolDto getToolByCode(String toolCode);
 
     /**
@@ -22,5 +25,6 @@ public interface ToolDao {
      *
      * @return
      */
+    @HQL("SELECT tool FROM Tool tool INNER JOIN FETCH ToolType toolType ORDER BY tool.code")
     List<ToolDto> listToolsSortedByToolCode();
 }

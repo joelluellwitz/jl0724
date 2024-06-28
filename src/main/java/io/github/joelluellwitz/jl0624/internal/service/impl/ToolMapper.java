@@ -17,10 +17,8 @@ import io.github.joelluellwitz.jl0624.internal.dao.api.ToolDto;
 @Mapper
 public interface ToolMapper {
 
-    final ToolMapper INSTANCE = Mappers.getMapper(ToolMapper.class);
+    ToolMapper INSTANCE = Mappers.getMapper(ToolMapper.class);
 
     ToolImpl toolDtoToTool(ToolDto tool);
-    List<Tool> toolDtoToTool(List<ToolDto> tool);
-    ToolDto toolToToolDto(Tool tool);
-    List<Tool> toolToToolDto(List<Tool> tool);
+    List<Tool> toolDtosToTools(List<ToolDto> tool);
 }
