@@ -8,3 +8,7 @@
 * Add @Override annotations.
 * See if there is a real tag for "// See method documentation in interface definition."
 * Search for use of underscores.
+* Attempt to autoformat everything.
+* Look into getter and setter annotations.
+* Consider renaming all references from DAO to data or repo.
+* Consider removing all references to DTO.

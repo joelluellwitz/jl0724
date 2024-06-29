@@ -5,21 +5,21 @@ package io.github.joelluellwitz.jl0624.exposed.ui.console;
 
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
 
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
-@SpringBootApplication
-@ComponentScan(basePackages="io.github.joelluellwitz.jl0624")
+@SpringBootApplication // TODO: (exclude = {DataSourceAutoConfiguration.class})
+@ComponentScan(basePackages = "io.github.joelluellwitz.jl0624")
+@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0624.dao.api")
 public class RetailConsole implements CommandLineRunner {
     //private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
 
@@ -38,7 +38,7 @@ public class RetailConsole implements CommandLineRunner {
      * @throws IOException Raised in the event that the console cannot be read. Realistically should
      *   never happen.
      */
-    public static void main(final String[] _args) {
+    public static void main(final String[] _args) throws IOException {
         // TODO: LOG.info("STARTING THE APPLICATION");
         SpringApplication.run(RetailConsole.class, _args);
         // TODO: LOG.info("APPLICATION FINISHED");

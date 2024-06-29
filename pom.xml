@@ -11,6 +11,12 @@
     A programming demonstration for an undisclosed company that is considering employing me.
   </description>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.3.1</version>
+  </parent>
+
   <properties>
     <hibernate.version>6.5.2.Final</hibernate.version>
     <junit.platform.version>1.10.2</junit.platform.version>
@@ -61,6 +67,13 @@
       <artifactId>hibernate-core</artifactId>
     </dependency>
 
+    <!-- TODO: Verify this is needed. -->
+    <!--<dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>-->
+
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
@@ -88,7 +101,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>3.3.1</version>
+      <!--<version>3.3.1</version>-->
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
     <dependency>
@@ -98,8 +116,8 @@
     </dependency>
   </dependencies>
 
-  <dependencyManagement>
-    <!-- TODO: Add Spring BOM. -->
+  <!-- TODO: <dependencyManagement>
+    <!- TODO: Add Spring BOM. ->
     <dependencies>
       <dependency>
         <groupId>org.hibernate.orm</groupId>
@@ -112,10 +130,10 @@
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
-        <version>3.1.5</version>
+        <version>3.3.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
     </dependencies>
-  </dependencyManagement>
+  </dependencyManagement> -->
 </project>

@@ -74,7 +74,7 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
         final RentalAgreementDto rentalAgreementDto =
                 rentalAgreementMapper.rentalAgreementToRentalAgreementDto(rentalAgreement);
 
-        rentalAgreementDao.save(rentalAgreementDto);
+        rentalAgreementDao.persist(rentalAgreementDto);
 
         return rentalAgreement;
     }

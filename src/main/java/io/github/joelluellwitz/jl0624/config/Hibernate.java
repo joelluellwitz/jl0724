@@ -23,8 +23,8 @@ public class Hibernate {
             Files.copy(sourceDatabase.openStream(), tempDatabase.toPath());
 
             Configuration config = new Configuration();
-            config.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC");
-            config.setProperty("hibernate.connection.url", "jdbc:sqlite:" + tempDatabase.getAbsolutePath());
+            //config.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC");
+            //config.setProperty("hibernate.connection.url", "jdbc:sqlite:" + tempDatabase.getAbsolutePath());
             // TODO: config.setProperty("hibernate.connection.username", "root");
             // TODO: config.setProperty("hibernate.connection.password", "password");
             config.setProperty("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
