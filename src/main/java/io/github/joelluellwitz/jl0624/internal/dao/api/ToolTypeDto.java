@@ -4,121 +4,147 @@
 package io.github.joelluellwitz.jl0624.internal.dao.api;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
  * TODO: Document.
  */
 @Entity(name = "ToolType")
-@Table(name="tool_type")
+@Table(name = "tool_type")
 public class ToolTypeDto {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id", nullable=false, unique=true)
     private int id;
+    @CreationTimestamp
+    @Column(name="created_on", nullable=false)
     private LocalDateTime createdOn;
+    @UpdateTimestamp
+    @Column(name="updated_on", nullable=false)
     private LocalDateTime updatedOn;
-    private String type;
+    @Column(name="name", nullable=false)
+    private String name;
+    @Column(name="daily_charge", nullable=false)
     private BigDecimal dailyCharge;
-    private LocalDate weekdayCharge;
-    private LocalDate weekendCharge;
-    private LocalDate holidayCharge;
+    @Column(name="weekday_charge", nullable=false)
+    private boolean weekdayCharge;
+    @Column(name="weekend_charge", nullable=false)
+    private boolean weekendCharge;
+    @Column(name="holiday_charge", nullable=false)
+    private boolean holidayCharge;
 
     /**
      * @return the id
      */
-    public final int getId() {
+    public int getId() {
         return id;
     }
     /**
      * @param id the id to set
      */
-    public final void setId(final int id) {
+    // Intentionally package private.
+    void setId(final int id) {
         this.id = id;
     }
     /**
      * @return the createdOn
      */
-    public final LocalDateTime getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
     /**
      * @param createdOn the createdOn to set
      */
-    public final void setCreatedOn(final LocalDateTime createdOn) {
+    // Intentionally package private.
+    void setCreatedOn(final LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
     /**
      * @return the updatedOn
      */
-    public final LocalDateTime getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
     /**
      * @param updatedOn the updatedOn to set
      */
-    public final void setUpdatedOn(final LocalDateTime updatedOn) {
+    // Intentionally package private.
+    void setUpdatedOn(final LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
     /**
-     * @return the type
+     * @return the name
      */
-    public final String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
     /**
-     * @param type the type to set
+     * @param name the name to set
      */
-    public final void setType(final String type) {
-        this.type = type;
+    // Intentionally package private.
+    void setName(final String name) {
+        this.name = name;
     }
     /**
      * @return the dailyCharge
      */
-    public final BigDecimal getDailyCharge() {
+    public BigDecimal getDailyCharge() {
         return dailyCharge;
     }
     /**
      * @param dailyCharge the dailyCharge to set
      */
-    public final void setDailyCharge(final BigDecimal dailyCharge) {
+    // Intentionally package private.
+    void setDailyCharge(final BigDecimal dailyCharge) {
         this.dailyCharge = dailyCharge;
     }
     /**
      * @return the weekdayCharge
      */
-    public final LocalDate getWeekdayCharge() {
+    public boolean getWeekdayCharge() {
         return weekdayCharge;
     }
     /**
      * @param weekdayCharge the weekdayCharge to set
      */
-    public final void setWeekdayCharge(final LocalDate weekdayCharge) {
+    // Intentionally package private.
+    void setWeekdayCharge(final boolean weekdayCharge) {
         this.weekdayCharge = weekdayCharge;
     }
     /**
      * @return the weekendCharge
      */
-    public final LocalDate getWeekendCharge() {
+    public boolean getWeekendCharge() {
         return weekendCharge;
     }
     /**
      * @param weekendCharge the weekendCharge to set
      */
-    public final void setWeekendCharge(final LocalDate weekendCharge) {
+    // Intentionally package private.
+    void setWeekendCharge(final boolean weekendCharge) {
         this.weekendCharge = weekendCharge;
     }
     /**
      * @return the holidayCharge
      */
-    public final LocalDate getHolidayCharge() {
+    public boolean getHolidayCharge() {
         return holidayCharge;
     }
     /**
      * @param holidayCharge the holidayCharge to set
      */
-    public final void setHolidayCharge(final LocalDate holidayCharge) {
+    // Intentionally package private.
+    void setHolidayCharge(final boolean holidayCharge) {
         this.holidayCharge = holidayCharge;
     }
 }

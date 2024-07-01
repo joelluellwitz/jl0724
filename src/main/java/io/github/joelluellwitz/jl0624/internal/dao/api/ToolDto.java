@@ -5,11 +5,16 @@ package io.github.joelluellwitz.jl0624.internal.dao.api;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -22,84 +27,96 @@ public class ToolDto {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id", nullable=false, unique=true)
     private int id;
+    @CreationTimestamp
     @Column(name="created_on", nullable=false)
     private LocalDateTime createdOn;
+    @UpdateTimestamp
     @Column(name="updated_on", nullable=false)
     private LocalDateTime updatedOn;
+    @Column(name="code", nullable=false)
     private String code;
+    @OneToOne // TODO: (cascade = CascadeType.ALL)
+    @JoinColumn(name = "tool_type_id", referencedColumnName = "id")
     private ToolTypeDto toolType;
+    @Column(name="brand", nullable=false)
     private String brand;
 
     /**
      * @return the id
      */
-    public final int getId() {
+    public int getId() {
         return id;
     }
     /**
      * @param id the id to set
      */
-    public final void setId(final int id) {
+    // Intentionally package private.
+    void setId(final int id) {
         this.id = id;
     }
     /**
      * @return the createdOn
      */
-    public final LocalDateTime getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
     /**
      * @param createdOn the createdOn to set
      */
-    public final void setCreatedOn(final LocalDateTime createdOn) {
+    // Intentionally package private.
+    void setCreatedOn(final LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
     /**
      * @return the updatedOn
      */
-    public final LocalDateTime getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
     /**
      * @param updatedOn the updatedOn to set
      */
-    public final void setUpdatedOn(final LocalDateTime updatedOn) {
+    // Intentionally package private.
+    void setUpdatedOn(final LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
     /**
      * @return the code
      */
-    public final String getCode() {
+    public String getCode() {
         return code;
     }
     /**
      * @param code the code to set
      */
-    public final void setCode(final String code) {
+    // Intentionally package private.
+    void setCode(final String code) {
         this.code = code;
     }
     /**
      * @return the toolType
      */
-    public final ToolTypeDto getToolType() {
+    public ToolTypeDto getToolType() {
         return toolType;
     }
     /**
      * @param toolType the toolType to set
      */
-    public final void setToolType(final ToolTypeDto toolType) {
+    // Intentionally package private.
+    void setToolType(final ToolTypeDto toolType) {
         this.toolType = toolType;
     }
     /**
      * @return the brand
      */
-    public final String getBrand() {
+    public String getBrand() {
         return brand;
     }
     /**
      * @param brand the brand to set
      */
-    public final void setBrand(final String brand) {
+    // Intentionally package private.
+    void setBrand(final String brand) {
         this.brand = brand;
     }
 }

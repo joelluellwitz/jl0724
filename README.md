@@ -12,3 +12,11 @@
 * Look into getter and setter annotations.
 * Consider renaming all references from DAO to data or repo.
 * Consider removing all references to DTO.
+* Explain use of final.
+* Fix annotations to have spaces.
+* Consider renaming repository and packages to jl0724
+  * Do a search to ensure no old references are left.
+* Rename Dao to Repository.
+* Add debugging logging statements.
+* Search for pattern "public final"
+* Search for System.out and System.in

@@ -4,8 +4,8 @@
 package io.github.joelluellwitz.jl0624.internal.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters;
@@ -33,7 +33,6 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
      * @param rentalAgreementDao
      * @param toolDao
      */
-    @Autowired
     // Intentionally package private.
     RetailPointOfSaleImpl(final RentalAgreementDao rentalAgreementDao, final ToolDao toolDao,
             final ToolMapper toolMapper, final RentalAgreementMapper rentalAgreementMapper) {
@@ -46,10 +45,7 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
     // For documentation, see interface definition.
     @Override
     public List<Tool> listTools() {
-        final List<ToolDto> dataTierTools = toolDao.listToolsSortedByToolCode();
-        final List<Tool> tools = toolMapper.toolDtosToTools(dataTierTools);
-
-        return tools;
+       return toolMapper.toolDtosToTools(toolDao.listToolsSortedByToolCode());
     }
 
     // For documentation, see interface definition.
@@ -67,14 +63,18 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
                     "The number of rental days must be greater than 1. You specified: %i", rentalDayCount));
         }
 
-        final ToolDto toolDto = toolDao.getToolByCode(contractParameters.getToolCode());
-        final Tool tool = toolMapper.toolDtoToTool(toolDto);
+        final Optional<ToolDto> toolOptional = toolDao.getToolByCode(contractParameters.getToolCode());
+        if (toolOptional.isEmpty()) {
+            throw new IllegalArgumentException(String.format(
+                    "Unrecognized tool code. You specified: %s", contractParameters.getToolCode()));
+        }
+        final Tool tool = toolMapper.toolDtoToTool(toolOptional.get());
 
-        final RentalAgreement rentalAgreement = new RentalAgreementImpl(contractParameters, tool);
+        final RentalAgreementImpl rentalAgreement = new RentalAgreementImpl(contractParameters, tool);
         final RentalAgreementDto rentalAgreementDto =
                 rentalAgreementMapper.rentalAgreementToRentalAgreementDto(rentalAgreement);
 
-        rentalAgreementDao.persist(rentalAgreementDto);
+        rentalAgreementDao.saveAndFlush(rentalAgreementDto);
 
         return rentalAgreement;
     }

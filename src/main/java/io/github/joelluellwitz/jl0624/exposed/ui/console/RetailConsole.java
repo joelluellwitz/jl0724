@@ -3,32 +3,54 @@
  */
 package io.github.joelluellwitz.jl0624.exposed.ui.console;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.text.NumberFormat;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import dnl.utils.text.table.TextTable;
+import io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters;
 import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
+import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
 
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
 @SpringBootApplication // TODO: (exclude = {DataSourceAutoConfiguration.class})
 @ComponentScan(basePackages = "io.github.joelluellwitz.jl0624")
-@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0624.dao.api")
+@EntityScan({"io.github.joelluellwitz.jl0624"}) // TODO: Internal package is referenced from external class.
+@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0624") // TODO: Internal package is referenced from external class.
+// TODO: Consider moving the command line running under io.github.joelluellwitz.jl0624 and having it call RetailConsole here.
 public class RetailConsole implements CommandLineRunner {
-    //private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
+    // TODO: private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
 
+    private final ConfigurableApplicationContext context;
+    private final Console console;
     private final RetailPointOfSale retailPointOfSale;
+
+    private String toolList;
 
     // TODO: Document?
     // Intentionally package private.
-    RetailConsole(@Autowired RetailPointOfSale retailPointOfSale) {
+    RetailConsole(@Autowired final ConfigurableApplicationContext context,
+            @Autowired final RetailPointOfSale retailPointOfSale) {
+        this.context = context;
         this.retailPointOfSale = retailPointOfSale;
+        console = System.console();
     }
 
     /**
@@ -47,28 +69,62 @@ public class RetailConsole implements CommandLineRunner {
     // TODO: Document.
     @Override
     public void run(final String... _args) throws IOException {
-        char mainInput;
-
-        do {
-            mainInput = (char) System.in.read();
+        while (true) {
+            final String mainInput = console.readLine(
+                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
 
             switch(mainInput) {
-                case 'q':
-                    // Is handled by while condition.
+                case "q":
+                    System.exit(SpringApplication.exit(context));
+                case "p":
+                    printToolList();
                     break;
-                case 'p':
-                    // TODO: Format this output:
-                    System.out.println(retailPointOfSale.listTools());
-                    break;
-                case 'c':
+                case "c":
                     checkout();
                     break;
+                default:
+                    console.printf("Invalid input: %s", mainInput);
             }
-        } while (mainInput != 'q');
+        }
+    }
+
+    // TODO: Document.
+    private void printToolList() {
+        if (toolList == null) {
+            final String[] columnNames = {"Tool Code", "Tool Type", "Brand", "Daily Charge", "Weekday Charge?",
+                    "Weekend Charge?", "Holiday Charge?"};
+
+            final List<Tool> tools = retailPointOfSale.listTools();
+            //final String[][] tableData = new String[toolList.size()][7];
+            final int toolCount = tools.size();
+            final String[][] tableData = new String[toolCount][];
+            final Iterator<Tool> toolListIterator = tools.iterator();
+            for (int toolIndex = 0; toolIndex < toolCount; toolIndex++) {
+                final Tool tool = toolListIterator.next();
+                tableData[toolIndex] = new String[] {
+                    tool.getCode(), tool.getType(), tool.getBrand(),
+                    NumberFormat.getCurrencyInstance(Locale.US).format(tool.getDailyCharge()),
+                    Boolean.valueOf(tool.isWeekdayCharge()).toString(), Boolean.valueOf(tool.isWeekendCharge()).toString(),
+                    Boolean.valueOf(tool.isHolidayCharge()).toString()
+                };
+            }
+
+            final OutputStream tableOutputStream = new ByteArrayOutputStream();
+            // TODO: Format the bottom of the table.
+            new TextTable(columnNames, tableData).printTable(new PrintStream(tableOutputStream), 0);
+            toolList = tableOutputStream.toString();
+        }
+        console.printf(toolList);
     }
 
     // TODO: Document.
     private void checkout() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode(null);
+        contractParameters.setCheckoutDate(null);
+        contractParameters.setRentalDayCount(0);
+        contractParameters.setDiscountPercent(0);
 
+        retailPointOfSale.checkout(contractParameters);
     }
 }

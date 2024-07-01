@@ -1,23 +1,22 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-      https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.github.joelluellwitz</groupId>
-  <artifactId>jl0624</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>Rental Point of Sale Tool</name>
-  <description>
-    A programming demonstration for an undisclosed company that is considering employing me.
-  </description>
-
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.3.1</version>
+    <relativePath/>
   </parent>
 
+  <groupId>io.github.joelluellwitz</groupId>
+  <artifactId>jl0624</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Rental Point of Sale Tool</name>
+  <description>A programming demonstration for an undisclosed company that is considering employing me.</description>
+
   <properties>
+    <java.version>21</java.version>
     <hibernate.version>6.5.2.Final</hibernate.version>
     <junit.platform.version>1.10.2</junit.platform.version>
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
@@ -26,9 +25,13 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <!--<version>3.8.1</version>-->
         <configuration>
           <source>1.21</source>
           <target>1.21</target>
@@ -38,11 +41,11 @@
               <artifactId>mapstruct-processor</artifactId>
               <version>${org.mapstruct.version}</version>
             </path>
-            <path>
+            <!--<path>
               <groupId>org.hibernate.orm</groupId>
               <artifactId>hibernate-jpamodelgen</artifactId>
               <version>${hibernate.version}</version>
-            </path>
+            </path>-->
           </annotationProcessorPaths>
         </configuration>
       </plugin>
@@ -51,21 +54,52 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.massisframework</groupId>
+      <artifactId>j-text-utils</artifactId>
+      <version>0.3.4</version>
+    </dependency>
+    <!--<dependency>
+      <groupId>de.vandermeer</groupId>
+      <artifactId>asciitable</artifactId>
+      <version>0.3.2</version>
+      <!-<exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId>
+          <artifactId>antlr-runtime</artifactId>
+        </exclusion>
+      </exclusions>->
+    </dependency>-->
+
+    <!-- TODO: Explain why this is here.
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>ST4</artifactId>
+      <version>4.3.4</version>
+    </dependency>-->
+
+    <!--<dependency>
       <groupId>jakarta.data</groupId>
       <artifactId>jakarta.data-api</artifactId>
       <version>1.0.0</version>
-    </dependency>
+    </dependency>-->
 
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-community-dialects</artifactId>
+      <!--<version>6.0.0.Final</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.antlr</groupId>
+          <artifactId>antlr4-runtime</artifactId>
+        </exclusion>
+      </exclusions>-->
     </dependency>
 
     <!-- TODO: Verify this is needed. -->
-    <dependency>
+    <!--<dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
-    </dependency>
+    </dependency>-->
 
     <!-- TODO: Verify this is needed. -->
     <!--<dependency>
@@ -74,11 +108,11 @@
       <version>${hibernate.version}</version>
     </dependency>-->
 
-    <dependency>
+    <!--<dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
-      <version>${junit.platform.version}</version>
-    </dependency>
+      <!-<version>${junit.platform.version}</version>->
+    </dependency>-->
 
     <dependency>
         <groupId>org.mapstruct</groupId>
@@ -98,11 +132,11 @@
       <version>3.3.1</version>
     </dependency>-->
 
-    <dependency>
+    <!--<dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <!--<version>3.3.1</version>-->
-    </dependency>
+      <!-<version>3.3.1</version>->
+    </dependency>-->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -112,7 +146,7 @@
     <dependency>
       <groupId>org.xerial</groupId>
       <artifactId>sqlite-jdbc</artifactId>
-      <version>3.46.0.0</version>
+      <!--<version>3.46.0.0</version>-->
     </dependency>
   </dependencies>
 
