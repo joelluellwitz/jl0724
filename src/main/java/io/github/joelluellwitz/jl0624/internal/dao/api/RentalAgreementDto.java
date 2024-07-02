@@ -68,7 +68,7 @@ public class RentalAgreementDto {
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(final int id) {
         this.id = id;
     }
     /**
@@ -80,7 +80,7 @@ public class RentalAgreementDto {
     /**
      * @param createdOn the createdOn to set
      */
-    public void setCreatedOn(LocalDateTime createdOn) {
+    public void setCreatedOn(final LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
     /**
@@ -92,7 +92,7 @@ public class RentalAgreementDto {
     /**
      * @param updatedOn the updatedOn to set
      */
-    public void setUpdatedOn(LocalDateTime updatedOn) {
+    public void setUpdatedOn(final LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
     /**

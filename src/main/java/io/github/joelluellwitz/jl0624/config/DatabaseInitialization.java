@@ -37,7 +37,8 @@ public class DatabaseInitialization implements ApplicationListener<ApplicationEn
             properties.put("spring.datasource.url", "jdbc:sqlite:" + tempDatabase.getAbsolutePath());
             environment.getPropertySources().addFirst(new PropertiesPropertySource("myProps", properties));
         }
-        catch (IOException e) {
+        catch (final IOException e) {
+            // Any failure above should crash the application.
             throw new RuntimeException(e);
         }
     }

@@ -29,7 +29,7 @@ public class ContractParameters {
     /**
      * @param toolCode the toolCode to set
      */
-    public void setToolCode(String toolCode) {
+    public void setToolCode(final String toolCode) {
         this.toolCode = toolCode;
     }
 	/**
@@ -41,7 +41,7 @@ public class ContractParameters {
 	/**
 	 * @param checkoutDate the checkoutDate to set
 	 */
-	public void setCheckoutDate(LocalDate checkoutDate) {
+	public void setCheckoutDate(final LocalDate checkoutDate) {
 		this.checkoutDate = checkoutDate;
 	}
     /**
@@ -53,7 +53,7 @@ public class ContractParameters {
     /**
      * @param rentalDayCount the rentalDayCount to set
      */
-    public void setRentalDayCount(int rentalDayCount) {
+    public void setRentalDayCount(final int rentalDayCount) {
         this.rentalDayCount = rentalDayCount;
     }
     /**
@@ -65,7 +65,7 @@ public class ContractParameters {
     /**
      * @param discountPercent the discountPercent to set
      */
-    public void setDiscountPercent(int discountPercent) {
+    public void setDiscountPercent(final int discountPercent) {
         this.discountPercent = discountPercent;
     }
 }

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import dnl.utils.text.table.TextTable;
 import io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters;
+import io.github.joelluellwitz.jl0624.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
 import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
 
@@ -37,6 +40,8 @@ import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
 // TODO: Consider moving the command line running under io.github.joelluellwitz.jl0624 and having it call RetailConsole here.
 public class RetailConsole implements CommandLineRunner {
     // TODO: private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
+
+    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yy");
 
     private final ConfigurableApplicationContext context;
     private final Console console;
@@ -83,7 +88,7 @@ public class RetailConsole implements CommandLineRunner {
                     checkout();
                     break;
                 default:
-                    console.printf("Invalid input: %s", mainInput);
+                    console.printf("Invalid option: %s\n", mainInput);
             }
         }
     }
@@ -95,7 +100,6 @@ public class RetailConsole implements CommandLineRunner {
                     "Weekend Charge?", "Holiday Charge?"};
 
             final List<Tool> tools = retailPointOfSale.listTools();
-            //final String[][] tableData = new String[toolList.size()][7];
             final int toolCount = tools.size();
             final String[][] tableData = new String[toolCount][];
             final Iterator<Tool> toolListIterator = tools.iterator();
@@ -110,21 +114,81 @@ public class RetailConsole implements CommandLineRunner {
             }
 
             final OutputStream tableOutputStream = new ByteArrayOutputStream();
-            // TODO: Format the bottom of the table.
+            // Unfortunately this table library doesn't print a bottom border.
             new TextTable(columnNames, tableData).printTable(new PrintStream(tableOutputStream), 0);
             toolList = tableOutputStream.toString();
         }
-        console.printf(toolList);
+        console.writer().print(toolList);
     }
 
     // TODO: Document.
     private void checkout() {
         final ContractParameters contractParameters = new ContractParameters();
-        contractParameters.setToolCode(null);
-        contractParameters.setCheckoutDate(null);
-        contractParameters.setRentalDayCount(0);
-        contractParameters.setDiscountPercent(0);
+        contractParameters.setToolCode(promptForToolCode());
+        contractParameters.setCheckoutDate(promptForCheckoutDate());
+        contractParameters.setRentalDayCount(promptForInteger("Enter the rental duration in days: "));
+        contractParameters.setDiscountPercent(promptForInteger(
+                "Enter the discount percentage as an integer (0-100): "));
 
-        retailPointOfSale.checkout(contractParameters);
+        // The requirements do not state that this header should be returned by 'RetailPointOfSale.checkout'.
+        console.printf("\nRental Agreement:\n");
+
+        final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
+        rentalAgreement.printRentalAgreement();
+    }
+
+    /**
+     * TODO:
+     *
+     * @return
+     */
+    private String promptForToolCode() {
+        String toolCode = "";
+        while ("".equals(toolCode)) {
+            toolCode = console.readLine("Enter the tool code: ");
+        }
+
+        return toolCode;
+    }
+
+    /**
+     * TODO:
+     *
+     * @return
+     */
+    private LocalDate promptForCheckoutDate() {
+        LocalDate dateValue = null;
+        while (dateValue == null) {
+            final String input = console.readLine("Enter the checkout date (MM/DD/YY): ");
+            try {
+                dateValue = LocalDate.parse(input, dateFormat);
+            }
+            catch (final Exception e) {
+                console.printf("Value %s is not a date.\n", input);
+            }
+        }
+
+        return dateValue;
+    }
+
+    /**
+     * TODO:
+     *
+     * @param prompt TOOD:
+     * @return
+     */
+    private int promptForInteger(final String prompt) {
+        Integer integerValue = null;
+        while (integerValue == null) {
+            final String input = console.readLine(prompt);
+            try {
+                integerValue = Integer.valueOf(input);
+            }
+            catch (final Exception e) {
+                console.printf("Value %s is not an integer.", input);
+            }
+        }
+
+        return integerValue.intValue();
     }
 }

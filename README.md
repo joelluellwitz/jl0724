@@ -20,3 +20,4 @@
 * Add debugging logging statements.
 * Search for pattern "public final"
 * Search for System.out and System.in
+* Verify all private static final fields are thread safe.
