@@ -1,11 +1,11 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.service.impl;
+package io.github.joelluellwitz.jl0724.internal.service.impl;
 
 import java.math.BigDecimal;
 
-import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
+import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
  * Exposed representation of a tool that can be rented.
@@ -23,13 +23,13 @@ public class ToolImpl implements Tool {
     /**
      * @return the id
      */
-    public final int getId() {
+    public int getId() {
         return id;
     }
     /**
      * @param id the id to set
      */
-    public final void setId(final int id) {
+    public void setId(final int id) {
         this.id = id;
     }
     /**
@@ -71,49 +71,49 @@ public class ToolImpl implements Tool {
     /**
      * @return the dailyCharge
      */
-    public final BigDecimal getDailyCharge() {
+    public BigDecimal getDailyCharge() {
         return dailyCharge;
     }
     /**
      * @param dailyCharge the dailyCharge to set
      */
-    public final void setDailyCharge(final BigDecimal dailyCharge) {
+    public void setDailyCharge(final BigDecimal dailyCharge) {
         this.dailyCharge = dailyCharge;
     }
     /**
      * @return the weekdayCharge
      */
-    public final boolean isWeekdayCharge() {
+    public boolean isWeekdayCharge() {
         return weekdayCharge;
     }
     /**
      * @param weekdayCharge the weekdayCharge to set
      */
-    public final void setWeekdayCharge(final boolean weekdayCharge) {
+    public void setWeekdayCharge(final boolean weekdayCharge) {
         this.weekdayCharge = weekdayCharge;
     }
     /**
      * @return the weekendCharge
      */
-    public final boolean isWeekendCharge() {
+    public boolean isWeekendCharge() {
         return weekendCharge;
     }
     /**
      * @param weekendCharge the weekendCharge to set
      */
-    public final void setWeekendCharge(final boolean weekendCharge) {
+    public void setWeekendCharge(final boolean weekendCharge) {
         this.weekendCharge = weekendCharge;
     }
     /**
      * @return the holidayCharge
      */
-    public final boolean isHolidayCharge() {
+    public boolean isHolidayCharge() {
         return holidayCharge;
     }
     /**
      * @param holidayCharge the holidayCharge to set
      */
-    public final void setHolidayCharge(final boolean holidayCharge) {
+    public void setHolidayCharge(final boolean holidayCharge) {
         this.holidayCharge = holidayCharge;
     }
 }

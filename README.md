@@ -10,14 +10,14 @@
 * Search for use of underscores.
 * Attempt to autoformat everything.
 * Look into getter and setter annotations.
-* Consider renaming all references from DAO to data or repo.
+X Consider renaming all references from DAO to data or repo.
 * Consider removing all references to DTO.
 * Explain use of final.
 * Fix annotations to have spaces.
-* Consider renaming repository and packages to jl0724
-  * Do a search to ensure no old references are left.
-* Rename Dao to Repository.
+X Consider renaming repository and packages to jl0724
+  X Do a search to ensure no old references are left.
+X Rename Dao to Repository.
 * Add debugging logging statements.
-* Search for pattern "public final"
+X Search for pattern "public final"
 * Search for System.out and System.in
-* Verify all private static final fields are thread safe.
+X Verify all private static final fields are thread safe.

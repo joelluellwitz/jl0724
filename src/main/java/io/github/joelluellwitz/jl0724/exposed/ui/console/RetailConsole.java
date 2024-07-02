@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.exposed.ui.console;
+package io.github.joelluellwitz.jl0724.exposed.ui.console;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Console;
@@ -25,19 +25,19 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import dnl.utils.text.table.TextTable;
-import io.github.joelluellwitz.jl0624.exposed.service.api.ContractParameters;
-import io.github.joelluellwitz.jl0624.exposed.service.api.RentalAgreement;
-import io.github.joelluellwitz.jl0624.exposed.service.api.RetailPointOfSale;
-import io.github.joelluellwitz.jl0624.exposed.service.api.Tool;
+import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
+import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
+import io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale;
+import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
 @SpringBootApplication // TODO: (exclude = {DataSourceAutoConfiguration.class})
-@ComponentScan(basePackages = "io.github.joelluellwitz.jl0624")
-@EntityScan({"io.github.joelluellwitz.jl0624"}) // TODO: Internal package is referenced from external class.
-@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0624") // TODO: Internal package is referenced from external class.
-// TODO: Consider moving the command line running under io.github.joelluellwitz.jl0624 and having it call RetailConsole here.
+@ComponentScan(basePackages = "io.github.joelluellwitz.jl0724")
+@EntityScan({"io.github.joelluellwitz.jl0724"}) // TODO: Internal package is referenced from external class.
+@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0724") // TODO: Internal package is referenced from external class.
+// TODO: Consider moving the command line running under io.github.joelluellwitz.jl0724 and having it call RetailConsole here.
 public class RetailConsole implements CommandLineRunner {
     // TODO: private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
 

@@ -2,5 +2,4 @@
 .factorypath
 .project
 .settings
-src/main/resources/io/github/joelluellwitz/jl0624/internal/dao/sqlite/pointOfSale.sqlite3
 target

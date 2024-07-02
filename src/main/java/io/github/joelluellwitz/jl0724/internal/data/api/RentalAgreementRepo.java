@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.dao.api;
+package io.github.joelluellwitz.jl0724.internal.data.api;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * TODO: Document.
  */
 @Repository
-public interface RentalAgreementDao extends JpaRepository<RentalAgreementDto, Integer> {
+public interface RentalAgreementRepo extends JpaRepository<RentalAgreementDto, Integer> {
 
 }

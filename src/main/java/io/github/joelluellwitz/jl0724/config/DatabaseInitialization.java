@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.config;
+package io.github.joelluellwitz.jl0724.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 
-import io.github.joelluellwitz.jl0624.exposed.ui.console.RetailConsole;
+import io.github.joelluellwitz.jl0724.exposed.ui.console.RetailConsole;
 
 /**
  * TODO: Document.
@@ -29,7 +29,7 @@ public class DatabaseInitialization implements ApplicationListener<ApplicationEn
             final File tempDatabase = File.createTempFile("pointOfSale-", ".tmp");
             tempDatabase.deleteOnExit();
             final URL sourceDatabase = RetailConsole.class.getResource(
-                    "/io/github/joelluellwitz/jl0624/internal/dao/sqlite/pointOfSale.sqlite3");
+                    "/io/github/joelluellwitz/jl0724/internal/data/sqlite/pointOfSale.sqlite3");
             Files.copy(sourceDatabase.openStream(), tempDatabase.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
             final ConfigurableEnvironment environment = event.getEnvironment();

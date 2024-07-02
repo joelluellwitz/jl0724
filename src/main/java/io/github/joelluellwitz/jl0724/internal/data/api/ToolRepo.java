@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.dao.api;
+package io.github.joelluellwitz.jl0724.internal.data.api;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * TODO: Document.
  */
 @Repository
-public interface ToolDao extends org.springframework.data.repository.Repository<ToolDto, Integer> {
+public interface ToolRepo extends org.springframework.data.repository.Repository<ToolDto, Integer> {
     /**
      * TODO:
      *

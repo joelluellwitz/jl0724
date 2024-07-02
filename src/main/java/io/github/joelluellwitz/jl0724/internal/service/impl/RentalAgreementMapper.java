@@ -1,13 +1,13 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.service.impl;
+package io.github.joelluellwitz.jl0724.internal.service.impl;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import io.github.joelluellwitz.jl0624.internal.dao.api.RentalAgreementDto;
+import io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto;
 
 /**
  * TODO: Document.

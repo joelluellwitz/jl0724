@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.exposed.service.api;
+package io.github.joelluellwitz.jl0724.exposed.service.api;
 
 import java.math.BigDecimal;
 

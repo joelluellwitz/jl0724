@@ -1,7 +1,7 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0624.internal.dao.api;
+package io.github.joelluellwitz.jl0724.internal.data.api;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
