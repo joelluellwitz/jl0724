@@ -32,7 +32,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     private final BigDecimal dailyCharge;
     private final int rentalDayCount;
     private final LocalDate checkoutDate;
-    private final BigDecimal discount;
+    private final int discountPercent;
     private boolean holidayCharge;
     private boolean weekdayCharge;
     private boolean weekendCharge;
@@ -60,7 +60,7 @@ public class RentalAgreementImpl implements RentalAgreement {
         weekendCharge = tool.isWeekendCharge();
         rentalDayCount = contractParameters.getRentalDayCount();
         checkoutDate = contractParameters.getCheckoutDate();
-        discount = BigDecimal.valueOf(contractParameters.getDiscountPercent()).multiply(cent);
+        discountPercent = contractParameters.getDiscountPercent();
     }
 
     /**
@@ -86,7 +86,7 @@ public class RentalAgreementImpl implements RentalAgreement {
             agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
             agreementStringBuilder.append("Pre-discount charge: ").append(
                     formatCurrency(getPreDiscountCharge())).append('\n');
-            agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscount())).append('\n');
+            agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent())).append('\n');
             agreementStringBuilder.append("Discount amount: ").append(formatCurrency(getDiscountAmount())).append('\n');
             agreementStringBuilder.append("Final charge: ").append(formatCurrency(getFinalCharge())).append('\n');
 
@@ -147,10 +147,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * @return the discount
+     * @return the discountPercent
      */
-    public BigDecimal getDiscount() {
-        return discount;
+    public int getDiscountPercent() {
+        return discountPercent;
     }
 
     /**
@@ -201,7 +201,8 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     public BigDecimal getDiscountAmount() {
         if (discountAmount == null) {
-            final BigDecimal unroundedDiscountAmount = getPreDiscountCharge().multiply(getDiscount());
+            final BigDecimal discount = BigDecimal.valueOf(getDiscountPercent()).multiply(cent);
+            final BigDecimal unroundedDiscountAmount = getPreDiscountCharge().multiply(discount);
             discountAmount = unroundedDiscountAmount.divide(cent, 0, RoundingMode.HALF_UP).multiply(cent);
         }
 
@@ -235,7 +236,8 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return
      */
-    private String formatPercentage(final BigDecimal discount) {
+    private String formatPercentage(final int discounPercent) {
+        final BigDecimal discount = BigDecimal.valueOf(getDiscountPercent()).multiply(cent);
         return NumberFormat.getPercentInstance(Locale.US).format(discount);
     }
 
@@ -247,10 +249,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     private int getWeekdayChargeDayCount() {
         final int weekdayChargeDayCount;
         if (holidayCharge) {
-            weekdayChargeDayCount = getWeekdayCount() - getIndependenceDayCount() - getLaborDayCount();
+            weekdayChargeDayCount = getWeekdayCount();
         }
         else {
-            weekdayChargeDayCount = getWeekdayCount();
+            weekdayChargeDayCount = getWeekdayCount() - getIndependenceDayCount() - getLaborDayCount();
         }
 
         return weekdayChargeDayCount;
@@ -275,15 +277,11 @@ public class RentalAgreementImpl implements RentalAgreement {
             // Week count can never be greater than rentalDayCount, so the long result can be safely casted back to an
             //   int.
             final int fullWeekCount = (int) ChronoUnit.WEEKS.between(getCheckoutDate(), getDueDate());
-            final int realStartDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
-            final int effectiveStartDayOfWeek;
-            if (realStartDayOfWeek > DayOfWeek.FRIDAY.getValue()) {
-                effectiveStartDayOfWeek = DayOfWeek.MONDAY.getValue();
-            }
-            else {
-                effectiveStartDayOfWeek = getCheckoutDate().getDayOfWeek().getValue();
-            }
-            final int effectiveEndDayOfWeek = Math.max(getDueDate().getDayOfWeek().getValue(), 5);
+
+            // These next two lines remove the weekends efficiently.
+            final int effectiveStartDayOfWeek = Math.max(2, (getCheckoutDate().getDayOfWeek().getValue() + 1) % 7) - 1;
+            final int effectiveEndDayOfWeek = Math.min(getDueDate().getDayOfWeek().getValue() - 1, 5) + 1;
+
             final int weekPortionCount = (effectiveEndDayOfWeek - effectiveStartDayOfWeek) % 5;
             weekdayCount = fullWeekCount * 5 + weekPortionCount;
         }
@@ -324,7 +322,7 @@ public class RentalAgreementImpl implements RentalAgreement {
 
     private int getHolidayCount(final LocalDate firstYearHolidayDate, final LocalDate lastYearHolidayDate) {
         final int firstYearHolidayCount;
-        if (!getCheckoutDate().isBefore(firstYearHolidayDate)
+        if (!firstYearHolidayDate.isBefore(getCheckoutDate())
                 && getDueDate().withYear(getCheckoutDate().getYear()).isAfter(firstYearHolidayDate)) {
             firstYearHolidayCount = 1;
         }
@@ -338,7 +336,7 @@ public class RentalAgreementImpl implements RentalAgreement {
             holidayCount = firstYearHolidayCount;
         }
         else {
-            if (!getCheckoutDate().withYear(getDueDate().getYear()).isBefore(lastYearHolidayDate)
+            if (!lastYearHolidayDate.isBefore(getCheckoutDate().withYear(getDueDate().getYear()))
                     && getDueDate().isAfter(lastYearHolidayDate)) {
                 holidayCount = firstYearHolidayCount + yearDifference;
             }

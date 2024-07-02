@@ -9,16 +9,15 @@ import java.time.LocalDate;
  * Contains the parameters to generate a contract during checkout.
  */
 public class ContractParameters {
-    // Note, that I really don't think transfer object should have private members. Internal state
-    //   is hidden in case one wants to add complexity to the class later. However, transfer
-    //   objects, by their nature, really should never have any implementation details. It is
-    //   unnecessary abstraction. That said, having getters and setters for all properties is very
-    //   much ingrained in Java culture, so I won't try to buck that trend here.
+    // Note, that I really don't think transfer object should have private members. With this pattern, internal state is
+    //   hidden in case one wants to add complexity to the class later. However, simple transfer objects, by their
+    //   nature, really should never have any implementation details. I find it to be unnecessary abstraction. That
+    //   said, having getters and setters for all properties is very much ingrained in Java culture, so I won't try to
+    //   buck that trend here.
     private String toolCode;
     private LocalDate checkoutDate;
     private int rentalDayCount;
     private int discountPercent;
-
 
     /**
      * @return the toolCode
@@ -27,6 +26,8 @@ public class ContractParameters {
         return toolCode;
     }
     /**
+     * Sets the case sensitive tool code.
+     *
      * @param toolCode the toolCode to set
      */
     public void setToolCode(final String toolCode) {

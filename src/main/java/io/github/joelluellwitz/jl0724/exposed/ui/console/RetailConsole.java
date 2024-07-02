@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -41,7 +42,8 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 public class RetailConsole implements CommandLineRunner {
     // TODO: private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
 
-    private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yy");
+    private static final DateTimeFormatter dateFormat =
+            DateTimeFormatter.ofPattern("MM/dd/uu").withResolverStyle(ResolverStyle.STRICT);
 
     private final ConfigurableApplicationContext context;
     private final Console console;
@@ -49,7 +51,12 @@ public class RetailConsole implements CommandLineRunner {
 
     private String toolList;
 
-    // TODO: Document?
+    /**
+     * TODO: Document.
+     *
+     * @param context
+     * @param retailPointOfSale
+     */
     // Intentionally package private.
     RetailConsole(@Autowired final ConfigurableApplicationContext context,
             @Autowired final RetailPointOfSale retailPointOfSale) {
@@ -71,7 +78,9 @@ public class RetailConsole implements CommandLineRunner {
         // TODO: LOG.info("APPLICATION FINISHED");
     }
 
-    // TODO: Document.
+    /**
+     * TODO: Document.
+     */
     @Override
     public void run(final String... _args) throws IOException {
         while (true) {
@@ -93,7 +102,9 @@ public class RetailConsole implements CommandLineRunner {
         }
     }
 
-    // TODO: Document.
+    /**
+     * TODO: Document.
+     */
     private void printToolList() {
         if (toolList == null) {
             final String[] columnNames = {"Tool Code", "Tool Type", "Brand", "Daily Charge", "Weekday Charge?",
@@ -121,7 +132,9 @@ public class RetailConsole implements CommandLineRunner {
         console.writer().print(toolList);
     }
 
-    // TODO: Document.
+    /**
+     * TODO: Document.
+     */
     private void checkout() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode(promptForToolCode());
@@ -130,11 +143,17 @@ public class RetailConsole implements CommandLineRunner {
         contractParameters.setDiscountPercent(promptForInteger(
                 "Enter the discount percentage as an integer (0-100): "));
 
-        // The requirements do not state that this header should be returned by 'RetailPointOfSale.checkout'.
-        console.printf("\nRental Agreement:\n");
+        try {
+            final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
-        final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
-        rentalAgreement.printRentalAgreement();
+            // The requirements do not state that this header should be returned by 'RetailPointOfSale.checkout'.
+            console.printf("\nRental Agreement:\n");
+
+            rentalAgreement.printRentalAgreement();
+        }
+        catch (final IllegalArgumentException e) {
+            console.printf("An error occurred during checkout: %s\n", e.getLocalizedMessage());
+        }
     }
 
     /**
@@ -164,7 +183,7 @@ public class RetailConsole implements CommandLineRunner {
                 dateValue = LocalDate.parse(input, dateFormat);
             }
             catch (final Exception e) {
-                console.printf("Value %s is not a date.\n", input);
+                console.printf("Value %s is not a valid date.\n", input);
             }
         }
 
@@ -185,7 +204,7 @@ public class RetailConsole implements CommandLineRunner {
                 integerValue = Integer.valueOf(input);
             }
             catch (final Exception e) {
-                console.printf("Value %s is not an integer.", input);
+                console.printf("Value %s is not an integer.\n", input);
             }
         }
 

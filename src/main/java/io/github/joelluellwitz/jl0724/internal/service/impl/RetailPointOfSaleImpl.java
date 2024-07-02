@@ -54,13 +54,13 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
         final int discountPercent = contractParameters.getDiscountPercent();
         if (discountPercent < 0 || discountPercent > 100) {
             throw new IllegalArgumentException(String.format(
-                    "Discount percentage must be between 0 and 100 (inclusive). You specified: %i", discountPercent));
+                    "Discount percentage must be between 0 and 100 (inclusive). You specified: %d", discountPercent));
         }
 
         final int rentalDayCount = contractParameters.getRentalDayCount();
         if (rentalDayCount < 1) {
             throw new IllegalArgumentException(String.format(
-                    "The number of rental days must be greater than 1. You specified: %i", rentalDayCount));
+                    "The number of rental days must be greater than 1. You specified: %d", rentalDayCount));
         }
 
         final Optional<ToolDto> toolOptional = toolRepo.getToolByCode(contractParameters.getToolCode());

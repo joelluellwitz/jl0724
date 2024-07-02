@@ -7,7 +7,7 @@
 * Maybe mention why not all versions are listed in properties.
 * Add @Override annotations.
 * See if there is a real tag for "// See method documentation in interface definition."
-* Search for use of underscores.
+X Search for use of underscores.
 * Attempt to autoformat everything.
 * Look into getter and setter annotations.
 X Consider renaming all references from DAO to data or repo.
