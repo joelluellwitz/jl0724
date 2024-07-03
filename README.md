@@ -1,3 +1,7 @@
+* Ask about how european or american counting and which day discounts are applied to.
+  * "from day after checkout through and including due date" seems to imply that the discount should be applied to the second day.
+* "Resulting total rounded half up to cents." implies partial days are supported? I suspect this is an error.
+
 * Mention organizing by functional area and not file type.
 * Mention extra functionality.
   * Mention how the console is not tested.
