@@ -15,10 +15,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
  * TODO: Document.
+ *
+ * TODO: Explain why there is a link to tool and all of tool's properties.
  */
 @Entity(name="RentalAgreement")
 @Table(name="rental_agreement")
@@ -33,7 +37,9 @@ public class RentalAgreementDto {
     @UpdateTimestamp
     @Column(name="updated_on", nullable=false)
     private LocalDateTime updatedOn;
-    // TODO: Add reference to tool.
+    @ManyToOne // TODO: (cascade = CascadeType.ALL)
+    @JoinColumn(name = "tool_id", referencedColumnName = "id")
+    private ToolDto tool;
     @Column(name="tool_code", nullable=false)
     private String toolCode;
     @Column(name="tool_type", nullable=false)
@@ -94,6 +100,18 @@ public class RentalAgreementDto {
      */
     public void setUpdatedOn(final LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
+    }
+    /**
+     * @return the tool
+     */
+    public ToolDto getTool() {
+        return tool;
+    }
+    /**
+     * @param tool the tool to set
+     */
+    public void setTool(ToolDto tool) {
+        this.tool = tool;
     }
     /**
      * @return the toolCode

@@ -19,5 +19,6 @@ public interface RentalAgreementMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "updatedOn", ignore = true)
+    @Mapping(target = "tool", ignore = true)
     RentalAgreementDto rentalAgreementToRentalAgreementDto(RentalAgreementImpl tool);
 }

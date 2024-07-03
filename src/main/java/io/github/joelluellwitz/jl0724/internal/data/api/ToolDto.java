@@ -14,7 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 /**
@@ -35,7 +35,7 @@ public class ToolDto {
     private LocalDateTime updatedOn;
     @Column(name="code", nullable=false)
     private String code;
-    @OneToOne // TODO: (cascade = CascadeType.ALL)
+    @ManyToOne // TODO: (cascade = CascadeType.ALL)
     @JoinColumn(name = "tool_type_id", referencedColumnName = "id")
     private ToolTypeDto toolType;
     @Column(name="brand", nullable=false)
