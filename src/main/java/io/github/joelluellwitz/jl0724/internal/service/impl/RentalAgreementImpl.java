@@ -23,7 +23,7 @@ import jakarta.annotation.Nonnull;
  * TODO: Document
  */
 public class RentalAgreementImpl implements RentalAgreement {
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yy");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/uu");
 
     private final BigDecimal cent = new BigDecimal("0.01");
     private final String toolCode;
@@ -68,6 +68,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return
      */
+    @Override
     public String getRentalAgreement() {
         if (rentalAgreement == null) {
             final StringBuilder agreementStringBuilder = new StringBuilder();
@@ -76,10 +77,10 @@ public class RentalAgreementImpl implements RentalAgreement {
             agreementStringBuilder.append("Tool brand: ").append(getToolBrand()).append('\n');
             agreementStringBuilder.append("Rental days: ").append(getRentalDayCount()).append('\n');
             agreementStringBuilder.append("Check out date: ");
-            dateFormatter.formatTo(getCheckoutDate(), agreementStringBuilder);
+            DATE_FORMATTER.formatTo(getCheckoutDate(), agreementStringBuilder);
             agreementStringBuilder.append('\n');
             agreementStringBuilder.append("Due date: ");
-            dateFormatter.formatTo(getDueDate(), agreementStringBuilder);
+            DATE_FORMATTER.formatTo(getDueDate(), agreementStringBuilder);
             agreementStringBuilder.append('\n');
             agreementStringBuilder.append("Daily rental charge: ").append(
                     formatCurrency(getDailyCharge())).append('\n');

@@ -35,6 +35,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the code
      */
+    @Override
     public String getCode() {
         return code;
     }
@@ -47,6 +48,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the type
      */
+    @Override
     public String getType() {
         return type;
     }
@@ -59,6 +61,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the brand
      */
+    @Override
     public String getBrand() {
         return brand;
     }
@@ -71,6 +74,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the dailyCharge
      */
+    @Override
     public BigDecimal getDailyCharge() {
         return dailyCharge;
     }
@@ -83,6 +87,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the weekdayCharge
      */
+    @Override
     public boolean isWeekdayCharge() {
         return weekdayCharge;
     }
@@ -95,6 +100,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the weekendCharge
      */
+    @Override
     public boolean isWeekendCharge() {
         return weekendCharge;
     }
@@ -107,6 +113,7 @@ public class ToolImpl implements Tool {
     /**
      * @return the holidayCharge
      */
+    @Override
     public boolean isHolidayCharge() {
         return holidayCharge;
     }

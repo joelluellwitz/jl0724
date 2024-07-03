@@ -24,6 +24,7 @@ public class DatabaseInitialization implements ApplicationListener<ApplicationEn
     /**
      * TODO: Document.
      */
+    @Override
     public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {
         try {
             final File tempDatabase = File.createTempFile("pointOfSale-", ".tmp");

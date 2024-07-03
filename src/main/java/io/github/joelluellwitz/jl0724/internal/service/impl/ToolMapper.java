@@ -17,7 +17,6 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
  */
 @Mapper(componentModel = "spring")
 public interface ToolMapper {
-
     ToolMapper INSTANCE = Mappers.getMapper(ToolMapper.class);
 
     @Mapping(source = "toolType.name", target = "type")

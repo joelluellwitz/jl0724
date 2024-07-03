@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -34,16 +36,15 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
-@SpringBootApplication // TODO: (exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @ComponentScan(basePackages = "io.github.joelluellwitz.jl0724")
-@EntityScan({"io.github.joelluellwitz.jl0724"}) // TODO: Internal package is referenced from external class.
-@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0724") // TODO: Internal package is referenced from external class.
-// TODO: Consider moving the command line running under io.github.joelluellwitz.jl0724 and having it call RetailConsole here.
+@EntityScan({"io.github.joelluellwitz.jl0724"})
+@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0724")
 public class RetailConsole implements CommandLineRunner {
-    // TODO: private static Logger LOG = LoggerFactory.getLogger(RetailConsole.class);
-
-    private static final DateTimeFormatter dateFormat =
+    private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("MM/dd/uu").withResolverStyle(ResolverStyle.STRICT);
+
+    private static Logger LOGGER = LoggerFactory.getLogger(RetailConsole.class);
 
     private final ConfigurableApplicationContext context;
     private final Console console;
@@ -73,9 +74,9 @@ public class RetailConsole implements CommandLineRunner {
      *   never happen.
      */
     public static void main(final String[] _args) throws IOException {
-        // TODO: LOG.info("STARTING THE APPLICATION");
+        LOGGER.debug("Staring the application.");
         SpringApplication.run(RetailConsole.class, _args);
-        // TODO: LOG.info("APPLICATION FINISHED");
+        LOGGER.debug("Terminating the application.");
     }
 
     /**
@@ -180,7 +181,7 @@ public class RetailConsole implements CommandLineRunner {
         while (dateValue == null) {
             final String input = console.readLine("Enter the checkout date (MM/DD/YY): ");
             try {
-                dateValue = LocalDate.parse(input, dateFormat);
+                dateValue = LocalDate.parse(input, DATE_FORMATTER);
             }
             catch (final Exception e) {
                 console.printf("Value %s is not a valid date.\n", input);

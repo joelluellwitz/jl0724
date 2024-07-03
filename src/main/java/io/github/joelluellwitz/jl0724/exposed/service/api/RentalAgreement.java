@@ -9,6 +9,13 @@ package io.github.joelluellwitz.jl0724.exposed.service.api;
  */
 public interface RentalAgreement {
     /**
+     * TODO: Document.
+     *
+     * @return
+     */
+    String getRentalAgreement();
+
+    /**
      * Prints the rental agreement to the console. This functionality is here because it is
      *   explicitly required. I do not think the code should be organized this way. Ideally a
      *   RentalAgreement should be just a transfer object and some service method should generate
