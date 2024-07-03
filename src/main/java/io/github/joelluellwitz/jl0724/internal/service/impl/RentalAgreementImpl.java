@@ -17,7 +17,6 @@ import org.springframework.util.Assert;
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
 import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
-import jakarta.annotation.Nonnull;
 
 /**
  * TODO: Document
@@ -46,8 +45,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     private String rentalAgreement;
 
     // Intentionally package private.
-    // TODO: Verified @Nonnull works with my IDE.
-    RentalAgreementImpl(@Nonnull final ContractParameters contractParameters, final Tool tool) {
+    RentalAgreementImpl(final ContractParameters contractParameters, final Tool tool) {
         Assert.isTrue(contractParameters.getToolCode().equals(tool.getCode()), "Tool codes do not match.");
 
         // Copy all needed values in case 'tool' or 'contractParameters' are changed later.

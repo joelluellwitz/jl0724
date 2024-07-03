@@ -27,7 +27,7 @@ public interface RetailPointOfSale {
      *
      * @param contractParameters Represents the customer's choices used in building a rental
      *   contract. An object is used here because positional parameters become confusing after 1 or
-     *   2 parameters. TODO: Consider using parameter builder pattern.
+     *   2 parameters.
      * @return Represents of the exact terms of the customer
      *   {@link io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement RentalAgreement}.
      */

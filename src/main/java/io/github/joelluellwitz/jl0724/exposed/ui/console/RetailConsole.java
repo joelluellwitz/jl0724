@@ -24,7 +24,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import dnl.utils.text.table.TextTable;
@@ -36,10 +35,9 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
-@SpringBootApplication
-@ComponentScan(basePackages = "io.github.joelluellwitz.jl0724")
+@SpringBootApplication(scanBasePackages = "io.github.joelluellwitz.jl0724")
 @EntityScan({"io.github.joelluellwitz.jl0724"})
-@EnableJpaRepositories(basePackages = "io.github.joelluellwitz.jl0724")
+@EnableJpaRepositories({"io.github.joelluellwitz.jl0724"})
 public class RetailConsole implements CommandLineRunner {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("MM/dd/uu").withResolverStyle(ResolverStyle.STRICT);
@@ -69,13 +67,13 @@ public class RetailConsole implements CommandLineRunner {
     /**
      * The retail console main loop.
      *
-     * @param _args The supplied command line parameters, of which none are recognized.
+     * @param args The supplied command line parameters, of which none are recognized.
      * @throws IOException Raised in the event that the console cannot be read. Realistically should
      *   never happen.
      */
-    public static void main(final String[] _args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         LOGGER.debug("Staring the application.");
-        SpringApplication.run(RetailConsole.class, _args);
+        SpringApplication.run(RetailConsole.class, args);
         LOGGER.debug("Terminating the application.");
     }
 
@@ -83,7 +81,7 @@ public class RetailConsole implements CommandLineRunner {
      * TODO: Document.
      */
     @Override
-    public void run(final String... _args) throws IOException {
+    public void run(final String... args) throws IOException {
         while (true) {
             final String mainInput = console.readLine(
                     "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
