@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class ToolDto {
     private LocalDateTime updatedOn;
     @Column(name="code", nullable=false)
     private String code;
-    @ManyToOne // TODO: (cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "tool_type_id", referencedColumnName = "id")
     private ToolTypeDto toolType;
     @Column(name="brand", nullable=false)
