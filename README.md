@@ -28,3 +28,6 @@ X Search for pattern "public final"
 X Verify all private static final fields are thread safe.
 * Remove TODOs.
 * Remove SNAPSHOT Modifier.
+* Disable extra spring output.
+* Verify SQLite tool foreign key reference is defined correctly.
+* Consider transactional boundaries and adding @Transaction annotations.

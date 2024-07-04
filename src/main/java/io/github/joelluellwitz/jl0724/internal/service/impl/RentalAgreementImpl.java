@@ -281,7 +281,7 @@ public class RentalAgreementImpl implements RentalAgreement {
             final int effectiveStartDayOfWeek = Math.max(2, (getCheckoutDate().getDayOfWeek().getValue() + 1) % 7) - 1;
             final int effectiveEndDayOfWeek = Math.min(getDueDate().getDayOfWeek().getValue() - 1, 5) + 1;
 
-            final int weekPortionCount = (effectiveEndDayOfWeek - effectiveStartDayOfWeek) % 5;
+            final int weekPortionCount = Math.floorMod(effectiveEndDayOfWeek - effectiveStartDayOfWeek, 5);
             weekdayCount = fullWeekCount * 5 + weekPortionCount;
         }
 

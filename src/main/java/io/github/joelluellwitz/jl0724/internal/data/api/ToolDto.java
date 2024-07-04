@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 /**
  * TODO: Document.
@@ -28,6 +29,9 @@ public class ToolDto {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id", nullable=false, unique=true)
     private int id;
+    @Version
+    @Column(name="version", nullable=false)
+    private int version;
     @CreationTimestamp
     @Column(name="created_on", nullable=false)
     private LocalDateTime createdOn;
@@ -54,6 +58,18 @@ public class ToolDto {
     // Intentionally package private.
     void setId(final int id) {
         this.id = id;
+    }
+    /**
+     * @return the version
+     */
+    public int getVersion() {
+        return version;
+    }
+    /**
+     * @param version the version to set
+     */
+    void setVersion(final int version) {
+        this.version = version;
     }
     /**
      * @return the createdOn
