@@ -44,6 +44,12 @@ public class RentalAgreementImpl implements RentalAgreement {
     private Integer weekdayCount;
     private String rentalAgreement;
 
+    /**
+     * TODO: Document.
+     *
+     * @param contractParameters
+     * @param tool
+     */
     // Intentionally package private.
     RentalAgreementImpl(final ContractParameters contractParameters, final Tool tool) {
         Assert.isTrue(contractParameters.getToolCode().equals(tool.getCode()), "Tool codes do not match.");
@@ -170,7 +176,6 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return the chargeDayCount
      */
-    // TODO: Are we using European style counting or American style counting?
     public Integer getChargeDayCount() {
         if (chargeDayCount == null) {
             chargeDayCount = (weekendCharge ? getWeekendChargeDayCount() : 0)
@@ -278,8 +283,9 @@ public class RentalAgreementImpl implements RentalAgreement {
             final int fullWeekCount = (int) ChronoUnit.WEEKS.between(getCheckoutDate(), getDueDate());
 
             // These next two lines remove the weekends efficiently.
-            final int effectiveStartDayOfWeek = Math.max(2, (getCheckoutDate().getDayOfWeek().getValue() + 1) % 7) - 1;
-            final int effectiveEndDayOfWeek = Math.min(getDueDate().getDayOfWeek().getValue() - 1, 5) + 1;
+            final int effectiveStartDayOfWeek =
+                    Math.max(2, (getCheckoutDate().plusDays(1).getDayOfWeek().getValue() + 1) % 7) - 1;
+            final int effectiveEndDayOfWeek = Math.min(getDueDate().plusDays(1).getDayOfWeek().getValue() - 1, 5) + 1;
 
             final int weekPortionCount = Math.floorMod(effectiveEndDayOfWeek - effectiveStartDayOfWeek, 5);
             weekdayCount = fullWeekCount * 5 + weekPortionCount;
@@ -294,7 +300,8 @@ public class RentalAgreementImpl implements RentalAgreement {
      * @return
      */
     private int getIndependenceDayCount() {
-        final LocalDate firstYearIndependenceDay = findNearestWeekday(LocalDate.of(getCheckoutDate().getYear(), 7, 4));
+        final LocalDate firstYearIndependenceDay =
+                findNearestWeekday(LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 7, 4));
         final LocalDate lastYearIndependenceDay = findNearestWeekday(LocalDate.of(getDueDate().getYear(), 7, 4));
 
         return getHolidayCount(firstYearIndependenceDay, lastYearIndependenceDay);
@@ -306,7 +313,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      * @return
      */
     private int getLaborDayCount() {
-        final LocalDate firstYearFirstSeptemberDay = LocalDate.of(getCheckoutDate().getYear(), 9, 1);
+        final LocalDate firstYearFirstSeptemberDay = LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 9, 1);
         final int firstYearFirstSeptemberDayOfWeek = firstYearFirstSeptemberDay.getDayOfWeek().getValue();
         final LocalDate firstYearLaborDay =
                 firstYearFirstSeptemberDay.withDayOfMonth((8 - firstYearFirstSeptemberDayOfWeek) % 7 + 1);
@@ -319,10 +326,17 @@ public class RentalAgreementImpl implements RentalAgreement {
         return getHolidayCount(firstYearLaborDay, lastYearLaborDay);
     }
 
+    /**
+     * TODO: Document.
+     *
+     * @param firstYearHolidayDate
+     * @param lastYearHolidayDate
+     * @return
+     */
     private int getHolidayCount(final LocalDate firstYearHolidayDate, final LocalDate lastYearHolidayDate) {
         final int firstYearHolidayCount;
-        if (!firstYearHolidayDate.isBefore(getCheckoutDate())
-                && getDueDate().withYear(getCheckoutDate().getYear()).isAfter(firstYearHolidayDate)) {
+        if (getCheckoutDate().isBefore(firstYearHolidayDate)
+                && firstYearHolidayDate.isBefore(getDueDate().withYear(getCheckoutDate().getYear()).plusDays(1))) {
             firstYearHolidayCount = 1;
         }
         else {
@@ -335,8 +349,8 @@ public class RentalAgreementImpl implements RentalAgreement {
             holidayCount = firstYearHolidayCount;
         }
         else {
-            if (!lastYearHolidayDate.isBefore(getCheckoutDate().withYear(getDueDate().getYear()))
-                    && getDueDate().isAfter(lastYearHolidayDate)) {
+            if (!lastYearHolidayDate.isBefore(getCheckoutDate().plusDays(1).withYear(getDueDate().getYear()))
+                    && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
                 holidayCount = firstYearHolidayCount + yearDifference;
             }
             else {
@@ -348,7 +362,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO:
+     * TODO: Document.
      *
      * @return
      */

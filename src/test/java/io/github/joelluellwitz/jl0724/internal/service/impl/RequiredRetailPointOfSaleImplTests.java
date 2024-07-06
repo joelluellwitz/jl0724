@@ -3,8 +3,8 @@
  */
 package io.github.joelluellwitz.jl0724.internal.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
 
@@ -50,12 +50,10 @@ public class RequiredRetailPointOfSaleImplTests {
         contractParameters.setRentalDayCount(5);
         contractParameters.setDiscountPercent(101);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        });
-
-        assertEquals("Discount percentage must be between 0 and 100 (inclusive). You specified: 101",
-                exception.getMessage());
+        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
+                "Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
     }
 
     // TODO: Explain why we are not testing each field.
@@ -85,7 +83,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Final charge: $3.58\n";
 
         // TODO: Look into changing the call to printRentalAgreement.
-        assertEquals(expectedRentalAgreement, rentalAgreement.getRentalAgreement());
+        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -112,7 +110,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $1.12\n"
                 + "Final charge: $3.35\n";
 
-        assertEquals(expectedRentalAgreement, rentalAgreement.getRentalAgreement());
+        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -139,7 +137,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $0.00\n"
                 + "Final charge: $8.97\n";
 
-        assertEquals(expectedRentalAgreement, rentalAgreement.getRentalAgreement());
+        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -160,13 +158,13 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Check out date: 07/02/15\n"
                 + "Due date: 07/11/15\n"
                 + "Daily rental charge: $2.99\n"
-                + "Charge days: 6\n"
-                + "Pre-discount charge: $17.94\n"
+                + "Charge days: 5\n"
+                + "Pre-discount charge: $14.95\n"
                 + "Discount percent: 0%\n"
                 + "Discount amount: $0.00\n"
-                + "Final charge: $17.94\n";
+                + "Final charge: $14.95\n";
 
-        assertEquals(expectedRentalAgreement, rentalAgreement.getRentalAgreement());
+        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -193,6 +191,6 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $1.50\n"
                 + "Final charge: $1.49\n";
 
-        assertEquals(expectedRentalAgreement, rentalAgreement.getRentalAgreement());
+        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
     }
 }
