@@ -68,6 +68,14 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
+     * TODO: Document
+     */
+    @Override
+    public void printRentalAgreement() {
+        System.console().writer().print(getRentalAgreement());
+    }
+
+    /**
      * TODO:
      *
      * @return
@@ -99,14 +107,6 @@ public class RentalAgreementImpl implements RentalAgreement {
         }
 
         return rentalAgreement;
-    }
-
-    /**
-     * TODO: Document
-     */
-    @Override
-    public void printRentalAgreement() {
-        System.console().writer().print(getRentalAgreement());
     }
 
     /**
@@ -176,13 +176,13 @@ public class RentalAgreementImpl implements RentalAgreement {
      *
      * @return the chargeDayCount
      */
-    public Integer getChargeDayCount() {
+    public int getChargeDayCount() {
         if (chargeDayCount == null) {
             chargeDayCount = (weekendCharge ? getWeekendChargeDayCount() : 0)
                     + (weekdayCharge ? getWeekdayChargeDayCount() : 0);
         }
 
-        return chargeDayCount;
+        return chargeDayCount.intValue();
     }
 
     /**
@@ -220,7 +220,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     public BigDecimal getFinalCharge() {
         if (finalCharge == null) {
-            finalCharge = preDiscountCharge.subtract(getDiscountAmount());
+            finalCharge = getPreDiscountCharge().subtract(getDiscountAmount());
         }
 
         return finalCharge;
@@ -278,17 +278,24 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     private int getWeekdayCount() {
         if (weekdayCount == null) {
+            // These next two lines remove the weekends efficiently.
+            final LocalDate effectiveCheckoutDate = getCheckoutDate().plusDays(
+                    Math.max(0, ((12 - getCheckoutDate().plusDays(1).getDayOfWeek().getValue()) % 7) - 4) + 1);
+            final LocalDate effectiveDueDate = getDueDate().plusDays(
+                    1 - Math.max(0, getDueDate().getDayOfWeek().getValue() - 5));
+
             // Week count can never be greater than rentalDayCount, so the long result can be safely casted back to an
             //   int.
-            final int fullWeekCount = (int) ChronoUnit.WEEKS.between(getCheckoutDate(), getDueDate());
+            final int weekCount = (int) ChronoUnit.WEEKS.between(effectiveCheckoutDate, effectiveDueDate);
 
-            // These next two lines remove the weekends efficiently.
-            final int effectiveStartDayOfWeek =
-                    Math.max(2, (getCheckoutDate().plusDays(1).getDayOfWeek().getValue() + 1) % 7) - 1;
-            final int effectiveEndDayOfWeek = Math.min(getDueDate().plusDays(1).getDayOfWeek().getValue() - 1, 5) + 1;
+            final int effectiveCheckoutDayOfWeek = effectiveCheckoutDate.getDayOfWeek().getValue();
+            final int effectiveDueDayOfWeek = effectiveDueDate.getDayOfWeek().getValue();
 
-            final int weekPortionCount = Math.floorMod(effectiveEndDayOfWeek - effectiveStartDayOfWeek, 5);
-            weekdayCount = fullWeekCount * 5 + weekPortionCount;
+            // Handles the case where the effective week starts on Monday and ends on Friday.
+            final int additionalWeek = effectiveDueDayOfWeek - effectiveCheckoutDayOfWeek == 5 ? 1 : 0;
+
+            final int weekPortionCount = Math.floorMod(effectiveDueDayOfWeek - effectiveCheckoutDayOfWeek, 5);
+            weekdayCount = (weekCount + additionalWeek) * 5 + weekPortionCount;
         }
 
         return weekdayCount.intValue();
@@ -336,29 +343,26 @@ public class RentalAgreementImpl implements RentalAgreement {
     private int getHolidayCount(final LocalDate firstYearHolidayDate, final LocalDate lastYearHolidayDate) {
         final int firstYearHolidayCount;
         if (getCheckoutDate().isBefore(firstYearHolidayDate)
-                && firstYearHolidayDate.isBefore(getDueDate().withYear(getCheckoutDate().getYear()).plusDays(1))) {
+                && firstYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
             firstYearHolidayCount = 1;
         }
         else {
             firstYearHolidayCount = 0;
         }
 
-        final int yearDifference = getDueDate().getYear() - getCheckoutDate().getYear();
-        final int holidayCount;
-        if (yearDifference == 0) {
-            holidayCount = firstYearHolidayCount;
+        final int fullYearCount = Math.max(0, getDueDate().getYear() - getCheckoutDate().getYear() - 1);
+
+        final int lastYearHolidayCount;
+        if (!firstYearHolidayDate.equals(lastYearHolidayDate)
+                && !lastYearHolidayDate.isBefore(getCheckoutDate().plusDays(1))
+                && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
+            lastYearHolidayCount = 1;
         }
         else {
-            if (!lastYearHolidayDate.isBefore(getCheckoutDate().plusDays(1).withYear(getDueDate().getYear()))
-                    && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
-                holidayCount = firstYearHolidayCount + yearDifference;
-            }
-            else {
-                holidayCount = firstYearHolidayCount + yearDifference - 1;
-            }
+            lastYearHolidayCount = 0;
         }
 
-        return holidayCount;
+        return firstYearHolidayCount + fullYearCount + lastYearHolidayCount;
     }
 
     /**
