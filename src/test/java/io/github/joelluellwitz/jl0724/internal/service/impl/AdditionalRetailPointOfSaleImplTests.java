@@ -6,9 +6,12 @@ package io.github.joelluellwitz.jl0724.internal.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.within;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,9 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
 import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
+import io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto;
+import io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementRepo;
+import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
 
 /**
  * TODO: Document.
@@ -32,8 +38,9 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Sql("RequiredRetailPointOfSaleImplTests.sql")
+@Sql("/io/github/joelluellwitz/jl0724/internal/data/api/ToolRepoTests.sql")
 public class AdditionalRetailPointOfSaleImplTests {
+    private final RentalAgreementRepo retailAgreementRepo;
     private final RetailPointOfSale retailPointOfSale;
 
     /**
@@ -42,7 +49,9 @@ public class AdditionalRetailPointOfSaleImplTests {
      * @param retailPointOfSale
      */
     @Autowired
-    public AdditionalRetailPointOfSaleImplTests(final RetailPointOfSale retailPointOfSale) {
+    public AdditionalRetailPointOfSaleImplTests(final RentalAgreementRepo retailAgreementRepo,
+            final RetailPointOfSale retailPointOfSale) {
+        this.retailAgreementRepo = retailAgreementRepo;
         this.retailPointOfSale = retailPointOfSale;
     }
 
@@ -197,5 +206,43 @@ public class AdditionalRetailPointOfSaleImplTests {
             retailPointOfSale.checkout(contractParameters);
         }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
                 "Unrecognized tool code. You specified: INVD");
+    }
+
+    @Test
+    public void checkoutSucceedsWithSavedRentalAgreement() {
+        final String toolCode = "JAKR";  // Note: Ensures I don't misspell JAKR anywhere in the test.
+
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode(toolCode);
+        contractParameters.setCheckoutDate(LocalDate.of(2015, 9, 3));
+        contractParameters.setRentalDayCount(1);
+        contractParameters.setDiscountPercent(100);
+
+        retailPointOfSale.checkout(contractParameters);
+
+        final List<RentalAgreementDto> rentalAgreementDtos = retailAgreementRepo.findAll();
+
+        assertThat(rentalAgreementDtos.size()).isEqualTo(1);
+
+        final RentalAgreementDto rentalAgreementDto = rentalAgreementDtos.getFirst();
+        assertThat(rentalAgreementDto.getId()).isEqualTo(1);
+        assertThat(rentalAgreementDto.getVersion()).isEqualTo(0);
+        assertThat(rentalAgreementDto.getCreatedOn()).isCloseTo(LocalDateTime.now(), within(1, ChronoUnit.MINUTES));
+        assertThat(rentalAgreementDto.getUpdatedOn()).isCloseTo(LocalDateTime.now(), within(1, ChronoUnit.MINUTES));
+        assertThat(rentalAgreementDto.getToolCode()).isEqualTo(toolCode);
+        assertThat(rentalAgreementDto.getToolType()).isEqualTo("Jackhammer");
+        assertThat(rentalAgreementDto.getToolBrand()).isEqualTo("Ridgid");
+        assertThat(rentalAgreementDto.getRentalDayCount()).isEqualTo(1);
+        assertThat(rentalAgreementDto.getCheckoutDate()).isEqualTo(LocalDate.of(2015, 9, 3));
+        assertThat(rentalAgreementDto.getDueDate()).isEqualTo(LocalDate.of(2015, 9, 4));
+        assertThat(rentalAgreementDto.getDailyCharge()).isEqualTo(new BigDecimal("2.99"));
+        assertThat(rentalAgreementDto.getChargeDayCount()).isEqualTo(1);
+        assertThat(rentalAgreementDto.getPreDiscountCharge()).isEqualTo(new BigDecimal("2.99"));
+        assertThat(rentalAgreementDto.getDiscountPercent()).isEqualTo(100);
+        assertThat(rentalAgreementDto.getDiscountAmount()).isEqualTo(new BigDecimal("2.99"));
+        assertThat(rentalAgreementDto.getFinalCharge()).isEqualTo(new BigDecimal("0.00"));
+
+        final ToolDto toolDto = rentalAgreementDto.getTool();
+        assertThat(toolDto.getCode()).isEqualTo(toolCode);
     }
 }

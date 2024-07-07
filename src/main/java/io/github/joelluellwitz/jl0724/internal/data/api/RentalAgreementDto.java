@@ -77,22 +77,10 @@ public class RentalAgreementDto {
         return id;
     }
     /**
-     * @param id the id to set
-     */
-    public void setId(final int id) {
-        this.id = id;
-    }
-    /**
      * @return the version
      */
     public int getVersion() {
         return version;
-    }
-    /**
-     * @param version the version to set
-     */
-    public void setVersion(final int version) {
-        this.version = version;
     }
     /**
      * @return the createdOn
@@ -101,22 +89,10 @@ public class RentalAgreementDto {
         return createdOn;
     }
     /**
-     * @param createdOn the createdOn to set
-     */
-    public void setCreatedOn(final LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-    /**
      * @return the updatedOn
      */
     public LocalDateTime getUpdatedOn() {
         return updatedOn;
-    }
-    /**
-     * @param updatedOn the updatedOn to set
-     */
-    public void setUpdatedOn(final LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
     }
     /**
      * @return the tool

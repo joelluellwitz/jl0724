@@ -54,23 +54,10 @@ public class ToolTypeDto {
         return id;
     }
     /**
-     * @param id the id to set
-     */
-    // Intentionally package private.
-    void setId(final int id) {
-        this.id = id;
-    }
-    /**
      * @return the version
      */
     public int getVersion() {
         return version;
-    }
-    /**
-     * @param version the version to set
-     */
-    void setVersion(final int version) {
-        this.version = version;
     }
     /**
      * @return the createdOn
@@ -79,24 +66,10 @@ public class ToolTypeDto {
         return createdOn;
     }
     /**
-     * @param createdOn the createdOn to set
-     */
-    // Intentionally package private.
-    void setCreatedOn(final LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-    /**
      * @return the updatedOn
      */
     public LocalDateTime getUpdatedOn() {
         return updatedOn;
-    }
-    /**
-     * @param updatedOn the updatedOn to set
-     */
-    // Intentionally package private.
-    void setUpdatedOn(final LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
     }
     /**
      * @return the name
@@ -105,24 +78,10 @@ public class ToolTypeDto {
         return name;
     }
     /**
-     * @param name the name to set
-     */
-    // Intentionally package private.
-    void setName(final String name) {
-        this.name = name;
-    }
-    /**
      * @return the dailyCharge
      */
     public BigDecimal getDailyCharge() {
         return dailyCharge;
-    }
-    /**
-     * @param dailyCharge the dailyCharge to set
-     */
-    // Intentionally package private.
-    void setDailyCharge(final BigDecimal dailyCharge) {
-        this.dailyCharge = dailyCharge;
     }
     /**
      * @return the weekdayCharge
@@ -131,36 +90,15 @@ public class ToolTypeDto {
         return weekdayCharge;
     }
     /**
-     * @param weekdayCharge the weekdayCharge to set
-     */
-    // Intentionally package private.
-    void setWeekdayCharge(final boolean weekdayCharge) {
-        this.weekdayCharge = weekdayCharge;
-    }
-    /**
      * @return the weekendCharge
      */
     public boolean getWeekendCharge() {
         return weekendCharge;
     }
     /**
-     * @param weekendCharge the weekendCharge to set
-     */
-    // Intentionally package private.
-    void setWeekendCharge(final boolean weekendCharge) {
-        this.weekendCharge = weekendCharge;
-    }
-    /**
      * @return the holidayCharge
      */
     public boolean getHolidayCharge() {
         return holidayCharge;
-    }
-    /**
-     * @param holidayCharge the holidayCharge to set
-     */
-    // Intentionally package private.
-    void setHolidayCharge(final boolean holidayCharge) {
-        this.holidayCharge = holidayCharge;
     }
 }

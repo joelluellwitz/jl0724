@@ -28,7 +28,7 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@Sql
+@Sql("/io/github/joelluellwitz/jl0724/internal/data/api/ToolRepoTests.sql")
 public class RequiredRetailPointOfSaleImplTests {
     private final RetailPointOfSale retailPointOfSale;
 

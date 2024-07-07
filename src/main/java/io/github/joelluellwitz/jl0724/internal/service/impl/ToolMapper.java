@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
@@ -17,8 +16,6 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
  */
 @Mapper(componentModel = "spring")
 public interface ToolMapper {
-    ToolMapper INSTANCE = Mappers.getMapper(ToolMapper.class);
-
     @Mapping(source = "toolType.name", target = "type")
     @Mapping(source = "toolType.dailyCharge", target = "dailyCharge")
     @Mapping(source = "toolType.weekdayCharge", target = "weekdayCharge")

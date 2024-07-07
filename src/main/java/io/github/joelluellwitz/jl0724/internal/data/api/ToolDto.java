@@ -53,23 +53,10 @@ public class ToolDto {
         return id;
     }
     /**
-     * @param id the id to set
-     */
-    // Intentionally package private.
-    void setId(final int id) {
-        this.id = id;
-    }
-    /**
      * @return the version
      */
     public int getVersion() {
         return version;
-    }
-    /**
-     * @param version the version to set
-     */
-    void setVersion(final int version) {
-        this.version = version;
     }
     /**
      * @return the createdOn
@@ -78,24 +65,10 @@ public class ToolDto {
         return createdOn;
     }
     /**
-     * @param createdOn the createdOn to set
-     */
-    // Intentionally package private.
-    void setCreatedOn(final LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-    /**
      * @return the updatedOn
      */
     public LocalDateTime getUpdatedOn() {
         return updatedOn;
-    }
-    /**
-     * @param updatedOn the updatedOn to set
-     */
-    // Intentionally package private.
-    void setUpdatedOn(final LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
     }
     /**
      * @return the code
@@ -104,36 +77,15 @@ public class ToolDto {
         return code;
     }
     /**
-     * @param code the code to set
-     */
-    // Intentionally package private.
-    void setCode(final String code) {
-        this.code = code;
-    }
-    /**
      * @return the toolType
      */
     public ToolTypeDto getToolType() {
         return toolType;
     }
     /**
-     * @param toolType the toolType to set
-     */
-    // Intentionally package private.
-    void setToolType(final ToolTypeDto toolType) {
-        this.toolType = toolType;
-    }
-    /**
      * @return the brand
      */
     public String getBrand() {
         return brand;
-    }
-    /**
-     * @param brand the brand to set
-     */
-    // Intentionally package private.
-    void setBrand(final String brand) {
-        this.brand = brand;
     }
 }

@@ -11,7 +11,6 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
  * Exposed representation of a tool that can be rented.
  */
 public class ToolImpl implements Tool {
-    private int id;
     private String code;
     private String type;
     private String brand;
@@ -20,18 +19,6 @@ public class ToolImpl implements Tool {
     private boolean weekendCharge;
     private boolean holidayCharge;
 
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(final int id) {
-        this.id = id;
-    }
     /**
      * @return the code
      */
