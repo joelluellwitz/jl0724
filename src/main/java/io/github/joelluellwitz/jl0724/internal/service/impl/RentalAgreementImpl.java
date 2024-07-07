@@ -341,28 +341,25 @@ public class RentalAgreementImpl implements RentalAgreement {
      * @return
      */
     private int getHolidayCount(final LocalDate firstYearHolidayDate, final LocalDate lastYearHolidayDate) {
-        final int firstYearHolidayCount;
+        final int firstYear;
         if (getCheckoutDate().isBefore(firstYearHolidayDate)
                 && firstYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
-            firstYearHolidayCount = 1;
+            firstYear = getCheckoutDate().plusDays(1).getYear() - 1;
         }
         else {
-            firstYearHolidayCount = 0;
+            firstYear = getCheckoutDate().plusDays(1).getYear();
         }
 
-        final int fullYearCount = Math.max(0, getDueDate().getYear() - getCheckoutDate().getYear() - 1);
-
-        final int lastYearHolidayCount;
-        if (!firstYearHolidayDate.equals(lastYearHolidayDate)
-                && !lastYearHolidayDate.isBefore(getCheckoutDate().plusDays(1))
+        final int lastYear;
+        if (getCheckoutDate().isBefore(lastYearHolidayDate)
                 && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
-            lastYearHolidayCount = 1;
+            lastYear = getDueDate().getYear();
         }
         else {
-            lastYearHolidayCount = 0;
+            lastYear = getDueDate().getYear() - 1;
         }
 
-        return firstYearHolidayCount + fullYearCount + lastYearHolidayCount;
+        return Math.max(0, lastYear - firstYear);
     }
 
     /**

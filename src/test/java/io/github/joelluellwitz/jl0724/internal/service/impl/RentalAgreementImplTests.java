@@ -21,11 +21,11 @@ public class RentalAgreementImplTests {
     // TODO: Add test for printRentalAgreement.
 
     @Test
-    public void getRentalAgreementSucceeds() {
+    public void getDueDateCalculates1DayLater() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
-        contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
-        contractParameters.setRentalDayCount(5);
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 7, 1));
+        contractParameters.setRentalDayCount(1);
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -37,23 +37,31 @@ public class RentalAgreementImplTests {
         tool.setWeekendCharge(false);
         tool.setHolidayCharge(true);
 
-        final String expectedRentalAgreement =
-                "Tool code: CHNS\n"
-                + "Tool type: Chainsaw\n"
-                + "Tool brand: Stihl\n"
-                + "Rental days: 5\n"
-                + "Check out date: 07/02/15\n"
-                + "Due date: 07/07/15\n"
-                + "Daily rental charge: $1.49\n"
-                + "Charge days: 3\n"
-                + "Pre-discount charge: $4.47\n"
-                + "Discount percent: 25%\n"
-                + "Discount amount: $1.12\n"
-                + "Final charge: $3.35\n";
+        final LocalDate dueDate = new RentalAgreementImpl(contractParameters, tool).getDueDate();
 
-        final String rentalAgreement = new RentalAgreementImpl(contractParameters, tool).getRentalAgreement();
+        assertThat(dueDate).isEqualTo(LocalDate.of(2024, 7, 2));
+    }
 
-        assertThat(rentalAgreement).isEqualTo(expectedRentalAgreement);
+    @Test
+    public void getDueDateCalculates1000DaysLater() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 7, 1));
+        contractParameters.setRentalDayCount(1000);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(true);
+
+        final LocalDate dueDate = new RentalAgreementImpl(contractParameters, tool).getDueDate();
+
+        assertThat(dueDate).isEqualTo(LocalDate.of(2027, 3, 28));
     }
 
     @Test
@@ -421,6 +429,46 @@ public class RentalAgreementImplTests {
     }
 
     @Test
+    public void getChargeDayCountNoHolidaysSameYear() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 10, 1));
+        contractParameters.setRentalDayCount(90);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(true);
+        tool.setHolidayCharge(false);
+
+        assertThat(new RentalAgreementImpl(contractParameters, tool).getChargeDayCount()).isEqualTo(90);
+    }
+
+    @Test
+    public void getChargeDayCountNoHolidaysTwoYears() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 10, 1));
+        contractParameters.setRentalDayCount(272);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(true);
+        tool.setHolidayCharge(false);
+
+        assertThat(new RentalAgreementImpl(contractParameters, tool).getChargeDayCount()).isEqualTo(272);
+    }
+
+    @Test
     public void getChargeDayCountSkippingIndependenceDayOnWeekday() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
@@ -732,6 +780,29 @@ public class RentalAgreementImplTests {
         assertThat(new RentalAgreementImpl(contractParameters, tool).getChargeDayCount()).isEqualTo(1093);
     }
 
+    @Test
+    public void getChargeDayCountSkippingHolidaysWithDatesAtYearEnds() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2023, 12, 31));
+        contractParameters.setRentalDayCount(731);  // Remember, 2024 is a leap year.
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(true);
+        tool.setHolidayCharge(false);
+
+        assertThat(new RentalAgreementImpl(contractParameters, tool).getDueDate()).isEqualTo(
+                LocalDate.of(2025, 12, 31));
+
+        assertThat(new RentalAgreementImpl(contractParameters, tool).getChargeDayCount()).isEqualTo(727);
+    }
+
     // TODO: Note how this test assumes an specific implementation of getWeekendChargeDayCount.
     @Test
     public void getChargeDayCountCountingWeekendDaysStartingWednesday1000DayDuration() {
@@ -751,6 +822,72 @@ public class RentalAgreementImplTests {
         tool.setHolidayCharge(true);
 
         assertThat(new RentalAgreementImpl(contractParameters, tool).getChargeDayCount()).isEqualTo(286);
+    }
+
+    @Test
+    public void getPreDiscountChargeCalculatesCorrectResult() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal preDiscountCharge = new RentalAgreementImpl(contractParameters, tool).getPreDiscountCharge();
+
+        assertThat(preDiscountCharge).isEqualTo(new BigDecimal("5.96"));
+    }
+
+    @Test
+    public void getPreDiscountChargeCalculatesCorrectResultWithZeroChargeDays() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(false);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal preDiscountCharge = new RentalAgreementImpl(contractParameters, tool).getPreDiscountCharge();
+
+        assertThat(preDiscountCharge).isEqualTo(new BigDecimal("0.00"));
+    }
+
+    @Test
+    public void getPreDiscountChargeCalculatesCorrectResultWithZeroDailyCharge() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("0.00"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(true);
+        tool.setHolidayCharge(true);
+
+        final BigDecimal preDiscountCharge = new RentalAgreementImpl(contractParameters, tool).getPreDiscountCharge();
+
+        assertThat(preDiscountCharge).isEqualTo(new BigDecimal("0.00"));
     }
 
     @Test
@@ -778,6 +915,116 @@ public class RentalAgreementImplTests {
     }
 
     @Test
+    public void getDiscountAmountCalculatesNoDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(0);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal discountAmount = new RentalAgreementImpl(contractParameters, tool).getDiscountAmount();
+
+        assertThat(discountAmount).isEqualTo("0.00");
+    }
+
+    @Test
+    public void getDiscountAmountCalculates1PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(1);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal discountAmount = new RentalAgreementImpl(contractParameters, tool).getDiscountAmount();
+
+        assertThat(discountAmount).isEqualTo("0.06");
+    }
+
+    @Test
+    public void getDiscountAmountCalculates99PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(99);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal discountAmount = new RentalAgreementImpl(contractParameters, tool).getDiscountAmount();
+
+        assertThat(discountAmount).isEqualTo("5.90");
+    }
+
+    @Test
+    public void getDiscountAmountCalculates100PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(100);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal discountAmount = new RentalAgreementImpl(contractParameters, tool).getDiscountAmount();
+
+        assertThat(discountAmount).isEqualTo("5.96");
+    }
+
+    @Test
+    public void getDiscountAmountRoundsUpHalfCents() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 7, 1));
+        contractParameters.setRentalDayCount(1);
+        contractParameters.setDiscountPercent(50);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.05"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal discountAmount = new RentalAgreementImpl(contractParameters, tool).getDiscountAmount();
+
+        assertThat(discountAmount).isEqualTo("0.53");
+    }
+
+    @Test
     public void getDiscountAmountSavesResult() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
@@ -802,6 +1049,116 @@ public class RentalAgreementImplTests {
     }
 
     @Test
+    public void getFinalChargeWithNoDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(0);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal finalCharge = new RentalAgreementImpl(contractParameters, tool).getFinalCharge();
+
+        assertThat(finalCharge).isEqualTo("5.96");
+    }
+
+    @Test
+    public void getFinalChargeWith1PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(1);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal finalCharge = new RentalAgreementImpl(contractParameters, tool).getFinalCharge();
+
+        assertThat(finalCharge).isEqualTo("5.90");
+    }
+
+    @Test
+    public void getFinalChargeWith99PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(99);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal finalCharge = new RentalAgreementImpl(contractParameters, tool).getFinalCharge();
+
+        assertThat(finalCharge).isEqualTo("0.06");
+    }
+
+    @Test
+    public void getFinalChargeWith100PercentDiscount() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 6, 30));
+        contractParameters.setRentalDayCount(7);
+        contractParameters.setDiscountPercent(100);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal finalCharge = new RentalAgreementImpl(contractParameters, tool).getFinalCharge();
+
+        assertThat(finalCharge).isEqualTo("0.00");
+    }
+
+    @Test
+    public void getFinalChargeWithRoundsDownHalfCents() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2024, 7, 1));
+        contractParameters.setRentalDayCount(1);
+        contractParameters.setDiscountPercent(50);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.05"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(false);
+
+        final BigDecimal finalCharge = new RentalAgreementImpl(contractParameters, tool).getFinalCharge();
+
+        assertThat(finalCharge).isEqualTo("0.52");
+    }
+
+    @Test
     public void getFinalChargeSavesResult() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
@@ -823,5 +1180,65 @@ public class RentalAgreementImplTests {
         final BigDecimal finalCharge1 = rentalAgreement.getFinalCharge();
 
         assertThat(finalCharge0).isSameAs(finalCharge1);
+    }
+
+    @Test
+    public void getRentalAgreementSucceeds() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
+        contractParameters.setRentalDayCount(5);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(true);
+
+        final String expectedRentalAgreement =
+                "Tool code: CHNS\n"
+                + "Tool type: Chainsaw\n"
+                + "Tool brand: Stihl\n"
+                + "Rental days: 5\n"
+                + "Check out date: 07/02/15\n"
+                + "Due date: 07/07/15\n"
+                + "Daily rental charge: $1.49\n"
+                + "Charge days: 3\n"
+                + "Pre-discount charge: $4.47\n"
+                + "Discount percent: 25%\n"
+                + "Discount amount: $1.12\n"
+                + "Final charge: $3.35\n";
+
+        final String rentalAgreement = new RentalAgreementImpl(contractParameters, tool).getRentalAgreement();
+
+        assertThat(rentalAgreement).isEqualTo(expectedRentalAgreement);
+    }
+
+    @Test
+    public void getRentalAgreementSavesResult() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
+        contractParameters.setRentalDayCount(5);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(true);
+
+        final RentalAgreementImpl rentalAgreement = new RentalAgreementImpl(contractParameters, tool);
+        final String rentalAgreement0 = rentalAgreement.getRentalAgreement();
+        final String rentalAgreement1 = rentalAgreement.getRentalAgreement();
+
+        assertThat(rentalAgreement0).isSameAs(rentalAgreement1);
     }
 }
