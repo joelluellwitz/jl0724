@@ -13,6 +13,8 @@ import java.io.PrintStream;
 import java.time.Duration;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -127,7 +129,7 @@ public class RetailConsoleTests {
     }
 
     @Test
-    public void checkoutWithUiValidationErrorsSucceeds() throws Exception {
+    public void checkoutWithValidationErrorsSucceeds() throws Exception {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
             final byte[] mainPrompt =
                     "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
@@ -145,7 +147,7 @@ public class RetailConsoleTests {
             outputStreamForStandardInput.write("\n".getBytes());
 
             assertThat(inputSreamForStandardOutput.readNBytes(toolCodePrompt.length)).isEqualTo(toolCodePrompt);
-            outputStreamForStandardInput.write("JAKD\n".getBytes());
+            outputStreamForStandardInput.write("INVD\n".getBytes());
 
             final byte[] checkoutDatePrompt = "Enter the checkout date (MM/DD/YY): ".getBytes();
             assertThat(inputSreamForStandardOutput.readNBytes(checkoutDatePrompt.length)).isEqualTo(checkoutDatePrompt);
@@ -180,29 +182,73 @@ public class RetailConsoleTests {
                     errorAndDiscountPrompt);
             outputStreamForStandardInput.write("25\n".getBytes());
 
-            final String rentalAgreementAndMainPromptString = "\n"
-                    + "Rental Agreement:\n"
-                    + "Tool code: JAKD\n"
-                    + "Tool type: Jackhammer\n"
-                    + "Tool brand: DeWalt\n"
-                    + "Rental days: 30\n"
-                    + "Check out date: 06/30/24\n"
-                    + "Due date: 07/30/24\n"
-                    + "Daily rental charge: $2.99\n"
-                    + "Charge days: 21\n"
-                    + "Pre-discount charge: $62.79\n"
-                    + "Discount percent: 25%\n"
-                    + "Discount amount: $15.70\n"
-                    + "Final charge: $47.09\n"
+            final String backendValidationErrorAndMainPromptString =
+                    "An error occurred during checkout: Unrecognized tool code. You specified: INVD\n"
                     + "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ";
-            final byte[] rentalAgreementAndMainPrompt = rentalAgreementAndMainPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(rentalAgreementAndMainPrompt.length)).isEqualTo(
-                    rentalAgreementAndMainPrompt);
+            final byte[] backendValidationErrorAndMainPrompt = backendValidationErrorAndMainPromptString.getBytes();
+            assertThat(inputSreamForStandardOutput.readNBytes(backendValidationErrorAndMainPrompt.length)).isEqualTo(
+                    backendValidationErrorAndMainPrompt);
             outputStreamForStandardInput.write("q\n".getBytes());
         });
     }
 
-    // TODO: Add test for backend validation error.
+    // TODO: Document?
+    @Test
+    public void inputIoExceptionFailure() throws Exception {
+        final PipedInputStream standardInputStream = new PipedInputStream(new PipedOutputStream());
+        System.setIn(standardInputStream);
+
+        final PipedInputStream inputSreamForStandardOutput = new PipedInputStream();
+        System.setOut(new PrintStream(new PipedOutputStream(inputSreamForStandardOutput)));
+
+        // Closing should eventually cause an IOException.
+        standardInputStream.close();
+
+        final BlockingQueue<Throwable> exceptionQueue = new ArrayBlockingQueue<Throwable>(1, true);
+        final Thread.UncaughtExceptionHandler exceptionHandler = new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(final Thread thread, final Throwable e) {
+                exceptionQueue.add(e);
+            }
+        };
+
+        final Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    retailConsole.run();
+                } catch (final RuntimeException e) {
+                    throw e;
+                } catch (final Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.setUncaughtExceptionHandler(exceptionHandler);
+        thread.start();
+
+        final Timer timer = new Timer();
+        final TimerTask threadTimeoutTask = new TimerTask() {
+            @Override
+            public void run() {
+                thread.interrupt();
+            }
+        };
+
+        timer.schedule(threadTimeoutTask, 10000);
+        final byte[] mainPrompt =
+                "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
+        assertThat(inputSreamForStandardOutput.readNBytes(mainPrompt.length)).isEqualTo(mainPrompt);
+
+        timer.cancel();
+
+        thread.join(Duration.ofSeconds(10));
+
+        final Throwable throwable = exceptionQueue.take();
+        assertThat(throwable).isExactlyInstanceOf(RuntimeException.class);
+        assertThat(throwable.getCause()).isExactlyInstanceOf(IOException.class);
+        assertThat(throwable.getCause().getMessage()).isEqualTo("Pipe closed");
+    }
 
     /**
      * Document.
