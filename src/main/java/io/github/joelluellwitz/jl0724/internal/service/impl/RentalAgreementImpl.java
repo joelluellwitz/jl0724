@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
@@ -23,6 +25,8 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
  */
 public class RentalAgreementImpl implements RentalAgreement {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/uu");
+
+    private static Logger LOGGER = LoggerFactory.getLogger(RentalAgreementImpl.class);
 
     private final BigDecimal cent = new BigDecimal("0.01");
     private final String toolCode;
@@ -166,6 +170,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     public LocalDate getDueDate() {
         if (dueDate == null) {
             dueDate = getCheckoutDate().plusDays(getRentalDayCount());
+            LOGGER.debug("Calculated due date: {}", dueDate.toString());
         }
 
         return dueDate;
@@ -180,6 +185,7 @@ public class RentalAgreementImpl implements RentalAgreement {
         if (chargeDayCount == null) {
             chargeDayCount = (weekendCharge ? getWeekendChargeDayCount() : 0)
                     + (weekdayCharge ? getWeekdayChargeDayCount() : 0);
+            LOGGER.debug("Calculated charge day count: {}", chargeDayCount);
         }
 
         return chargeDayCount.intValue();
@@ -193,6 +199,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     public BigDecimal getPreDiscountCharge() {
         if (preDiscountCharge == null) {
             preDiscountCharge = getDailyCharge().multiply(BigDecimal.valueOf(getChargeDayCount()));
+            LOGGER.debug("Calculated pre-discount charge: {}", preDiscountCharge);
         }
 
         return preDiscountCharge;
@@ -208,6 +215,7 @@ public class RentalAgreementImpl implements RentalAgreement {
             final BigDecimal discount = BigDecimal.valueOf(getDiscountPercent()).multiply(cent);
             final BigDecimal unroundedDiscountAmount = getPreDiscountCharge().multiply(discount);
             discountAmount = unroundedDiscountAmount.divide(cent, 0, RoundingMode.HALF_UP).multiply(cent);
+            LOGGER.debug("Calculated discount amount: {}", discountAmount);
         }
 
         return discountAmount;
@@ -221,6 +229,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     public BigDecimal getFinalCharge() {
         if (finalCharge == null) {
             finalCharge = getPreDiscountCharge().subtract(getDiscountAmount());
+            LOGGER.debug("Calculated final charge amount: {}", finalCharge);
         }
 
         return finalCharge;

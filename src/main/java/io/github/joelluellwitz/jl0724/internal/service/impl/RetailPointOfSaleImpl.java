@@ -6,6 +6,8 @@ package io.github.joelluellwitz.jl0724.internal.service.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,8 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo;
 @Service
 @Transactional
 public class RetailPointOfSaleImpl implements RetailPointOfSale {
+    private static Logger LOGGER = LoggerFactory.getLogger(RetailPointOfSaleImpl.class);
+
     private final RentalAgreementRepo rentalAgreementRepo;
     private final RentalAgreementMapper rentalAgreementMapper;
     private final ToolRepo toolRepo;
@@ -47,12 +51,15 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
     // For documentation, see interface definition.
     @Override
     public List<Tool> listTools() {
+       LOGGER.debug("Retrieving the tool list.");
        return toolMapper.toolDtosToTools(toolRepo.listToolsSortedByToolCode());
     }
 
     // For documentation, see interface definition.
     @Override
     public RentalAgreement checkout(final ContractParameters contractParameters) {
+        LOGGER.debug("Starting checkout.");
+
         final int discountPercent = contractParameters.getDiscountPercent();
         if (discountPercent < 0 || discountPercent > 100) {
             throw new IllegalArgumentException(String.format(
@@ -79,6 +86,7 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
         rentalAgreementDto.setTool(toolOptional.get());
         rentalAgreementRepo.saveAndFlush(rentalAgreementDto);
 
+        LOGGER.debug("Finishing checkout.");
         return rentalAgreement;
     }
 }

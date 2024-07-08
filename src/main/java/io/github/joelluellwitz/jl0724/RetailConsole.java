@@ -145,7 +145,18 @@ public class RetailConsole implements CommandLineRunner {
         try {
             final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
-            // The requirements do not state that this header should be returned by 'RetailPointOfSale.checkout'.
+            // Note: rentalAgreement.toString could be (but actually isn't) an expensive operation. Potentially
+            //   expensive to generate logging strings should be conditionally executed to avoid wasting execution time.
+            //   In this case, toString saves the result of the first generation, so we could just avoid this
+            //   conditional, but I wanted to demonstrate that I understand this concept.
+            if (LOGGER.isInfoEnabled()) {
+                // Note: Ideally we want to include some sort of user identifier in logging statements, but that
+                //   obviously isn't available here.
+                LOGGER.info("Rental agreement generated: \n{}", rentalAgreement.toString());
+            }
+
+            // Note: The requirements do not state that this header should be returned by
+            //   'RentalAgreement.printRentalAgreement'. I want to follow the requirements exactly.
             System.out.println("\nRental Agreement:");
 
             rentalAgreement.printRentalAgreement();

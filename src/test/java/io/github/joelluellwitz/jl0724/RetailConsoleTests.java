@@ -56,12 +56,11 @@ public class RetailConsoleTests {
     @Test
     public void printToolListSucceeds() throws Exception {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
-            final byte[] mainPrompt =
-                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(mainPrompt.length)).isEqualTo(mainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput,
+                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
             outputStreamForStandardInput.write("p\n".getBytes());
 
-            final String toolListAndMainPromptString =
+            final String toolListAndMainPrompt =
                     "________________________________________________________________________________________________\n"
                     + "| Tool Code| Tool Type | Brand | Daily Charge| Weekday Charge?| Weekend Charge?| Holiday Charge?|\n"
                     + "|===============================================================================================|\n"
@@ -70,14 +69,11 @@ public class RetailConsoleTests {
                     + "| JAKR     | Jackhammer| Ridgid| $2.99       | true           | false          | false          |\n"
                     + "| LADW     | Ladder    | Werner| $1.99       | true           | true           | false          |\n"
                     + "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ";
-            final byte[] toolListAndMainPrompt = toolListAndMainPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(toolListAndMainPrompt.length)).isEqualTo(
-                    toolListAndMainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, toolListAndMainPrompt);
             outputStreamForStandardInput.write("p\n".getBytes());
 
             // The table is printed again so that we get unit test coverage on the saved table data.
-            assertThat(inputSreamForStandardOutput.readNBytes(toolListAndMainPrompt.length)).isEqualTo(
-                    toolListAndMainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, toolListAndMainPrompt);
             outputStreamForStandardInput.write("q\n".getBytes());
         });
     }
@@ -85,28 +81,24 @@ public class RetailConsoleTests {
     @Test
     public void checkoutSucceeds() throws Exception {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
-            final byte[] mainPrompt =
-                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(mainPrompt.length)).isEqualTo(mainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput,
+                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
             outputStreamForStandardInput.write("c\n".getBytes());
 
-            final byte[] toolCodePrompt = "Enter the tool code: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(toolCodePrompt.length)).isEqualTo(toolCodePrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, "Enter the tool code: ");
             outputStreamForStandardInput.write("JAKD\n".getBytes());
 
-            final byte[] checkoutDatePrompt = "Enter the checkout date (MM/DD/YY): ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(checkoutDatePrompt.length)).isEqualTo(checkoutDatePrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, "Enter the checkout date (MM/DD/YY): ");
             outputStreamForStandardInput.write("06/30/24\n".getBytes());
 
-            final byte[] durationPrompt = "Enter the rental duration in days: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(durationPrompt.length)).isEqualTo(durationPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, "Enter the rental duration in days: ");
             outputStreamForStandardInput.write("30\n".getBytes());
 
-            final byte[] discountPrompt = "Enter the discount percentage as an integer (0-100): ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(discountPrompt.length)).isEqualTo(discountPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput,
+                    "Enter the discount percentage as an integer (0-100): ");
             outputStreamForStandardInput.write("25\n".getBytes());
 
-            final String rentalAgreementAndMainPromptString = "\n"
+            final String rentalAgreementAndMainPrompt = "\n"
                     + "Rental Agreement:\n"
                     + "Tool code: JAKD\n"
                     + "Tool type: Jackhammer\n"
@@ -121,9 +113,7 @@ public class RetailConsoleTests {
                     + "Discount amount: $15.70\n"
                     + "Final charge: $47.09\n"
                     + "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ";
-            final byte[] rentalAgreementAndMainPrompt = rentalAgreementAndMainPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(rentalAgreementAndMainPrompt.length)).isEqualTo(
-                    rentalAgreementAndMainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, rentalAgreementAndMainPrompt);
             outputStreamForStandardInput.write("q\n".getBytes());
         });
     }
@@ -131,63 +121,51 @@ public class RetailConsoleTests {
     @Test
     public void checkoutWithValidationErrorsSucceeds() throws Exception {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
-            final byte[] mainPrompt =
-                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(mainPrompt.length)).isEqualTo(mainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput,
+                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
             outputStreamForStandardInput.write("a\n".getBytes());
 
-            final String errorAndMainPromptString = "Invalid option: a\n"
+            final String errorAndMainPrompt = "Invalid option: a\n"
                     + "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ";
-            final byte[] errorAndMainPrompt = errorAndMainPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(errorAndMainPrompt.length)).isEqualTo(errorAndMainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, errorAndMainPrompt);
             outputStreamForStandardInput.write("c\n".getBytes());
 
-            final byte[] toolCodePrompt = "Enter the tool code: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(toolCodePrompt.length)).isEqualTo(toolCodePrompt);
+            final String toolCodePrompt = "Enter the tool code: ";
+            assertStandardOutputEquals(inputSreamForStandardOutput, toolCodePrompt);
             outputStreamForStandardInput.write("\n".getBytes());
 
-            assertThat(inputSreamForStandardOutput.readNBytes(toolCodePrompt.length)).isEqualTo(toolCodePrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, toolCodePrompt);
             outputStreamForStandardInput.write("INVD\n".getBytes());
 
-            final byte[] checkoutDatePrompt = "Enter the checkout date (MM/DD/YY): ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(checkoutDatePrompt.length)).isEqualTo(checkoutDatePrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, "Enter the checkout date (MM/DD/YY): ");
             outputStreamForStandardInput.write("02/30/24\n".getBytes());
 
-            final String errorAndCheckoutDatePromptString = "Value 02/30/24 is not a valid date.\n"
+            final String errorAndCheckoutDatePrompt = "Value 02/30/24 is not a valid date.\n"
                     + "Enter the checkout date (MM/DD/YY): ";
-            final byte[] errorAndCheckoutDatePrompt = errorAndCheckoutDatePromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(errorAndCheckoutDatePrompt.length)).isEqualTo(
-                    errorAndCheckoutDatePrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, errorAndCheckoutDatePrompt);
             outputStreamForStandardInput.write("06/30/24\n".getBytes());
 
-            final byte[] durationPrompt = "Enter the rental duration in days: ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(durationPrompt.length)).isEqualTo(durationPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, "Enter the rental duration in days: ");
             outputStreamForStandardInput.write("a\n".getBytes());
 
-            final String errorAndDurationPromptString = "Value a is not an integer.\n"
+            final String errorAndDurationPrompt = "Value a is not an integer.\n"
                     + "Enter the rental duration in days: ";
-            final byte[] errorAndDurationPrompt = errorAndDurationPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(errorAndDurationPrompt.length)).isEqualTo(
-                    errorAndDurationPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, errorAndDurationPrompt);
             outputStreamForStandardInput.write("30\n".getBytes());
 
-            final byte[] discountPrompt = "Enter the discount percentage as an integer (0-100): ".getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(discountPrompt.length)).isEqualTo(discountPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput,
+                    "Enter the discount percentage as an integer (0-100): ");
             outputStreamForStandardInput.write("a\n".getBytes());
 
-            final String errorAndDiscountPromptString = "Value a is not an integer.\n"
+            final String errorAndDiscountPrompt = "Value a is not an integer.\n"
                     + "Enter the discount percentage as an integer (0-100): ";
-            final byte[] errorAndDiscountPrompt = errorAndDiscountPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(errorAndDiscountPrompt.length)).isEqualTo(
-                    errorAndDiscountPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, errorAndDiscountPrompt);
             outputStreamForStandardInput.write("25\n".getBytes());
 
-            final String backendValidationErrorAndMainPromptString =
+            final String backendValidationErrorAndMainPrompt =
                     "An error occurred during checkout: Unrecognized tool code. You specified: INVD\n"
                     + "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ";
-            final byte[] backendValidationErrorAndMainPrompt = backendValidationErrorAndMainPromptString.getBytes();
-            assertThat(inputSreamForStandardOutput.readNBytes(backendValidationErrorAndMainPrompt.length)).isEqualTo(
-                    backendValidationErrorAndMainPrompt);
+            assertStandardOutputEquals(inputSreamForStandardOutput, backendValidationErrorAndMainPrompt);
             outputStreamForStandardInput.write("q\n".getBytes());
         });
     }
@@ -236,9 +214,9 @@ public class RetailConsoleTests {
         };
 
         timer.schedule(threadTimeoutTask, 10000);
-        final byte[] mainPrompt =
-                "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ".getBytes();
-        assertThat(inputSreamForStandardOutput.readNBytes(mainPrompt.length)).isEqualTo(mainPrompt);
+
+        assertStandardOutputEquals(inputSreamForStandardOutput,
+                "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
 
         timer.cancel();
 
@@ -292,6 +270,18 @@ public class RetailConsoleTests {
         timer.cancel();
 
         assertThat(thread.join(Duration.ofSeconds(10))).isTrue();
+    }
+
+    /**
+     * TODO: Document.
+     *
+     * @param inputStream
+     * @param expectedString
+     * @throws IOException
+     */
+    private void assertStandardOutputEquals(final PipedInputStream inputStream, final String expectedString)
+            throws IOException {
+        assertThat(new String(inputStream.readNBytes(expectedString.getBytes().length))).isEqualTo(expectedString);
     }
 
     /**
