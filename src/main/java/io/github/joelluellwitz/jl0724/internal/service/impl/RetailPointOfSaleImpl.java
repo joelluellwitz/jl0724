@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
 import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
@@ -21,6 +22,7 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo;
  * TODO: Document.
  */
 @Service
+@Transactional
 public class RetailPointOfSaleImpl implements RetailPointOfSale {
     private final RentalAgreementRepo rentalAgreementRepo;
     private final RentalAgreementMapper rentalAgreementMapper;

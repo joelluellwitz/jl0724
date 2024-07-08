@@ -1,15 +1,14 @@
-* Ask about how european or american counting and which day discounts are applied to.
+* Mention european vs american date counting.
   * "from day after checkout through and including due date" seems to imply that the discount should be applied to the second day.
-* "Resulting total rounded half up to cents." implies partial days are supported? I suspect this is an error.
-
+* Mention "Resulting total rounded half up to cents." implies partial days are supported? I suspect this is an error.
 * Mention organizing by functional area and not file type.
 * Mention extra functionality.
-  * Mention how the console is not tested.
 * Mention 3 tier or multi-tier model and how that relates to categorizing by functional area.
   * Explain exposed vs internal.
 * Mention where to find required unit tests.
 * Mention in code comments explain the rational about why things are done.
-* Maybe mention why not all versions are listed in properties.
+* Mention to read the "Note:"s.
+* Maybe mention why not all versions are listed in properties (in pom.xml).
 X Add @Override annotations.
 * See if there is a real tag for "// See method documentation in interface definition."
 X Search for use of underscores.
@@ -29,5 +28,6 @@ X Verify all private static final fields are thread safe.
 * Remove TODOs.
 * Remove SNAPSHOT Modifier.
 * Disable extra spring output.
-* Verify SQLite tool foreign key reference is defined correctly.
-* Consider transactional boundaries and adding @Transaction annotations.
+X Verify SQLite tool foreign key reference is defined correctly.
+X Consider transactional boundaries and adding @Transactional annotations.
+* Try executing with /tmp set to noexec.

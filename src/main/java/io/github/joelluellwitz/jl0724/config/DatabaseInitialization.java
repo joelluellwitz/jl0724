@@ -27,7 +27,7 @@ public class DatabaseInitialization implements ApplicationListener<ApplicationEn
     @Override
     public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {
         try {
-            final File tempDatabase = File.createTempFile("pointOfSale-", ".tmp");
+            final File tempDatabase = File.createTempFile("pointOfSale-", ".sqlite3");
             tempDatabase.deleteOnExit();
             final URL sourceDatabase = RetailConsole.class.getResource(
                     "/io/github/joelluellwitz/jl0724/internal/data/sqlite/pointOfSale.sqlite3");
