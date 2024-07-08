@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 
-import io.github.joelluellwitz.jl0724.exposed.ui.console.RetailConsole;
+import io.github.joelluellwitz.jl0724.RetailConsole;
 
 /**
  * TODO: Document.

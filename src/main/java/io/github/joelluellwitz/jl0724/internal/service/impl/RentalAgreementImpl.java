@@ -72,7 +72,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     @Override
     public void printRentalAgreement() {
-        System.console().writer().print(getRentalAgreement());
+        System.out.print(getRentalAgreement());
     }
 
     /**

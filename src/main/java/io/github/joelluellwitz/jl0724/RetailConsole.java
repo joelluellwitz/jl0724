@@ -1,11 +1,12 @@
 /**
  * Copyright (C) Joel Luellwitz 2024
  */
-package io.github.joelluellwitz.jl0724.exposed.ui.console;
+package io.github.joelluellwitz.jl0724;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.Console;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.NumberFormat;
@@ -22,9 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import dnl.utils.text.table.TextTable;
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
@@ -35,17 +33,13 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 /**
  * A console based implementation of the tool rental point of sale user interface.
  */
-@SpringBootApplication(scanBasePackages = "io.github.joelluellwitz.jl0724")
-@EntityScan({"io.github.joelluellwitz.jl0724"})
-@EnableJpaRepositories({"io.github.joelluellwitz.jl0724"})
+@SpringBootApplication
 public class RetailConsole implements CommandLineRunner {
     private static final DateTimeFormatter DATE_FORMATTER =
             DateTimeFormatter.ofPattern("MM/dd/uu").withResolverStyle(ResolverStyle.STRICT);
 
     private static Logger LOGGER = LoggerFactory.getLogger(RetailConsole.class);
 
-    private final ConfigurableApplicationContext context;
-    private final Console console;
     private final RetailPointOfSale retailPointOfSale;
 
     private String toolList;
@@ -57,11 +51,9 @@ public class RetailConsole implements CommandLineRunner {
      * @param retailPointOfSale
      */
     // Intentionally package private.
-    RetailConsole(@Autowired final ConfigurableApplicationContext context,
-            @Autowired final RetailPointOfSale retailPointOfSale) {
-        this.context = context;
+    // TODO: Verify @Autowired is needed.
+    RetailConsole(@Autowired final RetailPointOfSale retailPointOfSale) {
         this.retailPointOfSale = retailPointOfSale;
-        console = System.console();
     }
 
     /**
@@ -82,13 +74,14 @@ public class RetailConsole implements CommandLineRunner {
      */
     @Override
     public void run(final String... args) throws IOException {
-        while (true) {
-            final String mainInput = console.readLine(
-                    "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
+        String mainInput;
+        do {
+            mainInput = promptForString("Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
 
             switch(mainInput) {
                 case "q":
-                    System.exit(SpringApplication.exit(context));
+                    // This is handled by the while loop condition.
+                    break;
                 case "p":
                     printToolList();
                     break;
@@ -96,9 +89,9 @@ public class RetailConsole implements CommandLineRunner {
                     checkout();
                     break;
                 default:
-                    console.printf("Invalid option: %s\n", mainInput);
+                    System.out.println("Invalid option: %s".formatted(mainInput));
             }
-        }
+        } while (!mainInput.equals("q"));
     }
 
     /**
@@ -128,7 +121,7 @@ public class RetailConsole implements CommandLineRunner {
             new TextTable(columnNames, tableData).printTable(new PrintStream(tableOutputStream), 0);
             toolList = tableOutputStream.toString();
         }
-        console.writer().print(toolList);
+        System.out.print(toolList);
     }
 
     /**
@@ -146,12 +139,12 @@ public class RetailConsole implements CommandLineRunner {
             final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
             // The requirements do not state that this header should be returned by 'RetailPointOfSale.checkout'.
-            console.printf("\nRental Agreement:\n");
+            System.out.println("\nRental Agreement:");
 
             rentalAgreement.printRentalAgreement();
         }
         catch (final IllegalArgumentException e) {
-            console.printf("An error occurred during checkout: %s\n", e.getLocalizedMessage());
+            System.out.println("An error occurred during checkout: %s".formatted(e.getLocalizedMessage()));
         }
     }
 
@@ -163,7 +156,7 @@ public class RetailConsole implements CommandLineRunner {
     private String promptForToolCode() {
         String toolCode = "";
         while ("".equals(toolCode)) {
-            toolCode = console.readLine("Enter the tool code: ");
+            toolCode = promptForString("Enter the tool code: ");
         }
 
         return toolCode;
@@ -177,12 +170,12 @@ public class RetailConsole implements CommandLineRunner {
     private LocalDate promptForCheckoutDate() {
         LocalDate dateValue = null;
         while (dateValue == null) {
-            final String input = console.readLine("Enter the checkout date (MM/DD/YY): ");
+            final String input = promptForString("Enter the checkout date (MM/DD/YY): ");
             try {
                 dateValue = LocalDate.parse(input, DATE_FORMATTER);
             }
             catch (final Exception e) {
-                console.printf("Value %s is not a valid date.\n", input);
+                System.out.println("Value %s is not a valid date.".formatted(input));
             }
         }
 
@@ -198,15 +191,32 @@ public class RetailConsole implements CommandLineRunner {
     private int promptForInteger(final String prompt) {
         Integer integerValue = null;
         while (integerValue == null) {
-            final String input = console.readLine(prompt);
+            final String input = promptForString(prompt);
             try {
                 integerValue = Integer.valueOf(input);
             }
             catch (final Exception e) {
-                console.printf("Value %s is not an integer.\n", input);
+                System.out.println("Value %s is not an integer.".formatted(input));
             }
         }
 
         return integerValue.intValue();
+    }
+
+    /**
+     * TODO:
+     *
+     * @return
+     */
+    private String promptForString(final String prompt) {
+        System.out.print(prompt);
+        final String input;
+        try {
+            input = new BufferedReader(new InputStreamReader(System.in)).readLine();
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return input;
     }
 }
