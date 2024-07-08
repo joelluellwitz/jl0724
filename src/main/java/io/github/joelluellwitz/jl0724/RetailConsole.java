@@ -44,6 +44,13 @@ public class RetailConsole implements CommandLineRunner {
 
     private String toolList;
 
+    static {
+        // Work around in case /tmp is set as 'noexec'. Note the these files are removed at program termination. See
+        //   https://github.com/xerial/sqlite-jdbc/issues/1059 for details.
+        // This line is in a static block to increase unit test code coverage.
+        System.setProperty("org.sqlite.tmpdir", System.getProperty("user.home"));
+    }
+
     /**
      * TODO: Document.
      *

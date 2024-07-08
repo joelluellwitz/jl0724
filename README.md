@@ -27,7 +27,7 @@ X Search for pattern "public final"
 X Verify all private static final fields are thread safe.
 * Remove TODOs.
 * Remove SNAPSHOT Modifier.
-* Disable extra spring output.
+X Disable extra spring output.
 X Verify SQLite tool foreign key reference is defined correctly.
 X Consider transactional boundaries and adding @Transactional annotations.
-* Try executing with /tmp set to noexec.
+X Try executing with /tmp set to noexec.
