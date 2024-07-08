@@ -6,6 +6,8 @@ package io.github.joelluellwitz.jl0724.internal.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
@@ -82,8 +84,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $0.40\n"
                 + "Final charge: $3.58\n";
 
-        // TODO: Look into changing the call to printRentalAgreement.
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
     @Test
@@ -110,7 +111,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $1.12\n"
                 + "Final charge: $3.35\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
     @Test
@@ -137,7 +138,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $0.00\n"
                 + "Final charge: $8.97\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
     @Test
@@ -164,7 +165,7 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $0.00\n"
                 + "Final charge: $14.95\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
     @Test
@@ -191,6 +192,28 @@ public class RequiredRetailPointOfSaleImplTests {
                 + "Discount amount: $1.50\n"
                 + "Final charge: $1.49\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
+    }
+
+    /**
+     * TODO: Document.
+     *
+     * @param rentalAgreement
+     * @param expectedString
+     */
+    private void assertEqualsPrintedRentalAgreement(final String expectedString,
+            final RentalAgreement rentalAgreement) {
+        final PrintStream originalSystemOut = System.out;
+        final ByteArrayOutputStream standardOutputStream = new ByteArrayOutputStream();
+        try {
+            System.setOut(new PrintStream(standardOutputStream));
+
+            rentalAgreement.printRentalAgreement();
+        }
+        finally {
+            System.setOut(originalSystemOut);
+        }
+
+        assertThat(new String(standardOutputStream.toByteArray())).isEqualTo(expectedString);
     }
 }

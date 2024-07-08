@@ -107,7 +107,7 @@ public class AdditionalRetailPointOfSaleImplTests {
                 + "Final charge: $2.99\n";
 
         // TODO: Look into changing the call to printRentalAgreement.
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class AdditionalRetailPointOfSaleImplTests {
                 + "Discount amount: $0.00\n"
                 + "Final charge: $2.99\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class AdditionalRetailPointOfSaleImplTests {
                 + "Discount amount: $2.99\n"
                 + "Final charge: $0.00\n";
 
-        assertThat(rentalAgreement.getRentalAgreement()).isEqualTo(expectedRentalAgreement);
+        assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
     // Note: I realize this is also tested in RequiredRetailPointOfSaleImplTests.

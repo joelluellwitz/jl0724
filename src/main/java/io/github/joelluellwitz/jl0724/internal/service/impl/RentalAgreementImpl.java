@@ -72,7 +72,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      */
     @Override
     public void printRentalAgreement() {
-        System.out.print(getRentalAgreement());
+        System.out.print(toString());
     }
 
     /**
@@ -81,7 +81,7 @@ public class RentalAgreementImpl implements RentalAgreement {
      * @return
      */
     @Override
-    public String getRentalAgreement() {
+    public String toString() {
         if (rentalAgreement == null) {
             final StringBuilder agreementStringBuilder = new StringBuilder();
             agreementStringBuilder.append("Tool code: ").append(getToolCode()).append('\n');

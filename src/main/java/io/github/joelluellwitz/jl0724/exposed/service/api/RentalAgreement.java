@@ -13,7 +13,7 @@ public interface RentalAgreement {
      *
      * @return
      */
-    String getRentalAgreement();
+    String toString();
 
     /**
      * Prints the rental agreement to the console. This functionality is here because it is

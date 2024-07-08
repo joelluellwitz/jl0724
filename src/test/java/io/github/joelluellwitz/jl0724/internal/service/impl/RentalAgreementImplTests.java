@@ -5,6 +5,8 @@ package io.github.joelluellwitz.jl0724.internal.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -17,8 +19,6 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
  * TODO: Document.
  */
 public class RentalAgreementImplTests {
-
-    // TODO: Add test for printRentalAgreement.
 
     @Test
     public void getDueDateCalculates1DayLater() {
@@ -1183,7 +1183,7 @@ public class RentalAgreementImplTests {
     }
 
     @Test
-    public void getRentalAgreementSucceeds() {
+    public void toStringSucceeds() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
@@ -1213,13 +1213,13 @@ public class RentalAgreementImplTests {
                 + "Discount amount: $1.12\n"
                 + "Final charge: $3.35\n";
 
-        final String rentalAgreement = new RentalAgreementImpl(contractParameters, tool).getRentalAgreement();
+        final String rentalAgreementString = new RentalAgreementImpl(contractParameters, tool).toString();
 
-        assertThat(rentalAgreement).isEqualTo(expectedRentalAgreement);
+        assertThat(rentalAgreementString).isEqualTo(expectedRentalAgreement);
     }
 
     @Test
-    public void getRentalAgreementSavesResult() {
+    public void toStringSavesResult() {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
@@ -1236,9 +1236,54 @@ public class RentalAgreementImplTests {
         tool.setHolidayCharge(true);
 
         final RentalAgreementImpl rentalAgreement = new RentalAgreementImpl(contractParameters, tool);
-        final String rentalAgreement0 = rentalAgreement.getRentalAgreement();
-        final String rentalAgreement1 = rentalAgreement.getRentalAgreement();
+        final String rentalAgreementString0 = rentalAgreement.toString();
+        final String rentalAgreementString1 = rentalAgreement.toString();
 
-        assertThat(rentalAgreement0).isSameAs(rentalAgreement1);
+        assertThat(rentalAgreementString0).isSameAs(rentalAgreementString1);
+    }
+
+    @Test
+    public void printRentalAgreementSucceeds() {
+        final ContractParameters contractParameters = new ContractParameters();
+        contractParameters.setToolCode("CHNS");
+        contractParameters.setCheckoutDate(LocalDate.of(2015, 7, 2));
+        contractParameters.setRentalDayCount(5);
+        contractParameters.setDiscountPercent(25);
+
+        final ToolImpl tool = new ToolImpl();
+        tool.setCode("CHNS");
+        tool.setType("Chainsaw");
+        tool.setBrand("Stihl");
+        tool.setDailyCharge(new BigDecimal("1.49"));
+        tool.setWeekdayCharge(true);
+        tool.setWeekendCharge(false);
+        tool.setHolidayCharge(true);
+
+        final String expectedRentalAgreement =
+                "Tool code: CHNS\n"
+                + "Tool type: Chainsaw\n"
+                + "Tool brand: Stihl\n"
+                + "Rental days: 5\n"
+                + "Check out date: 07/02/15\n"
+                + "Due date: 07/07/15\n"
+                + "Daily rental charge: $1.49\n"
+                + "Charge days: 3\n"
+                + "Pre-discount charge: $4.47\n"
+                + "Discount percent: 25%\n"
+                + "Discount amount: $1.12\n"
+                + "Final charge: $3.35\n";
+
+        final PrintStream originalSystemOut = System.out;
+        try {
+            final ByteArrayOutputStream standardOutputStream = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(standardOutputStream));
+
+            new RentalAgreementImpl(contractParameters, tool).printRentalAgreement();;
+
+            assertThat(new String(standardOutputStream.toByteArray())).isEqualTo(expectedRentalAgreement);
+        }
+        finally {
+            System.setOut(originalSystemOut);
+        }
     }
 }
