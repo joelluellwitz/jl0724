@@ -71,9 +71,7 @@ public class RetailConsole implements CommandLineRunner {
      *   never happen.
      */
     public static void main(final String[] args) throws IOException {
-        LOGGER.debug("Staring the application.");
         SpringApplication.run(RetailConsole.class, args);
-        LOGGER.debug("Terminating the application.");
     }
 
     /**
@@ -81,6 +79,8 @@ public class RetailConsole implements CommandLineRunner {
      */
     @Override
     public void run(final String... args) throws IOException {
+        LOGGER.debug("Staring the Retail Console.");
+
         String mainInput;
         do {
             mainInput = promptForString("Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
@@ -99,6 +99,8 @@ public class RetailConsole implements CommandLineRunner {
                     System.out.println("Invalid option: %s".formatted(mainInput));
             }
         } while (!mainInput.equals("q"));
+
+        LOGGER.debug("Terminating the Retail Console.");
     }
 
     /**

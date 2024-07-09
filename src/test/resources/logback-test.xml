@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<!--
+Note: Logging conflicts with RetailConsoleTests. I generally don't test logging and the default Logback configuration
+just logs to the console, so there is little downside to disabling logging this way.
+-->
+<configuration/>
