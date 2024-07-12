@@ -29,6 +29,10 @@ import jakarta.persistence.Version;
  *   used to generate the rental agreement. Maintaining this association might be useful later for some business process
  *   like fulfillment or auditing. The copying of relevant properties allows the business to change the properties of
  *   the tools (such as the tool price) without changing existing contracts.
+ *
+ * Note: This table does not exist in the initial SQLite database. It is created by Hibernate. This has the unfortunate
+ *   side effect that the table columns are unordered. I could obviously work around this by creating the table first,
+ *   but I wanted to demonstrate Hibernate table creation.
  */
 @Entity(name="RentalAgreement")
 @Table(name="rental_agreement")

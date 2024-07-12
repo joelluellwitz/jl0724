@@ -33,4 +33,4 @@ X Consider transactional boundaries and adding @Transactional annotations.
 X Try executing with /tmp set to noexec.
 * Reduce required Java version.
 * Generate Javadoc HTML.
-*
+* Test on other computer.
