@@ -28,7 +28,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * TODO: Document.
+ * Tests {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole}.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)

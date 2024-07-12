@@ -25,7 +25,8 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale;
 
 /**
- * TODO: Document.
+ * Required tests for {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSaleImpl} as specified
+ *   in the requirements document.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)

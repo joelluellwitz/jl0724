@@ -23,8 +23,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import io.github.joelluellwitz.jl0724.TestConfiguration;
 
 /**
- * TODO: Document.
- * TODO: Explain that this class exists to get closer to 100% unit test code coverage.
+ * Tests {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo ToolRepo} and related
+ *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDto} and
+ *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolTypeDto ToolTypeDto}.
+ *
+ * Note: There is no RentalAgreementRepoTests as that class and related DTO already have full unit test code coverage.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)

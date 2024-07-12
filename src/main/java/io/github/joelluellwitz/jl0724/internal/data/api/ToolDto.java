@@ -22,28 +22,28 @@ import jakarta.persistence.Version;
 /**
  * The data tier representation of a tool.
  */
-@Entity(name="Tool")
-@Table(name="tool")
+@Entity(name = "Tool")
+@Table(name = "tool")
 public class ToolDto {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id", nullable=false, unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private int id;
     @Version
-    @Column(name="version", nullable=false)
+    @Column(name = "version", nullable = false)
     private int version;
     @CreationTimestamp
-    @Column(name="created_on", nullable=false)
+    @Column(name = "created_on", nullable = false)
     private LocalDateTime createdOn;
     @UpdateTimestamp
-    @Column(name="updated_on", nullable=false)
+    @Column(name = "updated_on", nullable = false)
     private LocalDateTime updatedOn;
-    @Column(name="code", nullable=false)
+    @Column(name = "code", nullable = false)
     private String code;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "tool_type_id", referencedColumnName = "id")
     private ToolTypeDto toolType;
-    @Column(name="brand", nullable=false)
+    @Column(name = "brand", nullable = false)
     private String brand;
 
     /**

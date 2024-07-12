@@ -24,27 +24,27 @@ import jakarta.persistence.Version;
 @Table(name = "tool_type")
 public class ToolTypeDto {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id", nullable=false, unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private int id;
     @Version
-    @Column(name="version", nullable=false)
+    @Column(name = "version", nullable = false)
     private int version;
     @CreationTimestamp
-    @Column(name="created_on", nullable=false)
+    @Column(name = "created_on", nullable = false)
     private LocalDateTime createdOn;
     @UpdateTimestamp
-    @Column(name="updated_on", nullable=false)
+    @Column(name = "updated_on", nullable = false)
     private LocalDateTime updatedOn;
-    @Column(name="name", nullable=false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name="daily_charge", nullable=false)
+    @Column(name = "daily_charge", nullable = false)
     private BigDecimal dailyCharge;
-    @Column(name="weekday_charge", nullable=false)
+    @Column(name = "weekday_charge", nullable = false)
     private boolean weekdayCharge;
-    @Column(name="weekend_charge", nullable=false)
+    @Column(name = "weekend_charge", nullable = false)
     private boolean weekendCharge;
-    @Column(name="holiday_charge", nullable=false)
+    @Column(name = "holiday_charge", nullable = false)
     private boolean holidayCharge;
 
     /**

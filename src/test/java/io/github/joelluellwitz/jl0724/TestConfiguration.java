@@ -7,7 +7,7 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * TODO: Document.
+ * Spring configuration for unit testing.
  */
 @SpringBootConfiguration
 @ComponentScan

@@ -34,48 +34,48 @@ import jakarta.persistence.Version;
  *   side effect that the table columns are unordered. I could obviously work around this by creating the table first,
  *   but I wanted to demonstrate Hibernate table creation.
  */
-@Entity(name="RentalAgreement")
-@Table(name="rental_agreement")
+@Entity(name = "RentalAgreement")
+@Table(name = "rental_agreement")
 public class RentalAgreementDto {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id", nullable=false, unique=true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private int id;
     @Version
-    @Column(name="version", nullable=false)
+    @Column(name = "version", nullable = false)
     private int version;
     @CreationTimestamp
-    @Column(name="created_on", nullable=false)
+    @Column(name = "created_on", nullable = false)
     private LocalDateTime createdOn;
     @UpdateTimestamp
-    @Column(name="updated_on", nullable=false)
+    @Column(name = "updated_on", nullable = false)
     private LocalDateTime updatedOn;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "tool_id", referencedColumnName = "id")
     private ToolDto tool;
-    @Column(name="tool_code", nullable=false)
+    @Column(name = "tool_code", nullable = false)
     private String toolCode;
-    @Column(name="tool_type", nullable=false)
+    @Column(name = "tool_type", nullable = false)
     private String toolType;
-    @Column(name="tool_brand", nullable=false)
+    @Column(name = "tool_brand", nullable = false)
     private String toolBrand;
-    @Column(name="daily_charge", nullable=false)
+    @Column(name = "daily_charge", nullable = false)
     private BigDecimal dailyCharge;
-    @Column(name="rental_day_count", nullable=false)
+    @Column(name = "rental_day_count", nullable = false)
     private int rentalDayCount;
-    @Column(name="checkout_date", nullable=false)
+    @Column(name = "checkout_date", nullable = false)
     private LocalDate checkoutDate;
-    @Column(name="discount_percent", nullable=false)
+    @Column(name = "discount_percent", nullable = false)
     private int discountPercent;
-    @Column(name="due_date", nullable=false)
+    @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
-    @Column(name="charge_day_count", nullable=false)
+    @Column(name = "charge_day_count", nullable = false)
     private Integer chargeDayCount;
-    @Column(name="pre_discount_charge", nullable=false)
+    @Column(name = "pre_discount_charge", nullable = false)
     private BigDecimal preDiscountCharge;
-    @Column(name="discount_amount", nullable=false)
+    @Column(name = "discount_amount", nullable = false)
     private BigDecimal discountAmount;
-    @Column(name="final_charge", nullable=false)
+    @Column(name = "final_charge", nullable = false)
     private BigDecimal finalCharge;
 
     /**

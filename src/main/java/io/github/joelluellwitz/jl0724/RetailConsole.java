@@ -173,7 +173,7 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * Prompts the user for the tool code. The user is continuously prompted until a non-empty value is supplied.
+     * Prompts the user for the Tool Code. The user is continuously prompted until a non-empty value is supplied.
      *
      * @return The supplied tool code {@link java.lang.String String}.
      */
@@ -189,6 +189,12 @@ public class RetailConsole implements CommandLineRunner {
     /**
      * Prompts the user for a valid date in the "MM/dd/uu" format. The user is continuously prompted until a valid date
      *   is entered.
+     *
+     * Note: I really dislike how some validation is in the presentation tier and some validation is in the business
+     *   logic tier. When I originally started to code this, I was going to have the date passed as a String to
+     *   RetailPointOfSale.checkout and I would do the date validation from within 'checkout'. I later opted to do the
+     *   date conversion here because something in the requirements document lead me to believe you expect 'checkout'
+     *   to accept a LocalDate object. (Same thinking applies to rentalDayCount and discountPercent integers.)
      *
      * @return The checkout date.
      */

@@ -33,7 +33,8 @@ import io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementRepo;
 import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
 
 /**
- * TODO: Document.
+ * Additional tests for {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSaleImpl} as I found
+ *   the required tests (as specified in the requirements document) insufficient.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)

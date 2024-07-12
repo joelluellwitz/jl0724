@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
 
 /**
- * TODO: Document.
+ * Tests {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl}.
  */
 public class RentalAgreementImplTests {
 

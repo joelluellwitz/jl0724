@@ -66,7 +66,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     /**
      * Constructs an immutable RentalAgreementImpl.
      *
-     * @param contractParameters Contains the contract parameters as specified by the customer.
+     * @param contractParameters Contains the contract parameters as specified by the user.
      * @param tool The business logic tier representation of a tool.
      */
     // Intentionally package private.

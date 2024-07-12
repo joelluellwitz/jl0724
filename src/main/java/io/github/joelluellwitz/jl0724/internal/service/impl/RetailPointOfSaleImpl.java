@@ -82,6 +82,10 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
                     "The number of rental days must be greater than 1. You specified: %d", rentalDayCount));
         }
 
+        // Note: The fact that the requirements document does not say anything about Tool Code validation leads me to
+        //   believe the requirements author intended for Tool Code to be represented as an {@link java.lang.Enum Enum}.
+        //   In this demo, I opted to back Tool Code with a database entry which I think is a reasonable justification
+        //   for not having a ToolCode Enum.
         final Optional<ToolDto> toolOptional = toolRepo.getToolByCode(contractParameters.getToolCode());
         if (toolOptional.isEmpty()) {
             throw new IllegalArgumentException(String.format(
