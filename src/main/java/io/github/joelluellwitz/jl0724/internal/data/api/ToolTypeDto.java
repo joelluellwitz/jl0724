@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 /**
- * TODO: Document.
+ * The data tier representation of a tool type.
  */
 @Entity(name = "ToolType")
 @Table(name = "tool_type")
@@ -84,19 +84,19 @@ public class ToolTypeDto {
         return dailyCharge;
     }
     /**
-     * @return the weekdayCharge
+     * @return true if there should be a charge for renting the tool during the weekday. false otherwise.
      */
     public boolean getWeekdayCharge() {
         return weekdayCharge;
     }
     /**
-     * @return the weekendCharge
+     * @return true if there should be a charge for renting the tool during the weekend. false otherwise.
      */
     public boolean getWeekendCharge() {
         return weekendCharge;
     }
     /**
-     * @return the holidayCharge
+     * @return true if there should be a charge for renting the tool during a holiday. false otherwise.
      */
     public boolean getHolidayCharge() {
         return holidayCharge;

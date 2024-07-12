@@ -6,30 +6,34 @@ package io.github.joelluellwitz.jl0724.exposed.service.api;
 import java.util.List;
 
 /**
- * Public service interface to be used by the Retail Point of Sale UI. Sometimes, public interfaces
- *   are part of a different project, but that doesn't work well for this programming demonstration.
+ * The main exposed interface for the business tier of the Retail Point of Sale application.
+ *
+ * Note: This interface, along with other files in the package, represent the exposed API that the presentation tier
+ *   is suppose to use to present this application to users. Sometimes, exposed APIs are extracted out into a separate
+ *   Java project (a separate jar), but that doesn't work well with this programming demonstration.
  */
 public interface RetailPointOfSale {
     /**
-     * A {@link java.util.List List} of all tools available for rental. This method is not required
-     *   to meet the programming demonstration requirements. I'm including it because it is required
-     *   by the console based register user interface (also not required).
+     * A {@link java.util.List List} of all tools available for rental sorted by Tool Code.
      *
-     * @return A {@link java.util.List List} of
-     *   {@link io.github.joelluellwitz.jl0724.exposed.service.api.ToolImpl Tools}.
+     * Note: This method is not required by the requirements document. I am including it because it is required to make
+     * the Retail Point of Sale UI a usable console.
+     *
+     * @return A List of {@link io.github.joelluellwitz.jl0724.exposed.service.api.Tool Tools}.
      */
     List<Tool> listTools();
 
     /**
-     * Checks out a {@link io.github.joelluellwitz.jl0724.exposed.service.api.ToolImpl Tool} to a
-     *   customer using the provided
-     *   {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.
+     * Checks out a {@link io.github.joelluellwitz.jl0724.exposed.service.api.ToolImpl Tool} to a customer using the
+     *   provided {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.
      *
-     * @param contractParameters Represents the customer's choices used in building a rental
-     *   contract. An object is used here because positional parameters become confusing after 1 or
-     *   2 parameters.
-     * @return Represents of the exact terms of the customer
-     *   {@link io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement RentalAgreement}.
+     * @param contractParameters Represents the customer's choices used in building a rental contract. Note: I used a
+     *   transfer object here instead of supplying multiple arguments to the checkout method. This is because positional
+     *   arguments become confusing after 1 or 2 arguments, particularly when some parameters share the same data type.
+     *   For example, with checkout("CHNS", LocalDate.of(2024, 7, 4), 10, 25), it isn't clear if this is a 10 day
+     *   checkout with a 25 percent discount or a 25 day checkout with a 10 percent discount. Using a transfer object
+     *   here avoids this ambiguity.
+     * @return Represents of the exact terms of the customer's tool rental agreement.
      */
     RentalAgreement checkout(ContractParameters contractParameters);
 }

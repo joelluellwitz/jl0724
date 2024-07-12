@@ -224,6 +224,7 @@ public class RetailConsoleTests {
 
         final Throwable throwable = exceptionQueue.take();
         assertThat(throwable).isExactlyInstanceOf(RuntimeException.class);
+        assertThat(throwable.getMessage()).isEqualTo("Error retrieving user input.");
         assertThat(throwable.getCause()).isExactlyInstanceOf(IOException.class);
         assertThat(throwable.getCause().getMessage()).isEqualTo("Pipe closed");
     }

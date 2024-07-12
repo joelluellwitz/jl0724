@@ -22,9 +22,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 /**
- * TODO: Document.
+ * The data tier representation of the tool rental agreement.
  *
- * TODO: Explain why there is a link to tool and all of tool's properties.
+ * Note: There is intentionally both a reference to a ToolDto and properties of information copied from ToolDto and
+ *   ToolTypeDto. The reference to ToolDto allows the rental business to maintain the association to the tool record
+ *   used to generate the rental agreement. Maintaining this association might be useful later for some business process
+ *   like fulfillment or auditing. The copying of relevant properties allows the business to change the properties of
+ *   the tools (such as the tool price) without changing existing contracts.
  */
 @Entity(name="RentalAgreement")
 @Table(name="rental_agreement")
@@ -95,61 +99,69 @@ public class RentalAgreementDto {
         return updatedOn;
     }
     /**
-     * @return the tool
+     * @return The tool record used to generate the rental agreement.
      */
     public ToolDto getTool() {
         return tool;
     }
     /**
-     * @param tool the tool to set
+     * @param tool The tool record used to generate the rental agreement.
      */
     public void setTool(ToolDto tool) {
         this.tool = tool;
     }
     /**
-     * @return the toolCode
+     * @return The Tool Code. For accurate contract record keeping, if the Tool Code changes in Tool table, this field
+     *   should remain unchanged.
      */
     public String getToolCode() {
         return toolCode;
     }
     /**
-     * @param toolCode the toolCode to set
+     * @param toolCode The Tool Code to set. For accurate contract record keeping, if the Tool Code changes in the Tool
+     *   table, this field should remain unchanged.
      */
     public void setToolCode(final String toolCode) {
         this.toolCode = toolCode;
     }
     /**
-     * @return the toolType
+     * @return The Tool Type. For accurate contract record keeping, if the Tool Type changes in Tool Type table, this
+     *   field should remain unchanged.
      */
     public String getToolType() {
         return toolType;
     }
     /**
-     * @param toolType the toolType to set
+     * @param toolType The Tool Type to set. For accurate contract record keeping, if the Tool Type changes in the Tool
+     *   Type table, this field should remain unchanged.
      */
     public void setToolType(final String toolType) {
         this.toolType = toolType;
     }
     /**
-     * @return the toolBrand
+     * @return The Tool Brand. For accurate contract record keeping, if the Tool Brand changes in Tool table, this field
+     *   should remain unchanged.
      */
     public String getToolBrand() {
         return toolBrand;
     }
     /**
-     * @param toolBrand the toolBrand to set
+     * @param toolBrand The Tool Brand to set. For accurate contract record keeping, if the Tool Brand changes in the
+     *   Tool table, this field should remain unchanged.
      */
     public void setToolBrand(final String toolBrand) {
         this.toolBrand = toolBrand;
     }
     /**
-     * @return the dailyCharge
+     * @return The daily rental charge. For accurate contract record keeping, if the daily rental charge changes in the
+     *   Tool Type table, this field should remain unchanged.
      */
     public BigDecimal getDailyCharge() {
         return dailyCharge;
     }
     /**
-     * @param dailyCharge the dailyCharge to set
+     * @param dailyCharge The daily rental charge to set. For accurate contract record keeping, if the daily rental
+     *   charge changes in the Tool Type table, this field should remain unchanged.
      */
     public void setDailyCharge(final BigDecimal dailyCharge) {
         this.dailyCharge = dailyCharge;

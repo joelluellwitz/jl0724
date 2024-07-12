@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
- * Exposed representation of a tool that can be rented.
+ * Business logic tier representation of a tool that can be rented.
  */
 public class ToolImpl implements Tool {
     private String code;
@@ -72,7 +72,7 @@ public class ToolImpl implements Tool {
         this.dailyCharge = dailyCharge;
     }
     /**
-     * @return the weekdayCharge
+     * @return true if there should be a charge for renting the tool during the weekday. false otherwise.
      */
     @Override
     public boolean isWeekdayCharge() {
@@ -85,7 +85,7 @@ public class ToolImpl implements Tool {
         this.weekdayCharge = weekdayCharge;
     }
     /**
-     * @return the weekendCharge
+     * @return true if there should be a charge for renting the tool during the weekend. false otherwise.
      */
     @Override
     public boolean isWeekendCharge() {
@@ -98,7 +98,7 @@ public class ToolImpl implements Tool {
         this.weekendCharge = weekendCharge;
     }
     /**
-     * @return the holidayCharge
+     * @return true if there should be a charge for renting the tool during a holiday. false otherwise.
      */
     @Override
     public boolean isHolidayCharge() {

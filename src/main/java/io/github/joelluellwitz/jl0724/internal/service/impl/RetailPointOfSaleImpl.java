@@ -21,41 +21,51 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
 import io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo;
 
 /**
- * TODO: Document.
+ * The main business tier implementation of the Retail Point of Sale application.
  */
 @Service
 @Transactional
 public class RetailPointOfSaleImpl implements RetailPointOfSale {
     private static Logger LOGGER = LoggerFactory.getLogger(RetailPointOfSaleImpl.class);
 
-    private final RentalAgreementRepo rentalAgreementRepo;
     private final RentalAgreementMapper rentalAgreementMapper;
-    private final ToolRepo toolRepo;
+    private final RentalAgreementRepo rentalAgreementRepo;
     private final ToolMapper toolMapper;
+    private final ToolRepo toolRepo;
 
     /**
-     * TODO: Document.
+     * Constructor.
      *
-     * @param rentalAgreementRepo
-     * @param toolRepo
+     * @param rentalAgreementMapper Mapper to convert a business tier
+     *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl RentalAgreementImpl} to a data
+     *   tier {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto RentalAgreementDto}.
+     * @param rentalAgreementRepo JPA Repository for RentalAgreementDto.
+     * @param toolMapper Mapper to convert data tier
+     *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDtos} to business tier
+     *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.ToolImpl ToolImpls}.
+     * @param toolRepo JPA Repository for ToolDto.
      */
     // Intentionally package private.
-    RetailPointOfSaleImpl(final RentalAgreementRepo rentalAgreementRepo, final ToolRepo toolRepo,
-            final ToolMapper toolMapper, final RentalAgreementMapper rentalAgreementMapper) {
-        this.rentalAgreementRepo = rentalAgreementRepo;
-        this.toolRepo = toolRepo;
-        this.toolMapper = toolMapper;
+    RetailPointOfSaleImpl(final RentalAgreementMapper rentalAgreementMapper,
+            final RentalAgreementRepo rentalAgreementRepo, final ToolMapper toolMapper, final ToolRepo toolRepo) {
         this.rentalAgreementMapper = rentalAgreementMapper;
+        this.rentalAgreementRepo = rentalAgreementRepo;
+        this.toolMapper = toolMapper;
+        this.toolRepo = toolRepo;
     }
 
-    // For documentation, see interface definition.
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Tool> listTools() {
        LOGGER.debug("Retrieving the tool list.");
        return toolMapper.toolDtosToTools(toolRepo.listToolsSortedByToolCode());
     }
 
-    // For documentation, see interface definition.
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RentalAgreement checkout(final ContractParameters contractParameters) {
         LOGGER.debug("Starting checkout.");

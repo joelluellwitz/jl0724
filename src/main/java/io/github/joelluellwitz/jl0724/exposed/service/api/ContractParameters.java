@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * Contains the parameters to generate a contract during checkout.
  */
 public class ContractParameters {
-    // Note, that I really don't think transfer object should have private members. With this pattern, internal state is
+    // Note: I really don't think transfer objects should have private members. With this pattern, internal state is
     //   hidden in case one wants to add complexity to the class later. However, simple transfer objects, by their
     //   nature, really should never have any implementation details. I find it to be unnecessary abstraction. That
     //   said, having getters and setters for all properties is very much ingrained in Java culture, so I won't try to

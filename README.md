@@ -1,5 +1,5 @@
-* Mention european vs american date counting.
-  * "from day after checkout through and including due date" seems to imply that the discount should be applied to the second day.
+X Mention european vs american date counting.
+  X "from day after checkout through and including due date" seems to imply that the discount should be applied to the second day.
 * Mention "Resulting total rounded half up to cents." implies partial days are supported? I suspect this is an error.
 * Mention organizing by functional area and not file type.
 * Mention extra functionality.
@@ -10,7 +10,7 @@
 * Mention to read the "Note:"s.
 * Maybe mention why not all versions are listed in properties (in pom.xml).
 X Add @Override annotations.
-* See if there is a real tag for "// See method documentation in interface definition."
+X See if there is a real tag for "// See method documentation in interface definition."
 X Search for use of underscores.
 * Attempt to autoformat everything.
 X Look into getter and setter annotations.
@@ -21,7 +21,7 @@ X Consider removing all references to DTO.
 X Consider renaming repository and packages to jl0724
   X Do a search to ensure no old references are left.
 X Rename Dao to Repository.
-* Add debugging logging statements.
+X Add debugging logging statements.
 X Search for pattern "public final"
 * Search for System.out and System.in
 X Verify all private static final fields are thread safe.
@@ -31,3 +31,6 @@ X Disable extra spring output.
 X Verify SQLite tool foreign key reference is defined correctly.
 X Consider transactional boundaries and adding @Transactional annotations.
 X Try executing with /tmp set to noexec.
+* Reduce required Java version.
+* Generate Javadoc HTML.
+*

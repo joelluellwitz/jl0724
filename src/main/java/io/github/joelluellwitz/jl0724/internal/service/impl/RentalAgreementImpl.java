@@ -21,7 +21,22 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
- * TODO: Document
+ * Business logic tier representation of a rental agreement. This class is immutable.
+ *
+ * For the purposes of this class, the "chargeable rental period" is defined as the period of time between the
+ *   checkoutDate (exclusive) to the dueDate (inclusive).
+ *
+ * Note: The requirements state that charge days are calculated "...from day after checkout through and including
+ *   due date...". This means that the first day of the rental period is never a chargeable day. This calculation
+ *   method seems very unidiomatic to me (I would expect the last day to not be chargeable) and I want to call this
+ *   requirement out to the reviewer. This requirement is the reason for most of the "plusDays(1)" found throughout
+ *   the class.
+ *
+ * Note: I realize that, as written, this class cannot be constructed from an existing
+ *   {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto}. Of course, for the purposes of this
+ *   demo application, there is no reason to construct a RentalAgreementImpl from a RentalAgreementDto. As this class is
+ *   written, I can demonstrate immutable classes and saving computed results for later use. In my opinion, the benefits
+ *   of demonstrating these concepts outweighs any disadvantages.
  */
 public class RentalAgreementImpl implements RentalAgreement {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/uu");
@@ -49,10 +64,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     private String rentalAgreement;
 
     /**
-     * TODO: Document.
+     * Constructs an immutable RentalAgreementImpl.
      *
-     * @param contractParameters
-     * @param tool
+     * @param contractParameters Contains the contract parameters as specified by the customer.
+     * @param tool The business logic tier representation of a tool.
      */
     // Intentionally package private.
     RentalAgreementImpl(final ContractParameters contractParameters, final Tool tool) {
@@ -72,7 +87,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document
+     * {@inheritDoc}
      */
     @Override
     public void printRentalAgreement() {
@@ -80,9 +95,7 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO:
-     *
-     * @return
+     * {@inheritDoc}
      */
     @Override
     public String toString() {
@@ -163,9 +176,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the tool due date.
      *
-     * @return the dueDate
+     * @return The due date.
      */
     public LocalDate getDueDate() {
         if (dueDate == null) {
@@ -177,9 +190,11 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the number of chargeable days during the rental period. The returned value excludes
+     *   weekdays, weekends, and holidays if the tool being rented is set to not charge for weekdays, weekends, and
+     *   holidays (respectively).
      *
-     * @return the chargeDayCount
+     * @return The number of days that apply to the rental charge.
      */
     public int getChargeDayCount() {
         if (chargeDayCount == null) {
@@ -192,9 +207,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the total rental charge before the discount is applied.
      *
-     * @return the preDiscountCharge
+     * @return The total rental charge before the discount is applied.
      */
     public BigDecimal getPreDiscountCharge() {
         if (preDiscountCharge == null) {
@@ -206,9 +221,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the discount used to find the final rental charge.
      *
-     * @return the discountAmount
+     * @return The discount amount.
      */
     public BigDecimal getDiscountAmount() {
         if (discountAmount == null) {
@@ -222,9 +237,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the final rental charge after the discount is applied.
      *
-     * @return the finalCharge
+     * @return The final rental charge.
      */
     public BigDecimal getFinalCharge() {
         if (finalCharge == null) {
@@ -236,18 +251,18 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Formats a currency amount assuming a United States of America locale.
      *
-     * @return
+     * @return The formatted currency amount.
      */
     private String formatCurrency(final BigDecimal amount) {
         return NumberFormat.getCurrencyInstance(Locale.US).format(amount);
     }
 
     /**
-     * TODO: Document.
+     * Formats a percentage assuming a United States of America locale.
      *
-     * @return
+     * @return The formatted percentage.
      */
     private String formatPercentage(final int discounPercent) {
         final BigDecimal discount = BigDecimal.valueOf(getDiscountPercent()).multiply(cent);
@@ -255,9 +270,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the number of days that occur on weekdays during the chargeable rental period. The
+     *   returned value excludes holidays if the tool being rented is set to not charge for holidays.
      *
-     * @return
+     * @return The number of chargeable weekdays.
      */
     private int getWeekdayChargeDayCount() {
         final int weekdayChargeDayCount;
@@ -272,29 +288,32 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the number of weekend days during the chargeable rental period. It is assumed that no
+     *   holidays are celebrated on a weekend.
      *
-     * @return
+     * @return The number of chargeable weekend days.
      */
     private int getWeekendChargeDayCount() {
         return rentalDayCount - getWeekdayCount();
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the total number of weekdays during the chargeable rental period. Holidays are not
+     *   considered by this method.
      *
-     * @return
+     * @return The number of weekdays during the chargeable rental period.
      */
     private int getWeekdayCount() {
         if (weekdayCount == null) {
-            // These next two lines remove the weekends efficiently.
+            // These next two lines remove the weekends efficiently. It leverages the fact that DayOfWeek enums are
+            //   backed by ordered integers. This ordering is documented in official Java documentation.
             final LocalDate effectiveCheckoutDate = getCheckoutDate().plusDays(
                     Math.max(0, ((12 - getCheckoutDate().plusDays(1).getDayOfWeek().getValue()) % 7) - 4) + 1);
             final LocalDate effectiveDueDate = getDueDate().plusDays(
                     1 - Math.max(0, getDueDate().getDayOfWeek().getValue() - 5));
 
-            // Week count can never be greater than rentalDayCount, so the long result can be safely casted back to an
-            //   int.
+            // Week count can never be greater than rentalDayCount, so the 'long' result can be safely casted back to an
+            //   'int'.
             final int weekCount = (int) ChronoUnit.WEEKS.between(effectiveCheckoutDate, effectiveDueDate);
 
             final int effectiveCheckoutDayOfWeek = effectiveCheckoutDate.getDayOfWeek().getValue();
@@ -311,9 +330,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the number of Independence Days during the chargeable rental period.
      *
-     * @return
+     * @return The number of Independence Days during the chargeable rental period.
      */
     private int getIndependenceDayCount() {
         final LocalDate firstYearIndependenceDay =
@@ -324,9 +343,9 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the number of Labor Days during the chargeable rental period.
      *
-     * @return
+     * @return The number of Labor Days during the rental period.
      */
     private int getLaborDayCount() {
         final LocalDate firstYearFirstSeptemberDay = LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 9, 1);
@@ -343,11 +362,14 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Helper method to determine the number of specific holidays during the chargeable rental period. It is assumed
+     *   that there is one specific holiday per year.
      *
-     * @param firstYearHolidayDate
-     * @param lastYearHolidayDate
-     * @return
+     * @param firstYearHolidayDate The date of the specific holiday in the first year of the chargeable rental period.
+     *   This date might fall before the chargeable rental period.
+     * @param lastYearHolidayDate The date of the specific holiday in the last year of the chargeable rental period.
+     *   This date might fall after the chargeable rental period.
+     * @return The number of specific holidays during the chargeable rental period.
      */
     private int getHolidayCount(final LocalDate firstYearHolidayDate, final LocalDate lastYearHolidayDate) {
         final int firstYear;
@@ -372,9 +394,10 @@ public class RentalAgreementImpl implements RentalAgreement {
     }
 
     /**
-     * TODO: Document.
+     * Calculates and returns the weekday date that is closest to the weekend date. Used to determine the observed
+     *   holiday date for some holidays.
      *
-     * @return
+     * @return The weekday date that is closet to the weekend date.
      */
     private LocalDate findNearestWeekday(final LocalDate date) {
         final LocalDate correctedDate;

@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 /**
- * TODO: Document.
+ * The data tier representation of a tool.
  */
 @Entity(name="Tool")
 @Table(name="tool")

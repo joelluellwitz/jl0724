@@ -11,23 +11,24 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
- * TODO: Document.
+ * JPA Repository for {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDto}.
  */
 @Repository
 public interface ToolRepo extends org.springframework.data.repository.Repository<ToolDto, Integer> {
     /**
-     * TODO:
+     * Returns the {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDto} matching the supplied
+     *   Tool Code.
      *
-     * @param toolCode
-     * @return
+     * @param toolCode A Tool Code.
+     * @return The matching tool.
      */
     @Query("SELECT tool FROM Tool tool INNER JOIN FETCH tool.toolType toolType WHERE tool.code = :toolCode")
     Optional<ToolDto> getToolByCode(@Param(value = "toolCode") String toolCode);
 
     /**
-     * TODO:
+     * Returns all tools sorted by Tool Code.
      *
-     * @return
+     * @return A List of data tier tools.
      */
     @Query("SELECT tool FROM Tool tool INNER JOIN FETCH tool.toolType toolType ORDER BY tool.code")
     List<ToolDto> listToolsSortedByToolCode();

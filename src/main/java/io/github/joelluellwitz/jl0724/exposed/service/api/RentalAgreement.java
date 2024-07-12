@@ -4,23 +4,29 @@
 package io.github.joelluellwitz.jl0724.exposed.service.api;
 
 /**
- * Represents a customer rental agreement. Note that the requirements does not require that all the
- *   properties are exposed.
+ * Represents a tool rental agreement.
+ *
+ * Note: The requirements document does not require that all the properties need to be exposed to consumers.
  */
 public interface RentalAgreement {
     /**
-     * TODO: Document.
+     * Returns the rental agreement as a {@link java.lang.String String}.
      *
-     * @return
+     * Note: This is not required by the requirements document, but it seems like something that should sensibly be
+     *   exposed.
+     *
+     * @return A String representation of the rental agreement.
      */
     String toString();
 
     /**
-     * Prints the rental agreement to the console. This functionality is here because it is
-     *   explicitly required. I do not think the code should be organized this way. Ideally a
-     *   RentalAgreement should be just a transfer object and some service method should generate
-     *   the agreement text. It should then be a third component's responsibility to request that
-     *   text and print it to the console. (Separation of UI concerns from business logic concerns.)
+     * Prints the rental agreement to the console.
+     *
+     * Note: This functionality is here because it is explicitly required by the requirements document. That said, I do
+     *   not think business tier code should print anything directly to the console. It should be the presentation
+     *   tier's responsibility to request the rental agreement text and print it to the console. (I realize when the
+     *   requirements document was written, the author probably didn't intend for candidates to demonstrate the 3-tier
+     *   model.)
      */
     void printRentalAgreement();
 }

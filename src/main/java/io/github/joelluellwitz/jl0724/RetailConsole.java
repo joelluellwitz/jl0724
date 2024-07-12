@@ -19,7 +19,6 @@ import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,6 +31,11 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
  * A console based implementation of the tool rental point of sale user interface.
+ *
+ * Note: I realize this class is explicitly <b>not</b> required by the requirements document. This class represents the
+ *   presentation tier in a three tier model. It was written quickly to serve the purpose of proving the business tier
+ *   and data tier actually work and don't depend on any resources under src/test to function. Since this class is not
+ *   required, it is of prototype level quality. (Some prompts have no option to quit or go back.).
  */
 @SpringBootApplication
 public class RetailConsole implements CommandLineRunner {
@@ -45,40 +49,38 @@ public class RetailConsole implements CommandLineRunner {
     private String toolList;
 
     static {
-        // Work around in case /tmp is set as 'noexec'. Note the these files are removed at program termination. See
-        //   https://github.com/xerial/sqlite-jdbc/issues/1059 for details.
-        // This line is in a static block to increase unit test code coverage.
+        // Work around in case tmpdir is set as 'noexec' as it is with RedHat Enterprise Linux. Note that these files
+        //   are removed at program termination. See https://github.com/xerial/sqlite-jdbc/issues/1059 for details.
+        // This line is in a static block as opposed to 'main' to increase unit test code coverage.
         System.setProperty("org.sqlite.tmpdir", System.getProperty("user.home"));
     }
 
     /**
-     * TODO: Document.
+     * Constructor.
      *
-     * @param context
-     * @param retailPointOfSale
+     * @param retailPointOfSale Provides access to the business logic tier of the Retail Point of Sale application.
      */
     // Intentionally package private.
-    // TODO: Verify @Autowired is needed.
-    RetailConsole(@Autowired final RetailPointOfSale retailPointOfSale) {
+    RetailConsole(final RetailPointOfSale retailPointOfSale) {
         this.retailPointOfSale = retailPointOfSale;
     }
 
     /**
-     * The retail console main loop.
+     * Entry point of the Retail Point of Sale application.
      *
      * @param args The supplied command line parameters, of which none are recognized.
-     * @throws IOException Raised in the event that the console cannot be read. Realistically should
-     *   never happen.
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) {
         SpringApplication.run(RetailConsole.class, args);
     }
 
     /**
-     * TODO: Document.
+     * Runs the retail console main loop.
+     *
+     * @param args The supplied command line parameters, of which none are recognized.
      */
     @Override
-    public void run(final String... args) throws IOException {
+    public void run(final String... args) {
         LOGGER.debug("Staring the Retail Console.");
 
         String mainInput;
@@ -104,7 +106,8 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO: Document.
+     * Prints the list of known tools and tool metadata to the console (STDOUT). The tool information is retrieved from
+     *   the business logic tier.
      */
     private void printToolList() {
         if (toolList == null) {
@@ -134,7 +137,8 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO: Document.
+     * Processes a checkout for a tool. Prompts the user for relevant information and submits that information to the
+     *   business tier for further validation and processing. Prints the returned rental agreement to the console.
      */
     private void checkout() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -169,9 +173,9 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO:
+     * Prompts the user for the tool code. The user is continuously prompted until a non-empty value is supplied.
      *
-     * @return
+     * @return The supplied tool code {@link java.lang.String String}.
      */
     private String promptForToolCode() {
         String toolCode = "";
@@ -183,9 +187,10 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO:
+     * Prompts the user for a valid date in the "MM/dd/uu" format. The user is continuously prompted until a valid date
+     *   is entered.
      *
-     * @return
+     * @return The checkout date.
      */
     private LocalDate promptForCheckoutDate() {
         LocalDate dateValue = null;
@@ -203,10 +208,10 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO:
+     * Prompts the user for an integer until a valid integer is entered.
      *
-     * @param prompt TOOD:
-     * @return
+     * @param prompt The prompt {@link java.lang.String String} to display to the user.
+     * @return The supplied integer.
      */
     private int promptForInteger(final String prompt) {
         Integer integerValue = null;
@@ -224,9 +229,10 @@ public class RetailConsole implements CommandLineRunner {
     }
 
     /**
-     * TODO:
+     * Prompts the user for a {@link java.lang.String String}.
      *
-     * @return
+     * @param prompt The prompt that should be displayed to the user.
+     * @return The value entered, even empty Strings.
      */
     private String promptForString(final String prompt) {
         System.out.print(prompt);
@@ -234,7 +240,8 @@ public class RetailConsole implements CommandLineRunner {
         try {
             input = new BufferedReader(new InputStreamReader(System.in)).readLine();
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+            // This block should not generally be reachable as the console should never realistically disappear.
+            throw new RuntimeException("Error retrieving user input.", e);
         }
 
         return input;

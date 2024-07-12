@@ -18,11 +18,18 @@ import org.springframework.core.env.PropertiesPropertySource;
 import io.github.joelluellwitz.jl0724.RetailConsole;
 
 /**
- * TODO: Document.
+ * Creates a persisted database instance in the user's home directory and sets the spring.datasource.url property.
+ *   The database is removed at program termination.
+ *
+ * Note: I could have used the H2 in-memory database here instead, but I wanted a more authentic persistent data tier
+ *   for the non-unit testing code. This way I can demonstrate how to swap out a database implementation for use with
+ *   testing (where I do use the H2 in-memory database). This class is not unit tested as it would not exist outside of
+ *   a demo environment and is (somewhat deceptively) difficult mock. Normally one would define spring.datasource.url in
+ *   application.properties and the value would reference a permanent database URL.
  */
 public class DatabaseInitialization implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
     /**
-     * TODO: Document.
+     * @see DatabaseInitialization.
      */
     @Override
     public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {
@@ -40,7 +47,7 @@ public class DatabaseInitialization implements ApplicationListener<ApplicationEn
         }
         catch (final IOException e) {
             // Any failure above should crash the application.
-            throw new RuntimeException(e);
+            throw new RuntimeException("Cannot setup the persistent database.", e);
         }
     }
 }
