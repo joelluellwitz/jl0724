@@ -54,6 +54,11 @@
     <dependency>
       <groupId>com.massisframework</groupId>
       <artifactId>j-text-utils</artifactId>
+      <!--
+        Note: Some developers put all dependency version numbers in the properties, likely for consistency. I dislike
+        doing this because it forces me to jump around the file to find the information that I am looking for. I find
+        this indirection distracting and makes me more likely to (briefly) loose track of what I am really looking for.
+        Hence, I tend to only pull out values that are used more than once, even if that breaks consistency. -->
       <version>0.3.4</version>
     </dependency>
 
