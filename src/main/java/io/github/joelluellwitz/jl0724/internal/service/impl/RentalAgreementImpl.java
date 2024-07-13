@@ -356,8 +356,8 @@ public class RentalAgreementImpl implements RentalAgreement {
 
         final LocalDate lastYearFirstSeptemberDay = LocalDate.of(getDueDate().getYear(), 9, 1);
         final int lastYearFirstSeptemberDayOfWeek = lastYearFirstSeptemberDay.getDayOfWeek().getValue();
-        final LocalDate lastYearLaborDay =
-                lastYearFirstSeptemberDay.withDayOfMonth((8 - lastYearFirstSeptemberDayOfWeek) % 7 + 1);
+        final LocalDate lastYearLaborDay = lastYearFirstSeptemberDay
+                .withDayOfMonth((8 - lastYearFirstSeptemberDayOfWeek) % 7 + 1);
 
         return getHolidayCount(firstYearLaborDay, lastYearLaborDay);
     }
