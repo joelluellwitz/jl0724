@@ -77,10 +77,9 @@ public class RequiredRetailPointOfSaleImplTests {
 
         final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
-        // Note: I don't test each property of RentalAgreementImpl because each property is tested through
-        //   RentalAgreement#printRentalAgreement. There are pros and cons of not testing each property. The pros being
-        //   there could be reduced unit test maintenance if implementation details change later. The con being that I
-        //   am making an assumption about how RentalAgreement#printRentalAgreement is implemented.
+        // Note: I don't test each property of RentalAgreementImpl because each property is tested in
+        //   RentalAgreementImplTests. The tests in this file are just focused on correct rental agreement text
+        //   generation.
 
         // Note: I typically don't use helper methods to setup expected test data. The reason for this is that I want
         //   the expected value to be easy to read and completely unobfuscated. This way I can be more certain the test
