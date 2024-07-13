@@ -36,15 +36,20 @@ public class RequiredRetailPointOfSaleImplTests {
     private final RetailPointOfSale retailPointOfSale;
 
     /**
-     * TODO: Document?
+     * Constructor.
      *
-     * @param retailPointOfSale
+     * @param retailPointOfSale A
+     *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSaleImpl RetailPointOfSaleImpl}
+     *   instance to test.
      */
     @Autowired
     public RequiredRetailPointOfSaleImplTests(final RetailPointOfSale retailPointOfSale) {
         this.retailPointOfSale = retailPointOfSale;
     }
 
+    /**
+     * The first test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest1() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -59,7 +64,9 @@ public class RequiredRetailPointOfSaleImplTests {
                 "Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
     }
 
-    // TODO: Explain why we are not testing each field.
+    /**
+     * The second test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest2() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -70,7 +77,15 @@ public class RequiredRetailPointOfSaleImplTests {
 
         final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
-        // TODO: Explain why I don't use a helper method here.
+        // Note: I don't test each property of RentalAgreementImpl because each property is tested through
+        //   RentalAgreement#printRentalAgreement. There are pros and cons of not testing each property. The pros being
+        //   there could be reduced unit test maintenance if implementation details change later. The con being that I
+        //   am making an assumption about how RentalAgreement#printRentalAgreement is implemented.
+
+        // Note: I typically don't use helper methods to setup expected test data. The reason for this is that I want
+        //   the expected value to be easy to read and completely unobfuscated. This way I can be more certain the test
+        //   is correct. Additionally, I avoid the temptation to copy the string building code form the class being
+        //   tested.
         final String expectedRentalAgreement =
                 "Tool code: LADW\n"
                 + "Tool type: Ladder\n"
@@ -88,6 +103,9 @@ public class RequiredRetailPointOfSaleImplTests {
         assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
+    /**
+     * The third test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest3() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -115,6 +133,9 @@ public class RequiredRetailPointOfSaleImplTests {
         assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
+    /**
+     * The forth test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest4() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -142,6 +163,9 @@ public class RequiredRetailPointOfSaleImplTests {
         assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
+    /**
+     * The fifth test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest5() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -169,6 +193,9 @@ public class RequiredRetailPointOfSaleImplTests {
         assertEqualsPrintedRentalAgreement(expectedRentalAgreement, rentalAgreement);
     }
 
+    /**
+     * The sixth test case as specified in the requirements document.
+     */
     @Test
     public void checkoutTest6() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -197,10 +224,10 @@ public class RequiredRetailPointOfSaleImplTests {
     }
 
     /**
-     * TODO: Document.
+     * Verifies the code printed to {@link java.lang.System#out System#out} matches the expected String.
      *
-     * @param rentalAgreement
-     * @param expectedString
+     * @param rentalAgreement The rental agreement being tested.
+     * @param expectedString The expected String.
      */
     private void assertEqualsPrintedRentalAgreement(final String expectedString,
             final RentalAgreement rentalAgreement) {
