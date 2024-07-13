@@ -97,15 +97,3 @@ java -jar target/jl0724-1.0.0.jar --logging.file.name=jl0724.log --logging.level
 ```
 
 Logs will be recorded in 'jl0724.log' in the current working directory.
-
-
-* Mention "Resulting total rounded half up to cents." implies partial days are supported? I suspect this is an error.
-* Attempt to autoformat everything.
-* Remove SNAPSHOT Modifier.
-* Tag the project.
-* Generate Javadoc HTML.
-* Test on other computer.
-* Limit README.md to 80 characters wide.
-* Remove TODOs from README.md.
-* Test in Windows?
-  * If Windows succeeds, update README.md.
