@@ -8,7 +8,7 @@ An undisclosed employer asked me to create this application as part of their hir
 
 ## Notes to Reviewer
 
-First, thank you for reviewing my demo project. I hope you are as impressed by this as I think you will be.
+First, thank you for reviewing my demo project. I hope you are as impressed by what I created as I think you will be.
 
 ### This Application is Over-architected
 
