@@ -33,7 +33,7 @@ I feel it is important to note that in a real job environment, I might not put t
 
 ### Files the Reviewer Will Care Most About
 
-Most of the logic the reviewer is probably interested in is in the following files:
+Most of the logic the reviewer is probably interested in, is in the following files:
 
 * RetailPointOfSaleImpl.java
 * RentalAgreementImpl.java
