@@ -27,6 +27,8 @@ Particularly, I'm trying to demonstrate:
 
 Even with the over-architecting, I believe I strictly adhered to all the requirements in the requirements document.
 
+I feel it is important to note that in a real job environment, I might not put this level of detail into my code. For example, to develop code more quickly, I typically do not Javadoc unit test methods.
+
 ### Files the Reviewer Will Care Most About
 
 Most of the logic the reviewer is probably interested in is in the following files:
