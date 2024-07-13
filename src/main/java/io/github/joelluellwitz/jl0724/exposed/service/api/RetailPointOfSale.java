@@ -25,7 +25,7 @@ public interface RetailPointOfSale {
 
     /**
      * Checks out a {@link io.github.joelluellwitz.jl0724.exposed.service.api.Tool Tool} to a customer using the
-     *   provided {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.<p>
+     *   provided {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.
      *
      * @param contractParameters Represents the user's selections in building a rental contract. Note: I used a transfer
      *   object here instead of supplying multiple arguments to the checkout method. This is because positional
