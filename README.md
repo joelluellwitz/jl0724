@@ -41,7 +41,7 @@ Most of the logic the reviewer is probably interested in, is in the following fi
 
 ### Comments Explaining Rationale
 
-I included comments in the source explaining my rationale for many of my design decisions. The most important comments start with the phrase "Note:". I recommend searching on that phrase to make sure you don't miss any of these comments.
+I included comments in the source explaining my rationale for many of my design decisions. The most important comments start with the phrase "Note:". I recommend searching on that phrase to make sure you do not miss any of these comments.
 
 The rationale for more broad design decisions are explained below.
 
