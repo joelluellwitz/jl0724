@@ -31,11 +31,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  * Tests {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole}.
  *
  * Note: {@link org.mockito.Mockito#mockStatic Mockito#mockStatic} explicitly does not allow mocking of
- *   {@link java.lang.System} static methods. That makes it impossible to use mocks alone to test the input and output
- *   of the RetailConsole. Instead, I replace STDIN and STDOUT with thread safe streams and run the RetailConsole in a
- *   separate thread. I then use the thread safe streams to simulate user input and verify console output. I prefer this
- *   method of testing over adding a console abstraction layer specifically for unit testing. I generally try to avoid
- *   altering the 'main' classes due to unit testing concerns.
+ *   {@link java.lang.System System} static methods. That makes it impossible to use mocks alone to test the input and
+ *   output of the RetailConsole. Instead, I replace {@link java.lang.System#in System#in} and
+ *   {@link java.lang.System#out System#out} with thread safe streams and runs the RetailConsole in a separate thread. I
+ *   then use the thread safe streams to simulate user input and verify console output. I prefer this method of testing
+ *   over adding a console abstraction layer specifically for unit testing. I generally try to avoid altering the 'main'
+ *   classes due to unit testing concerns.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -47,21 +48,35 @@ public class RetailConsoleTests {
 
     private CommandLineRunner retailConsole;
 
+    /**
+     * Restores {@link java.lang.System#in System#in} and {@link java.lang.System#out System#out} to their original
+     *   values after each test.
+     */
     @AfterEach
     public void restoreStandardPipes() {
         System.setIn(SYSTEM_IN);
         System.setOut(SYSTEM_OUT);
     }
 
-    // TODO: Document?
+    /**
+     * Constructor.
+     *
+     * @param retailConsole A {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole} instance to test.
+     */
     @Autowired
     private RetailConsoleTests(final CommandLineRunner retailConsole) {
         this.retailConsole = retailConsole;
     }
 
-    // TODO: Document?
+    /**
+     * Tests printing the tool list. The tool list is printed twice to get unit test code coverage for printing the
+     *   saved table data.
+     *
+     * @throws IOException Thrown if an error occurs with the streams used for input or output.
+     * @throws InterruptedException Thrown if thread joining times out.
+     */
     @Test
-    public void printToolListSucceeds() throws Exception {
+    public void printToolListSucceeds() throws IOException, InterruptedException {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
             assertStandardOutputEquals(inputSreamForStandardOutput,
                     "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
@@ -85,8 +100,14 @@ public class RetailConsoleTests {
         });
     }
 
+    /**
+     * Tests checking out a tool.
+     *
+     * @throws IOException Thrown if an error occurs with the streams used for input or output.
+     * @throws InterruptedException Thrown if thread joining times out.
+     */
     @Test
-    public void checkoutSucceeds() throws Exception {
+    public void checkoutSucceeds() throws IOException, InterruptedException {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
             assertStandardOutputEquals(inputSreamForStandardOutput,
                     "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
@@ -125,8 +146,14 @@ public class RetailConsoleTests {
         });
     }
 
+    /**
+     * Tests all the validation error messages.
+     *
+     * @throws IOException Thrown if an error occurs with the streams used for input or output.
+     * @throws InterruptedException Thrown if thread joining times out.
+     */
     @Test
-    public void checkoutWithValidationErrorsSucceeds() throws Exception {
+    public void checkoutWithValidationErrorsSucceeds() throws IOException, InterruptedException {
         runRetailConsoleTest((outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer) -> {
             assertStandardOutputEquals(inputSreamForStandardOutput,
                     "Type 'p' to print a list of tools, 'c' to checkout, and 'q' to quit: ");
@@ -177,9 +204,14 @@ public class RetailConsoleTests {
         });
     }
 
-    // TODO: Document?
+    /**
+     * Test the handling of IOExceptions raised from reading from @{link {@link java.lang.System#in System#in}.
+     *
+     * @throws IOException Thrown if an error occurs with the streams used for input or output.
+     * @throws InterruptedException Thrown if thread joining times out.
+     */
     @Test
-    public void inputIoExceptionFailure() throws Exception {
+    public void inputIoExceptionFailure() throws IOException, InterruptedException {
         final PipedInputStream standardInputStream = new PipedInputStream(new PipedOutputStream());
         System.setIn(standardInputStream);
 
@@ -237,15 +269,17 @@ public class RetailConsoleTests {
     }
 
     /**
-     * Document.
+     * Replaces {@link java.lang.System#in System#in} and {@link java.lang.System#out System#out} with thread safe
+     *   streams and runs the {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole} in a separate thread.
+     *   The thread safe streams are then used by the callback to mimic user input and verify console output.
      *
-     * @param assertCode
-     * @throws IOException
-     * @throws InterruptedException
+     * @param assertCallback Callback that mimics user input and verifies output.
+     * @throws IOException Thrown if an error occurs with the streams used for input or output.
+     * @throws InterruptedException Thrown if thread joining times out.
      */
-    // TODO: Note about thread safety.
-    private void runRetailConsoleTest(final QuadConsumer<PipedOutputStream, PipedInputStream, Thread, Timer> assertCode)
-            throws IOException, InterruptedException {
+    private void runRetailConsoleTest(
+            final QuadConsumer<PipedOutputStream, PipedInputStream, Thread, Timer> assertCallback)
+                    throws IOException, InterruptedException {
         final PipedOutputStream outputStreamForStandardInput = new PipedOutputStream();
         System.setIn(new PipedInputStream(outputStreamForStandardInput));
 
@@ -273,7 +307,7 @@ public class RetailConsoleTests {
         };
         timer.schedule(threadTimeoutTask, 30000);
 
-        assertCode.accept(outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer);
+        assertCallback.accept(outputStreamForStandardInput, inputSreamForStandardOutput, thread, timer);
 
         timer.cancel();
 
@@ -281,24 +315,29 @@ public class RetailConsoleTests {
     }
 
     /**
-     * TODO: Document.
+     * Asserts that the expected String equals the bytes read from the input stream.
      *
-     * @param inputStream
-     * @param expectedString
-     * @throws IOException
+     * Note: Reading can block if the actual output length is less than the expected output length. To avoid a deadlock,
+     *   I setup a {@link java.util.Timer Timer} in the tests that terminates the thread if too much time passes.
+     *   Terminating the thread causes the stream to raise an IOException, which breaks the deadlock.
+     *
+     * @param inputSreamForStandardOutput Input stream providing data intended for display on the console.
+     * @param expectedString The expected String.
+     * @throws IOException Thrown if an error occurs reading from the stream.
      */
-    private void assertStandardOutputEquals(final PipedInputStream inputStream, final String expectedString)
-            throws IOException {
-        assertThat(new String(inputStream.readNBytes(expectedString.getBytes().length))).isEqualTo(expectedString);
+    private void assertStandardOutputEquals(final PipedInputStream inputSreamForStandardOutput,
+            final String expectedString) throws IOException {
+        assertThat(new String(inputSreamForStandardOutput.readNBytes(
+                expectedString.getBytes().length))).isEqualTo(expectedString);
     }
 
     /**
-     * TODO: Document.
+     * A consumer FunctionalInterface with four parameters.
      *
-     * @param <T>
-     * @param <U>
-     * @param <V>
-     * @param <W>
+     * @param <T> Parameter 0.
+     * @param <U> Parameter 1.
+     * @param <V> Parameter 2.
+     * @param <W> Parameter 3.
      */
     @FunctionalInterface
     public interface QuadConsumer<T, U, V, W> {

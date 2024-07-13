@@ -104,4 +104,4 @@ Logs will be recorded in 'jl0724.log' in the current working directory.
 * Test on other computer.
 * Limit README.md to 80 characters wide.
 * Remove TODOs from README.md.
-* Mention mocking System.out and System.in.
+* Test in Windows?
