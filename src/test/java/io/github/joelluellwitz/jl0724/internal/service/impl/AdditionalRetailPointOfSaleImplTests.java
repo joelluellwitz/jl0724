@@ -68,7 +68,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     public void listToolsSucceeds() {
         final List<Tool> tools = retailPointOfSale.listTools();
 
-        assertThat(tools).extracting("code", "type", "brand", "dailyCharge", "weekdayCharge", "weekendCharge", "holidayCharge")
+        assertThat(tools)
+                .extracting("code", "type", "brand", "dailyCharge", "weekdayCharge", "weekendCharge", "holidayCharge")
                 .contains(tuple("CHNS", "Chainsaw", "Stihl", new BigDecimal("1.49"), true, false, true),
                         tuple("JAKD", "Jackhammer", "DeWalt", new BigDecimal("2.99"), true, false, false),
                         tuple("JAKR", "Jackhammer", "Ridgid", new BigDecimal("2.99"), true, false, false),
@@ -139,8 +140,8 @@ public class AdditionalRetailPointOfSaleImplTests {
 
         assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-                "Discount percentage must be between 0 and 100 (inclusive). You specified: -1");
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Discount percentage must be between 0 and 100 (inclusive). You specified: -1");
     }
 
     /**

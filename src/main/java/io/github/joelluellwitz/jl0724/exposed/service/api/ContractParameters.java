@@ -33,18 +33,18 @@ public class ContractParameters {
     public void setToolCode(final String toolCode) {
         this.toolCode = toolCode;
     }
-	/**
-	 * @return the checkoutDate
-	 */
-	public LocalDate getCheckoutDate() {
-		return checkoutDate;
-	}
-	/**
-	 * @param checkoutDate the checkoutDate to set
-	 */
-	public void setCheckoutDate(final LocalDate checkoutDate) {
-		this.checkoutDate = checkoutDate;
-	}
+    /**
+     * @return the checkoutDate
+     */
+    public LocalDate getCheckoutDate() {
+        return checkoutDate;
+    }
+    /**
+     * @param checkoutDate the checkoutDate to set
+     */
+    public void setCheckoutDate(final LocalDate checkoutDate) {
+        this.checkoutDate = checkoutDate;
+    }
     /**
      * @return the rentalDayCount
      */
