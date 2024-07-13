@@ -111,12 +111,13 @@ public class RentalAgreementImpl implements RentalAgreement {
             agreementStringBuilder.append("Due date: ");
             DATE_FORMATTER.formatTo(getDueDate(), agreementStringBuilder);
             agreementStringBuilder.append('\n');
-            agreementStringBuilder.append("Daily rental charge: ")
-                    .append(formatCurrency(getDailyCharge())).append('\n');
+            agreementStringBuilder.append("Daily rental charge: ").append(formatCurrency(getDailyCharge()))
+                    .append('\n');
             agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
-            agreementStringBuilder.append("Pre-discount charge: ")
-                    .append(formatCurrency(getPreDiscountCharge())).append('\n');
-            agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent())).append('\n');
+            agreementStringBuilder.append("Pre-discount charge: ").append(formatCurrency(getPreDiscountCharge()))
+                    .append('\n');
+            agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent()))
+                    .append('\n');
             agreementStringBuilder.append("Discount amount: ").append(formatCurrency(getDiscountAmount())).append('\n');
             agreementStringBuilder.append("Final charge: ").append(formatCurrency(getFinalCharge())).append('\n');
 
@@ -309,8 +310,8 @@ public class RentalAgreementImpl implements RentalAgreement {
             //   backed by ordered integers. This ordering is documented in official Java documentation.
             final LocalDate effectiveCheckoutDate = getCheckoutDate().plusDays(
                     Math.max(0, ((12 - getCheckoutDate().plusDays(1).getDayOfWeek().getValue()) % 7) - 4) + 1);
-            final LocalDate effectiveDueDate = getDueDate().plusDays(
-                    1 - Math.max(0, getDueDate().getDayOfWeek().getValue() - 5));
+            final LocalDate effectiveDueDate = getDueDate()
+                    .plusDays(1 - Math.max(0, getDueDate().getDayOfWeek().getValue() - 5));
 
             // Week count can never be greater than rentalDayCount, so the 'long' result can be safely casted back to an
             //   'int'.
@@ -335,8 +336,8 @@ public class RentalAgreementImpl implements RentalAgreement {
      * @return The number of Independence Days during the chargeable rental period.
      */
     private int getIndependenceDayCount() {
-        final LocalDate firstYearIndependenceDay =
-                findNearestWeekday(LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 7, 4));
+        final LocalDate firstYearIndependenceDay = findNearestWeekday(
+                LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 7, 4));
         final LocalDate lastYearIndependenceDay = findNearestWeekday(LocalDate.of(getDueDate().getYear(), 7, 4));
 
         return getHolidayCount(firstYearIndependenceDay, lastYearIndependenceDay);
@@ -350,8 +351,8 @@ public class RentalAgreementImpl implements RentalAgreement {
     private int getLaborDayCount() {
         final LocalDate firstYearFirstSeptemberDay = LocalDate.of(getCheckoutDate().plusDays(1).getYear(), 9, 1);
         final int firstYearFirstSeptemberDayOfWeek = firstYearFirstSeptemberDay.getDayOfWeek().getValue();
-        final LocalDate firstYearLaborDay =
-                firstYearFirstSeptemberDay.withDayOfMonth((8 - firstYearFirstSeptemberDayOfWeek) % 7 + 1);
+        final LocalDate firstYearLaborDay = firstYearFirstSeptemberDay
+                .withDayOfMonth((8 - firstYearFirstSeptemberDayOfWeek) % 7 + 1);
 
         final LocalDate lastYearFirstSeptemberDay = LocalDate.of(getDueDate().getYear(), 9, 1);
         final int lastYearFirstSeptemberDayOfWeek = lastYearFirstSeptemberDay.getDayOfWeek().getValue();
@@ -382,8 +383,7 @@ public class RentalAgreementImpl implements RentalAgreement {
         }
 
         final int lastYear;
-        if (getCheckoutDate().isBefore(lastYearHolidayDate)
-                && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
+        if (getCheckoutDate().isBefore(lastYearHolidayDate) && lastYearHolidayDate.isBefore(getDueDate().plusDays(1))) {
             lastYear = getDueDate().getYear();
         }
         else {

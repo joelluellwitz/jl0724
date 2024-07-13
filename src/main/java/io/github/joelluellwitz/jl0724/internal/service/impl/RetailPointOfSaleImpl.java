@@ -59,8 +59,8 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
      */
     @Override
     public List<Tool> listTools() {
-       LOGGER.debug("Retrieving the tool list.");
-       return toolMapper.toolDtosToTools(toolRepo.listToolsSortedByToolCode());
+        LOGGER.debug("Retrieving the tool list.");
+        return toolMapper.toolDtosToTools(toolRepo.listToolsSortedByToolCode());
     }
 
     /**
@@ -78,8 +78,8 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
 
         final int rentalDayCount = contractParameters.getRentalDayCount();
         if (rentalDayCount < 1) {
-            throw new IllegalArgumentException(String.format(
-                    "The number of rental days must be greater than 1. You specified: %d", rentalDayCount));
+            throw new IllegalArgumentException(String
+                    .format("The number of rental days must be greater than 1. You specified: %d", rentalDayCount));
         }
 
         // Note: The fact that the requirements document does not say anything about Tool Code validation leads me to
@@ -88,14 +88,14 @@ public class RetailPointOfSaleImpl implements RetailPointOfSale {
         //   for not having a ToolCode Enum.
         final Optional<ToolDto> toolOptional = toolRepo.getToolByCode(contractParameters.getToolCode());
         if (toolOptional.isEmpty()) {
-            throw new IllegalArgumentException(String.format(
-                    "Unrecognized tool code. You specified: %s", contractParameters.getToolCode()));
+            throw new IllegalArgumentException(
+                    String.format("Unrecognized tool code. You specified: %s", contractParameters.getToolCode()));
         }
         final Tool tool = toolMapper.toolDtoToTool(toolOptional.get());
 
         final RentalAgreementImpl rentalAgreement = new RentalAgreementImpl(contractParameters, tool);
-        final RentalAgreementDto rentalAgreementDto =
-                rentalAgreementMapper.rentalAgreementToRentalAgreementDto(rentalAgreement);
+        final RentalAgreementDto rentalAgreementDto = rentalAgreementMapper
+                .rentalAgreementToRentalAgreementDto(rentalAgreement);
 
         rentalAgreementDto.setTool(toolOptional.get());
         rentalAgreementRepo.saveAndFlush(rentalAgreementDto);

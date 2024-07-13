@@ -60,8 +60,8 @@ public class RequiredRetailPointOfSaleImplTests {
 
         assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-                "Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
     }
 
     /**

@@ -68,12 +68,11 @@ public class AdditionalRetailPointOfSaleImplTests {
     public void listToolsSucceeds() {
         final List<Tool> tools = retailPointOfSale.listTools();
 
-        assertThat(tools).extracting(
-                "code", "type", "brand", "dailyCharge", "weekdayCharge", "weekendCharge", "holidayCharge"
-                ).contains(tuple("CHNS", "Chainsaw", "Stihl", new BigDecimal("1.49"), true, false, true),
+        assertThat(tools).extracting("code", "type", "brand", "dailyCharge", "weekdayCharge", "weekendCharge", "holidayCharge")
+                .contains(tuple("CHNS", "Chainsaw", "Stihl", new BigDecimal("1.49"), true, false, true),
                         tuple("JAKD", "Jackhammer", "DeWalt", new BigDecimal("2.99"), true, false, false),
                         tuple("JAKR", "Jackhammer", "Ridgid", new BigDecimal("2.99"), true, false, false),
-                        tuple("LADW", "Ladder", "Werner" , new BigDecimal("1.99"),  true, true, false));
+                        tuple("LADW", "Ladder", "Werner", new BigDecimal("1.99"), true, true, false));
     }
 
     /**
@@ -90,8 +89,8 @@ public class AdditionalRetailPointOfSaleImplTests {
 
         assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-                "The number of rental days must be greater than 1. You specified: 0");
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("The number of rental days must be greater than 1. You specified: 0");
 
     }
 
@@ -228,8 +227,8 @@ public class AdditionalRetailPointOfSaleImplTests {
 
         assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-                "Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
     }
 
     /**
@@ -246,8 +245,8 @@ public class AdditionalRetailPointOfSaleImplTests {
 
         assertThatThrownBy(() -> {
             retailPointOfSale.checkout(contractParameters);
-        }).isInstanceOf(IllegalArgumentException.class).hasMessageContaining(
-                "Unrecognized tool code. You specified: INVD");
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unrecognized tool code. You specified: INVD");
     }
 
     /**

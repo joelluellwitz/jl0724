@@ -39,8 +39,8 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
  */
 @SpringBootApplication
 public class RetailConsole implements CommandLineRunner {
-    private static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("MM/dd/uu").withResolverStyle(ResolverStyle.STRICT);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/uu")
+            .withResolverStyle(ResolverStyle.STRICT);
 
     private static Logger LOGGER = LoggerFactory.getLogger(RetailConsole.class);
 

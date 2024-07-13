@@ -758,7 +758,7 @@ public class RentalAgreementImplTests {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2019, 7, 3));
-        contractParameters.setRentalDayCount(366);  // Remember, 2020 is a leap year.
+        contractParameters.setRentalDayCount(366); // Remember, 2020 is a leap year.
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -911,7 +911,7 @@ public class RentalAgreementImplTests {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2023, 9, 3));
-        contractParameters.setRentalDayCount(365);  // Remember, 2024 is a leap year.
+        contractParameters.setRentalDayCount(365); // Remember, 2024 is a leap year.
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -939,7 +939,7 @@ public class RentalAgreementImplTests {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2019, 9, 1));
-        contractParameters.setRentalDayCount(372);  // Remember, 2020 is a leap year.
+        contractParameters.setRentalDayCount(372); // Remember, 2020 is a leap year.
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -966,7 +966,7 @@ public class RentalAgreementImplTests {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2023, 9, 3));
-        contractParameters.setRentalDayCount(1100);  // Remember, 2024 is a leap year.
+        contractParameters.setRentalDayCount(1100); // Remember, 2024 is a leap year.
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -998,7 +998,7 @@ public class RentalAgreementImplTests {
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode("CHNS");
         contractParameters.setCheckoutDate(LocalDate.of(2023, 12, 31));
-        contractParameters.setRentalDayCount(731);  // Remember, 2024 is a leap year.
+        contractParameters.setRentalDayCount(731); // Remember, 2024 is a leap year.
         contractParameters.setDiscountPercent(25);
 
         final ToolImpl tool = new ToolImpl();
@@ -1557,7 +1557,7 @@ public class RentalAgreementImplTests {
             final ByteArrayOutputStream standardOutputStream = new ByteArrayOutputStream();
             System.setOut(new PrintStream(standardOutputStream));
 
-            new RentalAgreementImpl(contractParameters, tool).printRentalAgreement();;
+            new RentalAgreementImpl(contractParameters, tool).printRentalAgreement();
 
             assertThat(new String(standardOutputStream.toByteArray())).isEqualTo(expectedRentalAgreement);
         }
