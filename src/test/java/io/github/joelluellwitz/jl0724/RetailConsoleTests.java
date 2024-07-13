@@ -29,6 +29,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Tests {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole}.
+ *
+ * Note: {@link org.mockito.Mockito#mockStatic Mockito#mockStatic} explicitly does not allow mocking of
+ *   {@link java.lang.System} static methods. That makes it impossible to use mocks alone to test the input and output
+ *   of the RetailConsole. Instead, I replace STDIN and STDOUT with thread safe streams and run the RetailConsole in a
+ *   separate thread. I then use the thread safe streams to simulate user input and verify console output. I prefer this
+ *   method of testing over adding a console abstraction layer specifically for unit testing. I generally try to avoid
+ *   altering the 'main' classes due to unit testing concerns.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)

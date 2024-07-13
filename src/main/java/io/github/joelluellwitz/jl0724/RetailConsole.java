@@ -151,7 +151,7 @@ public class RetailConsole implements CommandLineRunner {
         try {
             final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);
 
-            // Note: rentalAgreement.toString could be (but actually isn't) an expensive operation. Potentially
+            // Note: RentalAgreement#toString could be (but actually isn't) an expensive operation. Potentially
             //   expensive to generate logging strings should be conditionally executed to avoid wasting execution time.
             //   In this case, toString saves the result of the first generation, so we could just avoid this
             //   conditional, but I wanted to demonstrate that I understand this concept.
@@ -162,7 +162,7 @@ public class RetailConsole implements CommandLineRunner {
             }
 
             // Note: The requirements do not state that this header should be returned by
-            //   'RentalAgreement.printRentalAgreement'. I want to follow the requirements exactly.
+            //   'RentalAgreement#printRentalAgreement'. I want to follow the requirements exactly.
             System.out.println("\nRental Agreement:");
 
             rentalAgreement.printRentalAgreement();
@@ -192,7 +192,7 @@ public class RetailConsole implements CommandLineRunner {
      *
      * Note: I really dislike how some validation is in the presentation tier and some validation is in the business
      *   logic tier. When I originally started to code this, I was going to have the date passed as a String to
-     *   RetailPointOfSale.checkout and I would do the date validation from within 'checkout'. I later opted to do the
+     *   RetailPointOfSale#checkout and I would do the date validation from within 'checkout'. I later opted to do the
      *   date conversion here because something in the requirements document lead me to believe you expect 'checkout'
      *   to accept a LocalDate object. (Same thinking applies to rentalDayCount and discountPercent integers.)
      *
