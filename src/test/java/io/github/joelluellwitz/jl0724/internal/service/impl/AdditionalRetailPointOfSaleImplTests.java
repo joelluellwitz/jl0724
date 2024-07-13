@@ -47,6 +47,9 @@ public class AdditionalRetailPointOfSaleImplTests {
     /**
      * Constructor.
      *
+     * @param retailAgreementRepo Used to verify a
+     *   {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto RentalAgreementDto} is saved to the
+     *   database during checkout.
      * @param retailPointOfSale A
      *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSaleImpl RetailPointOfSaleImpl}
      *   instance to test.
@@ -74,8 +77,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
-     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the rental duration is 0.
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} throws an
+     *   {@link java.lang.IllegalArgumentException IllegalArgumentException} when the rental duration is 0.
      */
     @Test
     public void checkoutFailsWithRentalDayCountOfZero() {
@@ -93,8 +96,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
-     *   succeeds when the rental duration is 1.
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} succeeds
+     *   when the rental duration is 1.
      */
     @Test
     public void checkoutSucceedsWithRentalDayCountOfOne() {
@@ -124,8 +127,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
-     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is -1.
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} throws an
+     *   {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is -1.
      */
     @Test
     public void checkoutFailsWithNegativeDiscount() {
@@ -142,8 +145,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
-     *   succeeds when the discount percentage is 0.<p>
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} succeeds
+     *   when the discount percentage is 0.<p>
      *
      * Note: I realize this is also tested in {@link
      *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests
@@ -177,8 +180,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
-     *   succeeds when the discount percentage is 100.
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} succeeds
+     *   when the discount percentage is 100.
      */
     @Test
     public void checkoutSucceedsWith100PercentDiscount() {
@@ -208,8 +211,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
-     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is 101.<p>
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} throws an
+     *   {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is 101.<p>
      *
      * Note: I realize this is also tested in {@link
      *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests
@@ -230,8 +233,8 @@ public class AdditionalRetailPointOfSaleImplTests {
     }
 
     /**
-     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
-     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when an invalid Tool Code is supplied.
+     * Verifies {@link io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale#checkout checkout} throws an
+     *   {@link java.lang.IllegalArgumentException IllegalArgumentException} when an invalid Tool Code is supplied.
      */
     @Test
     public void checkoutFailsWithInvalidToolCode() {

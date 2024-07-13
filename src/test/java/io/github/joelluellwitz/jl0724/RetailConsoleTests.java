@@ -341,6 +341,15 @@ public class RetailConsoleTests {
      */
     @FunctionalInterface
     public interface QuadConsumer<T, U, V, W> {
+        /**
+         * Executes the callback.
+         *
+         * @param t Parameter 0.
+         * @param u Parameter 1.
+         * @param v Parameter 2.
+         * @param w Parameter 3.
+         * @throws IOException Thrown if an error occurs reading from the stream.
+         */
         void accept(T t, U u, V v, W w) throws IOException;
     }
 }

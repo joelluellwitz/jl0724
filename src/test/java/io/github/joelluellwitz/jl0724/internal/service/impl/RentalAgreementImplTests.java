@@ -20,7 +20,7 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
  *
  * Note: There is admittedly a very large amount of unit tests here, but date math is confusing and complex,
  *   particularly when rental durations span multiple years. I added enough tests to make myself certain I implemented
- *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl.getChargeDayCount
+ *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl#getChargeDayCount
  *   getChargeDayCount} correctly. Good thing too, because I caught many errors in my initial implementation.
  */
 public class RentalAgreementImplTests {
