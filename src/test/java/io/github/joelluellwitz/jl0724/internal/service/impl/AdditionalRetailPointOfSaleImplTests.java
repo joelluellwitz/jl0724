@@ -45,9 +45,11 @@ public class AdditionalRetailPointOfSaleImplTests {
     private final RetailPointOfSale retailPointOfSale;
 
     /**
-     * TODO: Document?
+     * Constructor.
      *
-     * @param retailPointOfSale
+     * @param retailPointOfSale A
+     *   {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSaleImpl RetailPointOfSaleImpl}
+     *   instance to test.
      */
     @Autowired
     public AdditionalRetailPointOfSaleImplTests(final RentalAgreementRepo retailAgreementRepo,
@@ -56,6 +58,9 @@ public class AdditionalRetailPointOfSaleImplTests {
         this.retailPointOfSale = retailPointOfSale;
     }
 
+    /**
+     * Verifies the entire tool list contains the correct properties and is sorted by the Tool Code.
+     */
     @Test
     public void listToolsSucceeds() {
         final List<Tool> tools = retailPointOfSale.listTools();
@@ -68,6 +73,10 @@ public class AdditionalRetailPointOfSaleImplTests {
                         tuple("LADW", "Ladder", "Werner" , new BigDecimal("1.99"),  true, true, false));
     }
 
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
+     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the rental duration is 0.
+     */
     @Test
     public void checkoutFailsWithRentalDayCountOfZero() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -83,6 +92,10 @@ public class AdditionalRetailPointOfSaleImplTests {
 
     }
 
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
+     *   succeeds when the rental duration is 1.
+     */
     @Test
     public void checkoutSucceedsWithRentalDayCountOfOne() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -107,10 +120,13 @@ public class AdditionalRetailPointOfSaleImplTests {
                 + "Discount amount: $0.00\n"
                 + "Final charge: $2.99\n";
 
-        // TODO: Look into changing the call to printRentalAgreement.
         assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
+     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is -1.
+     */
     @Test
     public void checkoutFailsWithNegativeDiscount() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -125,7 +141,14 @@ public class AdditionalRetailPointOfSaleImplTests {
                 "Discount percentage must be between 0 and 100 (inclusive). You specified: -1");
     }
 
-    // Note: I realize this is also tested in RequiredRetailPointOfSaleImplTests.
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
+     *   succeeds when the discount percentage is 0.
+     *
+     * Note: I realize this is also tested in {@link
+     *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests
+     *   RequiredRetailPointOfSaleImplTests}.
+     */
     @Test
     public void checkoutSucceedsWithZeroPercentDiscount() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -153,6 +176,10 @@ public class AdditionalRetailPointOfSaleImplTests {
         assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
+     *   succeeds when the discount percentage is 100.
+     */
     @Test
     public void checkoutSucceedsWith100PercentDiscount() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -180,7 +207,14 @@ public class AdditionalRetailPointOfSaleImplTests {
         assertThat(rentalAgreement.toString()).isEqualTo(expectedRentalAgreement);
     }
 
-    // Note: I realize this is also tested in RequiredRetailPointOfSaleImplTests.
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
+     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is 101.
+     *
+     * Note: I realize this is also tested in {@link
+     *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests
+     *   RequiredRetailPointOfSaleImplTests}.
+     */
     @Test
     public void checkoutFailsWith101PercentDiscount() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -195,6 +229,10 @@ public class AdditionalRetailPointOfSaleImplTests {
                 "Discount percentage must be between 0 and 100 (inclusive). You specified: 101");
     }
 
+    /**
+     * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
+     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when an invalid Tool Code is supplied.
+     */
     @Test
     public void checkoutFailsWithInvalidToolCode() {
         final ContractParameters contractParameters = new ContractParameters();
@@ -209,6 +247,10 @@ public class AdditionalRetailPointOfSaleImplTests {
                 "Unrecognized tool code. You specified: INVD");
     }
 
+    /**
+     * Verifies the {@link io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement RentalAgreement} is
+     *   successfully saved to the database.
+     */
     @Test
     public void checkoutSucceedsWithSavedRentalAgreement() {
         final String toolCode = "JAKR";  // Note: Ensures I don't misspell JAKR anywhere in the test.
