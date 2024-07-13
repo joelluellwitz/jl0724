@@ -30,7 +30,7 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.RetailPointOfSale;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
- * A console based implementation of the tool rental point of sale user interface.
+ * A console based implementation of the tool rental point of sale user interface.<p>
  *
  * Note: I realize this class is explicitly <b>not</b> required by the requirements document. This class represents the
  *   presentation tier in a three tier model. It was written quickly to serve the purpose of proving the business tier
@@ -188,7 +188,7 @@ public class RetailConsole implements CommandLineRunner {
 
     /**
      * Prompts the user for a valid date in the "MM/dd/uu" format. The user is continuously prompted until a valid date
-     *   is entered.
+     *   is entered.<p>
      *
      * Note: I really dislike how some validation is in the presentation tier and some validation is in the business
      *   logic tier. When I originally started to code this, I was going to have the date passed as a String to

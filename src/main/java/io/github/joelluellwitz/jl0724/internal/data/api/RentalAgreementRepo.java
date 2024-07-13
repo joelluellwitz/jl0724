@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * JPA Repository for {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto RentalAgreementDto}.
+ * JPA Repository for {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto RentalAgreementDto}.<p>
  *
  * Note: Concerning the package name "io.github.joelluellwitz.jl0724.internal.data.api", 'api' is at the end because
  *   it identifies the classes and interfaces to be used by the business logic tier. There could just as well have been

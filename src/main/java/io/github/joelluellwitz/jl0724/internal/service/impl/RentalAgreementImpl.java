@@ -21,16 +21,16 @@ import io.github.joelluellwitz.jl0724.exposed.service.api.RentalAgreement;
 import io.github.joelluellwitz.jl0724.exposed.service.api.Tool;
 
 /**
- * Business logic tier representation of a rental agreement. This class is immutable.
+ * Business logic tier representation of a rental agreement. This class is immutable.<p>
  *
  * For the purposes of this class, the "chargeable rental period" is defined as the period of time between the
- *   checkoutDate (exclusive) to the dueDate (inclusive).
+ *   checkoutDate (exclusive) to the dueDate (inclusive).<p>
  *
  * Note: The requirements state that charge days are calculated "...from day after checkout through and including
  *   due date...". This means that the first day of the rental period is never a chargeable day. This calculation
  *   method seems very unidiomatic to me (I would expect the last day to not be chargeable) and I want to call this
  *   requirement out to the reviewer. This requirement is the reason for most of the "plusDays(1)" found throughout
- *   the class.
+ *   the class.<p>
  *
  * Note: I realize that, as written, this class cannot be constructed from an existing
  *   {@link io.github.joelluellwitz.jl0724.internal.data.api.RentalAgreementDto}. Of course, for the purposes of this

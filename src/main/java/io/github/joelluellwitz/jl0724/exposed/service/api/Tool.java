@@ -6,7 +6,7 @@ package io.github.joelluellwitz.jl0724.exposed.service.api;
 import java.math.BigDecimal;
 
 /**
- * Represents a tool available for checkout.
+ * Represents a tool available for checkout.<p>
  *
  * Note: The requirements document does not require that tool information be exposed to the presentation tier, but this
  *   needed to make the demo console usable.

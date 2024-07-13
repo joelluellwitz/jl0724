@@ -143,7 +143,7 @@ public class AdditionalRetailPointOfSaleImplTests {
 
     /**
      * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout}
-     *   succeeds when the discount percentage is 0.
+     *   succeeds when the discount percentage is 0.<p>
      *
      * Note: I realize this is also tested in {@link
      *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests
@@ -209,7 +209,7 @@ public class AdditionalRetailPointOfSaleImplTests {
 
     /**
      * Verifies {@link io.github.joelluellwitz.jl0724.internal.service.impl.RetailPointOfSale#checkout checkout} throws
-     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is 101.
+     *   an {@link java.lang.IllegalArgumentException IllegalArgumentException} when the discount percentage is 101.<p>
      *
      * Note: I realize this is also tested in {@link
      *   io.github.joelluellwitz.jl0724.internal.service.impl.RequiredRetailPointOfSaleImplTests

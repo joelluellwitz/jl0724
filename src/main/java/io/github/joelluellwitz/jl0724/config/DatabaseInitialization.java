@@ -19,7 +19,7 @@ import io.github.joelluellwitz.jl0724.RetailConsole;
 
 /**
  * Creates a persisted database instance in the user's home directory and sets the spring.datasource.url property.
- *   The database is removed at program termination.
+ *   The database is removed at program termination.<p>
  *
  * Note: I could have used the H2 in-memory database here instead, but I wanted a more authentic persistent data tier
  *   for the non-unit testing code. This way I can demonstrate how to swap out a database implementation for use with
@@ -29,7 +29,7 @@ import io.github.joelluellwitz.jl0724.RetailConsole;
  */
 public class DatabaseInitialization implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
     /**
-     * @see DatabaseInitialization.
+     * {@see DatabaseInitialization}.
      */
     @Override
     public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {

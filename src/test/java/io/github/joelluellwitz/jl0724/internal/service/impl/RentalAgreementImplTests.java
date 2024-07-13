@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters;
 
 /**
- * Tests {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl}.
+ * Tests {@link io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl}.<p>
  *
  * Note: There is admittedly a very large amount of unit tests here, but date math is confusing and complex,
  *   particularly when rental durations span multiple years. I added enough tests to make myself certain I implemented
@@ -987,7 +987,7 @@ public class RentalAgreementImplTests {
 
     /**
      * Tests holidays are not chargeable days when the chargeable rental period starts on the first day of one year and
-     *   ends on the last day of the next year.
+     *   ends on the last day of the next year.<p>
      *
      * Note: This test broke my original implementation of {@link
      *   io.github.joelluellwitz.jl0724.internal.service.impl.RentalAgreementImpl#getHolidayCount getHolidayCount}, so I
@@ -1016,7 +1016,7 @@ public class RentalAgreementImplTests {
     }
 
     /**
-     * Verifies weekends are charged correctly over a multi-year rental period.
+     * Verifies weekends are charged correctly over a multi-year rental period.<p>
      *
      * Note: This test case makes the assumption that the algorithm used to calculate chargeable weekend days is simply
      *   the rental duration minus the number of weekdays in that period (not including the checkout day). Generally, it

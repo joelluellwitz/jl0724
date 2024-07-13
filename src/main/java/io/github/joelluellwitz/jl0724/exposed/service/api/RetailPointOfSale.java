@@ -6,7 +6,7 @@ package io.github.joelluellwitz.jl0724.exposed.service.api;
 import java.util.List;
 
 /**
- * The main exposed interface for the business tier of the Retail Point of Sale application.
+ * The main exposed interface for the business tier of the Retail Point of Sale application.<p>
  *
  * Note: This interface, along with other files in this package, represent the 'exposed' API that the presentation tier
  *   is suppose to use to present this application to users. Sometimes, exposed APIs are extracted out into a separate
@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface RetailPointOfSale {
     /**
-     * A {@link java.util.List List} of all tools available for rental sorted by Tool Code.
+     * A {@link java.util.List List} of all tools available for rental sorted by Tool Code.<p>
      *
      * Note: This method is not required by the requirements document. I am including it because it is required to make
      * the Retail Point of Sale UI a usable console.
@@ -24,8 +24,8 @@ public interface RetailPointOfSale {
     List<Tool> listTools();
 
     /**
-     * Checks out a {@link io.github.joelluellwitz.jl0724.exposed.service.api.ToolImpl Tool} to a customer using the
-     *   provided {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.
+     * Checks out a {@link io.github.joelluellwitz.jl0724.exposed.service.api.Tool Tool} to a customer using the
+     *   provided {@link io.github.joelluellwitz.jl0724.exposed.service.api.ContractParameters}.<p>
      *
      * @param contractParameters Represents the user's selections in building a rental contract. Note: I used a transfer
      *   object here instead of supplying multiple arguments to the checkout method. This is because positional

@@ -25,7 +25,7 @@ import io.github.joelluellwitz.jl0724.TestConfiguration;
 /**
  * Tests {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo ToolRepo} and related
  *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDto} and
- *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolTypeDto ToolTypeDto}.
+ *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolTypeDto ToolTypeDto}.<p>
  *
  * Note: There is no RentalAgreementRepoTests as that interface and related DTO already has full unit test code
  *   coverage.

@@ -28,7 +28,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
- * Tests {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole}.
+ * Tests {@link io.github.joelluellwitz.jl0724.RetailConsole RetailConsole}.<p>
  *
  * Note: {@link org.mockito.Mockito#mockStatic Mockito#mockStatic} explicitly does not allow mocking of
  *   {@link java.lang.System System} static methods. That makes it impossible to use mocks alone to test the input and
@@ -315,7 +315,7 @@ public class RetailConsoleTests {
     }
 
     /**
-     * Asserts that the expected String equals the bytes read from the input stream.
+     * Asserts that the expected String equals the bytes read from the input stream.<p>
      *
      * Note: Reading can block if the actual output length is less than the expected output length. To avoid a deadlock,
      *   I setup a {@link java.util.Timer Timer} in the tests that terminates the thread if too much time passes.

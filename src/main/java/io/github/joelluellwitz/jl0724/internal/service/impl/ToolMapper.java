@@ -13,7 +13,7 @@ import io.github.joelluellwitz.jl0724.internal.data.api.ToolDto;
 
 /**
  * Mapper to convert data tier {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDtos} to business
- *   tier {@link io.github.joelluellwitz.jl0724.internal.service.impl.ToolImpl ToolImpls}.
+ *   tier {@link io.github.joelluellwitz.jl0724.internal.service.impl.ToolImpl ToolImpls}.<p>
  *
  * Note: I feel it is a good idea to have different transfer objects for the data tier and the business tier. The reason
  *   being is that some properties are not relevant for all tiers. Generally you don't want data tier concerns affecting

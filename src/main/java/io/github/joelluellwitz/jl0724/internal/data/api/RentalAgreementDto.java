@@ -22,13 +22,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 /**
- * The data tier representation of the tool rental agreement.
+ * The data tier representation of the tool rental agreement.<p>
  *
  * Note: There is intentionally both a reference to a ToolDto and properties of information copied from ToolDto and
  *   ToolTypeDto. The reference to ToolDto allows the rental business to maintain the association to the tool record
  *   used to generate the rental agreement. Maintaining this association might be useful later for some business process
  *   like fulfillment or auditing. The copying of relevant properties allows the business to change the properties of
- *   the tools (such as the tool price) without changing existing contracts.
+ *   the tools (such as the tool price) without changing existing contracts.<p>
  *
  * Note: This table does not exist in the initial SQLite database. It is created by Hibernate. This has the unfortunate
  *   side effect that the table columns are unordered. I could obviously work around this by creating the table first,

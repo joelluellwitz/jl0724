@@ -4,13 +4,13 @@
 package io.github.joelluellwitz.jl0724.exposed.service.api;
 
 /**
- * Represents a tool rental agreement.
+ * Represents a tool rental agreement.<p>
  *
  * Note: The requirements document does not require that all the properties need to be exposed to consumers.
  */
 public interface RentalAgreement {
     /**
-     * Returns the rental agreement as a {@link java.lang.String String}.
+     * Returns the rental agreement as a {@link java.lang.String String}.<p>
      *
      * Note: This is not required by the requirements document, but it seems like something that should sensibly be
      *   exposed.
@@ -20,7 +20,7 @@ public interface RentalAgreement {
     String toString();
 
     /**
-     * Prints the rental agreement to the console.
+     * Prints the rental agreement to the console.<p>
      *
      * Note: This functionality is here because it is explicitly required by the requirements document. That said, I do
      *   not think business tier code should print anything directly to the console. It should be the presentation
