@@ -14,7 +14,7 @@ First, thank you for reviewing my demo project. I hope you are as impressed by w
 
 I intentionally added extra functionality, complexity, and layers of abstraction to demonstrate mastery of Java, Spring, and other libraries and design patterns. Admittedly, a real application of this size probably should not have all this complexity.
 
-Particularly, I'm trying to demonstrate:
+Particularly, I am trying to demonstrate:
 
 * The 3-tier model.
 * Spring Boot.
