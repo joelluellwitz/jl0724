@@ -51,7 +51,7 @@ The rationale for more broad design decisions are explained below.
 
 One thing the reviewer might notice is that I did not group files by file type. What I mean by this is, I intentionally did not put all DTO classes in one package and all Repo classes in another package, etc. This is because I do not think it is useful organize files this way. I generally try to group files by business function.
 
-This application is too small to have business function divisions, so I did not attempt to model function divisions in this project. However, suppose this application is a bit more complex and there is also user account functionality. In this case, I might have organized some of the project with this package layout:
+This application is too small to have business function divisions, so I did not attempt to model functional divisions in this project. However, suppose this application is a bit more complex and there is also user account functionality. In this case, I might have organized some of the project with this package layout:
 * io.github.joelluellwitz.jl0724.exposed.service.account.api
 * io.github.joelluellwitz.jl0724.exposed.service.rental.api
 * io.github.joelluellwitz.jl0724.internal.data.account.api
