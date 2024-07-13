@@ -40,7 +40,7 @@ public class ToolDto {
     private LocalDateTime updatedOn;
     @Column(name = "code", nullable = false)
     private String code;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "tool_type_id", referencedColumnName = "id")
     private ToolTypeDto toolType;
     @Column(name = "brand", nullable = false)

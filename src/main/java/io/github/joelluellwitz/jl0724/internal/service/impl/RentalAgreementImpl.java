@@ -111,11 +111,11 @@ public class RentalAgreementImpl implements RentalAgreement {
             agreementStringBuilder.append("Due date: ");
             DATE_FORMATTER.formatTo(getDueDate(), agreementStringBuilder);
             agreementStringBuilder.append('\n');
-            agreementStringBuilder.append("Daily rental charge: ").append(
-                    formatCurrency(getDailyCharge())).append('\n');
+            agreementStringBuilder.append("Daily rental charge: ")
+                    .append(formatCurrency(getDailyCharge())).append('\n');
             agreementStringBuilder.append("Charge days: ").append(getChargeDayCount()).append('\n');
-            agreementStringBuilder.append("Pre-discount charge: ").append(
-                    formatCurrency(getPreDiscountCharge())).append('\n');
+            agreementStringBuilder.append("Pre-discount charge: ")
+                    .append(formatCurrency(getPreDiscountCharge())).append('\n');
             agreementStringBuilder.append("Discount percent: ").append(formatPercentage(getDiscountPercent())).append('\n');
             agreementStringBuilder.append("Discount amount: ").append(formatCurrency(getDiscountAmount())).append('\n');
             agreementStringBuilder.append("Final charge: ").append(formatCurrency(getFinalCharge())).append('\n');

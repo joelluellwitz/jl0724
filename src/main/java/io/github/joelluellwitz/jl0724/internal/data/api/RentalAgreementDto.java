@@ -50,7 +50,7 @@ public class RentalAgreementDto {
     @UpdateTimestamp
     @Column(name = "updated_on", nullable = false)
     private LocalDateTime updatedOn;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "tool_id", referencedColumnName = "id")
     private ToolDto tool;
     @Column(name = "tool_code", nullable = false)

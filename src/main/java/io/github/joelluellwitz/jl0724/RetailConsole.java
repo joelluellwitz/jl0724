@@ -111,8 +111,8 @@ public class RetailConsole implements CommandLineRunner {
      */
     private void printToolList() {
         if (toolList == null) {
-            final String[] columnNames = {"Tool Code", "Tool Type", "Brand", "Daily Charge", "Weekday Charge?",
-                    "Weekend Charge?", "Holiday Charge?"};
+            final String[] columnNames = { "Tool Code", "Tool Type", "Brand", "Daily Charge", "Weekday Charge?",
+                    "Weekend Charge?", "Holiday Charge?" };
 
             final List<Tool> tools = retailPointOfSale.listTools();
             final int toolCount = tools.size();
@@ -145,8 +145,8 @@ public class RetailConsole implements CommandLineRunner {
         contractParameters.setToolCode(promptForToolCode());
         contractParameters.setCheckoutDate(promptForCheckoutDate());
         contractParameters.setRentalDayCount(promptForInteger("Enter the rental duration in days: "));
-        contractParameters.setDiscountPercent(promptForInteger(
-                "Enter the discount percentage as an integer (0-100): "));
+        contractParameters
+                .setDiscountPercent(promptForInteger("Enter the discount percentage as an integer (0-100): "));
 
         try {
             final RentalAgreement rentalAgreement = retailPointOfSale.checkout(contractParameters);

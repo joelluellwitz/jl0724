@@ -327,8 +327,8 @@ public class RetailConsoleTests {
      */
     private void assertStandardOutputEquals(final PipedInputStream inputSreamForStandardOutput,
             final String expectedString) throws IOException {
-        assertThat(new String(inputSreamForStandardOutput.readNBytes(
-                expectedString.getBytes().length))).isEqualTo(expectedString);
+        assertThat(new String(inputSreamForStandardOutput
+                .readNBytes(expectedString.getBytes().length))).isEqualTo(expectedString);
     }
 
     /**

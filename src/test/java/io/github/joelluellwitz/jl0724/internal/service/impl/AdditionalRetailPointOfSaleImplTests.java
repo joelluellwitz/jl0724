@@ -256,7 +256,7 @@ public class AdditionalRetailPointOfSaleImplTests {
      */
     @Test
     public void checkoutSucceedsWithSavedRentalAgreement() {
-        final String toolCode = "JAKR";  // Note: Ensures I don't misspell JAKR anywhere in the test.
+        final String toolCode = "JAKR"; // Note: Ensures I don't misspell JAKR anywhere in the test.
 
         final ContractParameters contractParameters = new ContractParameters();
         contractParameters.setToolCode(toolCode);

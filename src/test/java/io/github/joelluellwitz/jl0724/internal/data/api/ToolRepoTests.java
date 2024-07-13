@@ -52,7 +52,7 @@ public class ToolRepoTests {
      */
     @Test
     public void getToolByCodeReturnsValidTool() {
-        final String toolCode = "JAKR";  // Note: Ensures I don't misspell JAKR anywhere in the test.
+        final String toolCode = "JAKR"; // Note: Ensures I don't misspell JAKR anywhere in the test.
 
         final Optional<ToolDto> toolDtoOptional = toolRepo.getToolByCode(toolCode);
 
