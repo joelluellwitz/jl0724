@@ -4,7 +4,7 @@ Repository website: https://github.com/joelluellwitz/jl0724
 
 ## Overview
 
-An undisclosed employer asked me to create this application as part of their hiring process. Basically, this console application prompts the user to enter tool rental parameters and then a rental agreement is displayed.
+An undisclosed employer asked me to create this application as part of their hiring process. Basically, this console application prompts the user to enter tool rental parameters and then displays a rental agreement.
 
 ## Notes to Reviewer
 
