@@ -1,5 +1,7 @@
 # Retail Point of Sale Demo Application
 
+Repository website: https://github.com/joelluellwitz/jl0724
+
 ## Overview
 
 An undisclosed employer asked me to create this application as part of their hiring process. Basically, the user selects a tool for rental and some rental parameters and a tool rental agreement is displayed.
