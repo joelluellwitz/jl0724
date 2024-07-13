@@ -27,7 +27,8 @@ import io.github.joelluellwitz.jl0724.TestConfiguration;
  *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolDto ToolDto} and
  *   {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolTypeDto ToolTypeDto}.
  *
- * Note: There is no RentalAgreementRepoTests as that class and related DTO already have full unit test code coverage.
+ * Note: There is no RentalAgreementRepoTests as that interface and related DTO already has full unit test code
+ *   coverage.
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfiguration.class)
@@ -36,12 +37,19 @@ import io.github.joelluellwitz.jl0724.TestConfiguration;
 public class ToolRepoTests {
     private final ToolRepo toolRepo;
 
-    // TODO: Document?
+    /**
+     * Constructor.
+     *
+     * @param toolRepo A {@link io.github.joelluellwitz.jl0724.internal.data.api.ToolRepo ToolRepo} instance to test.
+     */
     @Autowired
     public ToolRepoTests(final ToolRepo toolRepo) {
         this.toolRepo = toolRepo;
     }
 
+    /**
+     * Verifies tool information is correctly pulled from the database.
+     */
     @Test
     public void getToolByCodeReturnsValidTool() {
         final String toolCode = "JAKR";  // Note: Ensures I don't misspell JAKR anywhere in the test.
