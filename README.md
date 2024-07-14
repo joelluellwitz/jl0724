@@ -155,8 +155,7 @@ Because this is a console based application, logging to the console is disabled
 by default. If you want to enable debug logging, run the program like this:
 
 ```
-java -jar target/jl0724-1.0.0.jar --logging.file.name=jl0724.log \
-  --logging.level.io.github.joelluellwitz.jl0724=debug
+java -jar target/jl0724-1.0.0.jar --logging.file.name=jl0724.log --logging.level.io.github.joelluellwitz.jl0724=debug
 ```
 
 Logs will be recorded in 'jl0724.log' in the current working directory.
