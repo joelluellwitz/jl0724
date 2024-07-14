@@ -10,7 +10,7 @@
 
   <groupId>io.github.joelluellwitz</groupId>
   <artifactId>jl0724</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>Rental Point of Sale Tool</name>
   <description>A programming demonstration for an undisclosed company that is considering employing me.</description>
