@@ -126,18 +126,20 @@ That said, Java is not Scala. Due to missing language constructs to handle
 immutable variables, sometimes it is practically necessary to use mutable
 variables.
 
+### Unit Test Code Coverage
+
+I want to boast that the code under src/main/java has 97.8% unit test coverage.
+
 ## Building and Running the Demo
 
 ### System Requirements
 
 **This demo requires Java 21.** The project is known to build correctly with
-Maven version 3.6.3. It was tested on Ubuntu 22.04.4 LTS.
+Maven versions 3.6.3 and 3.9.8. It was tested on Ubuntu 22.04.4 LTS and Windows
+10. (I do not have access to macOS for testing.)
 
 Building the project requires access to Maven Central
 (https://repo1.maven.org/).
-
-Unfortunately, I do not have reasonable access to MacOS or Windows for cross
-platform testing. (I only use Linux on my personal computers.)
 
 ### Building and Running
 

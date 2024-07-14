@@ -98,7 +98,7 @@ public class RetailConsole implements CommandLineRunner {
                     checkout();
                     break;
                 default:
-                    System.out.println("Invalid option: %s".formatted(mainInput));
+                    System.out.print("Invalid option: %s\n".formatted(mainInput));
             }
         } while (!mainInput.equals("q"));
 
@@ -123,7 +123,8 @@ public class RetailConsole implements CommandLineRunner {
                 tableData[toolIndex] = new String[] {
                     tool.getCode(), tool.getType(), tool.getBrand(),
                     NumberFormat.getCurrencyInstance(Locale.US).format(tool.getDailyCharge()),
-                    Boolean.valueOf(tool.isWeekdayCharge()).toString(), Boolean.valueOf(tool.isWeekendCharge()).toString(),
+                    Boolean.valueOf(tool.isWeekdayCharge()).toString(),
+                    Boolean.valueOf(tool.isWeekendCharge()).toString(),
                     Boolean.valueOf(tool.isHolidayCharge()).toString()
                 };
             }
@@ -131,7 +132,9 @@ public class RetailConsole implements CommandLineRunner {
             final OutputStream tableOutputStream = new ByteArrayOutputStream();
             // Unfortunately this table library doesn't print a bottom border.
             new TextTable(columnNames, tableData).printTable(new PrintStream(tableOutputStream), 0);
-            toolList = tableOutputStream.toString();
+            // Remove carriage return characters so that the unit tests pass on Windows. This does not change the
+            //   appearance of the table even on Windows.
+            toolList = tableOutputStream.toString().replace("\r", "");
         }
         System.out.print(toolList);
     }
@@ -163,12 +166,12 @@ public class RetailConsole implements CommandLineRunner {
 
             // Note: The requirements do not state that this header should be returned by
             //   'RentalAgreement#printRentalAgreement'. I want to follow the requirements exactly.
-            System.out.println("\nRental Agreement:");
+            System.out.print("\nRental Agreement:\n");
 
             rentalAgreement.printRentalAgreement();
         }
         catch (final IllegalArgumentException e) {
-            System.out.println("An error occurred during checkout: %s".formatted(e.getLocalizedMessage()));
+            System.out.print("An error occurred during checkout: %s\n".formatted(e.getLocalizedMessage()));
         }
     }
 
@@ -206,7 +209,7 @@ public class RetailConsole implements CommandLineRunner {
                 dateValue = LocalDate.parse(input, DATE_FORMATTER);
             }
             catch (final Exception e) {
-                System.out.println("Value %s is not a valid date.".formatted(input));
+                System.out.print("Value %s is not a valid date.\n".formatted(input));
             }
         }
 
@@ -227,7 +230,7 @@ public class RetailConsole implements CommandLineRunner {
                 integerValue = Integer.valueOf(input);
             }
             catch (final Exception e) {
-                System.out.println("Value %s is not an integer.".formatted(input));
+                System.out.print("Value %s is not an integer.\n".formatted(input));
             }
         }
 
